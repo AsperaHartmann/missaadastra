@@ -1,0 +1,1391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Missa Ad Astra | Original Contemporary Mass by Rui Paulo Teixeira & Alvaro Aspera | For SATB Soloists, Choir and Orchestra</title>
+	<meta name="description" content="Experience Missa Ad Astra, a revolutionary contemporary mass with entirely new Latin texts. Composed by Rui Paulo Teixeira with texts by Alvaro Aspera. 25 years in the making. World premiere 2024.">
+    <meta name="keywords" content="Missa Ad Astra, contemporary mass, sacred music, Latin mass, Rui Paulo Teixeira, Alvaro Aspera, classical music, choral music, SATB, orchestra">
+	<meta property="og:title" content="Missa Ad Astra - A Contemporary Sacred Manifesto">
+	<meta property="og:description" content="25 years in the making. Entirely new Latin texts. Revolutionary sacred music.">
+	<meta property="og:type" content="website">
+	<link rel="canonical" href="https://missaadastra.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            color: #1a1a1a;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .sans {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Hero Section with Generative Art */
+        #hero {
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: #000;
+        }
+
+        #canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            color: #fff;
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 8vw, 6rem);
+            font-weight: 300;
+            letter-spacing: 0.3em;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            animation: fadeIn 2s ease-in;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 2vw, 1.5rem);
+            font-weight: 300;
+            letter-spacing: 0.2em;
+            opacity: 0;
+            animation: fadeIn 2s ease-in 1s forwards;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0.7;
+            animation: bounce 2s infinite;
+            font-size: 1.5rem;
+            color: #fff;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+
+        /* Section Base Styles */
+        section {
+            min-height: 100vh;
+            padding: 5rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 5vw, 3rem);
+            letter-spacing: 0.2em;
+            text-align: center;
+            margin-bottom: 4rem;
+            text-transform: uppercase;
+        }
+
+        /* Essence Section */
+        #essence {
+            background: #fafafa;
+        }
+
+        .essence-content {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .essence-question {
+            font-size: clamp(1.65rem, 4.4vw, 2.75rem);
+            font-style: italic;
+            margin-bottom: 3rem;
+            color: #333;
+        }
+
+        .essence-body {
+            font-size: clamp(1.21rem, 2.2vw, 1.43rem);
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .essence-divider {
+            width: 60px;
+            height: 1px;
+            background: #999;
+            border: none;
+            margin: 3rem auto;
+        }
+
+        .essence-highlight {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 1rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .essence-details {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 2rem;
+            font-family: 'Inter', sans-serif;
+            font-weight: 300;
+            line-height: 1.8;
+        }
+
+        .movements {
+            text-align: center;
+            font-size: 1.1rem;
+            letter-spacing: 0.1em;
+            margin-top: 2rem;
+            color: #999;
+            font-family: 'Inter', sans-serif;
+            font-weight: 300;
+        }
+
+        /* Experience Section */
+        #experience {
+            background: #fff;
+        }
+
+        .experience-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .experience-card {
+            text-align: center;
+            padding: 2rem;
+            border: 1px solid #eee;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .experience-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .experience-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            font-weight: 300;
+        }
+
+        .experience-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #1a1a1a;
+        }
+
+        .experience-subtitle {
+            color: #666;
+            font-size: 0.85rem;
+            font-family: 'Inter', sans-serif;
+            font-weight: 300;
+        }
+
+        /* Words Section */
+        #words {
+            background: #f5f5f5;
+        }
+
+        .words-content {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .accordion {
+            margin-bottom: 1rem;
+        }
+
+        .accordion-header {
+            padding: 1.5rem 2rem;
+            cursor: pointer;
+            font-size: 1.65rem;
+            transition: opacity 0.3s ease;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: transparent;
+        }
+
+        .accordion-header:hover {
+            opacity: 0.8;
+        }
+
+        .accordion-arrow {
+            transition: transform 0.3s ease;
+            display: inline-block;
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 10px solid #1a1a1a;
+        }
+
+        .accordion.active .accordion-arrow {
+            transform: rotate(180deg);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background: #fff;
+        }
+
+        .accordion.active .accordion-content {
+            max-height: 2000px;
+            padding: 2rem;
+        }
+
+        .text-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .latin-column, .english-column {
+            text-align: left;
+        }
+
+        .text-block {
+            margin-bottom: 1.5rem;
+        }
+
+        .text-block:last-child {
+            margin-bottom: 0;
+        }
+
+        .latin-column .text-block {
+            font-size: 1.43rem;
+            line-height: 1.4;
+            font-style: italic;
+        }
+
+        .latin-column .text-block.roman {
+            font-style: normal;
+        }
+
+        .english-column .text-block {
+            font-size: 1.05rem;
+            line-height: 1.9;
+            color: #666;
+            font-family: 'Inter', sans-serif;
+            font-weight: 300;
+        }
+
+        .english-column .text-block.italic {
+            font-style: italic;
+        }
+
+        /* Voices Section with Carousel */
+        #voices {
+            background: #fff;
+			    text-align: center;
+        }
+
+        .testimonial-carousel {
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+    min-height: 400px; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.testimonial-wrapper {
+    position: relative;
+    width: 100%;
+    min-height: 300px; 
+    display: flex;
+    align-items: center;     
+    justify-content: center;  
+    text-align: center;
+}
+
+.testimonial {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    opacity: 0;
+    transition: opacity 1.2s ease-in-out;
+    pointer-events: none;
+    text-align: center; 
+}
+
+.testimonial.active {
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 2;
+}
+
+        .testimonial-quote {
+            font-size: clamp(1.43rem, 3.3vw, 1.98rem);
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .testimonial-quote::before {
+            content: '"';
+        }
+
+        .testimonial-quote::after {
+            content: '"';
+        }
+
+        .testimonial-divider {
+            width: 60px;
+            height: 1px;
+            background: #999;
+            border: none;
+            margin: 2rem auto;
+        }
+
+        .testimonial-author {
+            font-size: 1.21rem;
+            font-weight: 500;
+            margin-bottom: 0.3rem;
+            font-family: 'Inter', sans-serif;
+            color: #1a1a1a;
+        }
+
+        .testimonial-role {
+            font-size: 1.1rem;
+            color: #666;
+        }
+
+.testimonial-dots {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 3rem;
+}
+
+        .testimonial-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ddd;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .testimonial-dot.active {
+            background: #333;
+        }
+
+        .testimonial-dot:hover {
+            background: #666;
+        }
+
+        /* Performances Section */
+        #performances {
+            background: #fafafa;
+        }
+
+        .performances-container {
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .performance-preview {
+            margin-bottom: 2rem;
+        }
+
+        .performance-status {
+            font-size: 0.9rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            color: #666;
+        }
+
+        .performance-date {
+            font-size: clamp(1.98rem, 4.4vw, 2.75rem);
+            margin-bottom: 0.5rem;
+        }
+
+        .performance-location {
+            font-size: 1.21rem;
+            color: #999;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 2rem;
+        }
+
+        .performance-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+            margin-bottom: 2rem;
+        }
+
+        .performance-details.expanded {
+            max-height: 1000px;
+        }
+
+        .details-content {
+            padding: 2.5rem;
+            background: #fff;
+            border-radius: 8px;
+            text-align: left;
+            margin-top: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .detail-row {
+            margin-bottom: 2rem;
+        }
+
+        .detail-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .detail-label {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #999;
+            margin-bottom: 0.7rem;
+        }
+
+        .detail-value {
+            font-size: 1.1rem;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .detail-value.italic {
+            font-style: italic;
+        }
+
+        .performers-list {
+            line-height: 1.8;
+        }
+
+        .performance-cta {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            border: 1px solid #1a1a1a;
+            text-decoration: none;
+            color: #1a1a1a;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: transparent;
+        }
+
+        .performance-cta:hover {
+            background: #1a1a1a;
+            color: #fff;
+        }
+
+        .performance-nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .nav-arrow {
+            cursor: pointer;
+            font-size: 1.5rem;
+            padding: 0.5rem;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-arrow:hover:not(.disabled) {
+            opacity: 0.7;
+        }
+
+        .nav-arrow.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .nav-counter {
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            color: #666;
+        }
+
+        /* Connect Section */
+        #connect {
+            background: #000;
+            color: #fff;
+        }
+
+        .connect-content {
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .connect-title {
+            font-size: clamp(2rem, 5vw, 3rem);
+            letter-spacing: 0.2em;
+            margin-bottom: 3rem;
+            text-transform: uppercase;
+        }
+
+        .connect-intro {
+            font-size: 1.43rem;
+            margin-bottom: 2rem;
+            font-style: italic;
+        }
+
+        .connect-email {
+            font-size: 1.1rem;
+            color: #fff;
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.3s ease;
+            display: inline-block;
+            margin-bottom: 3rem;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.03em;
+        }
+
+        .connect-email:hover {
+            border-bottom-color: #fff;
+        }
+
+        .composers {
+            font-size: 1.21rem;
+            color: #999;
+            margin-top: 4rem;
+            padding-top: 3rem;
+            position: relative;
+        }
+
+        .composers::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 1px;
+            background: #555;
+        }
+
+        .copyright {
+            font-size: 0.7rem;
+            color: #555;
+            margin-top: 2rem;
+            font-family: 'Inter', sans-serif;
+            font-weight: 300;
+        }
+
+        /* Navigation Dots */
+        .nav-dots {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+        }
+
+        .nav-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin: 1rem 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .text-columns {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .experience-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-dots {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Dots -->
+    <div class="nav-dots">
+        <div class="nav-dot" onclick="scrollToSection('hero')"></div>
+        <div class="nav-dot" onclick="scrollToSection('essence')"></div>
+        <div class="nav-dot" onclick="scrollToSection('experience')"></div>
+        <div class="nav-dot" onclick="scrollToSection('words')"></div>
+        <div class="nav-dot" onclick="scrollToSection('voices')"></div>
+        <div class="nav-dot" onclick="scrollToSection('performances')"></div>
+        <div class="nav-dot" onclick="scrollToSection('connect')"></div>
+    </div>
+
+    <!-- Hero Section with Particle Animation -->
+    <section id="hero">
+        <canvas id="canvas"></canvas>
+        <div class="hero-content">
+            <h1 class="hero-title">Missa Ad Astra</h1>
+            <p class="hero-subtitle">A Contemporary Sacred Manifesto</p>
+        </div>
+        <div class="scroll-indicator">↓</div>
+    </section>
+
+    <!-- Essence Section -->
+    <section id="essence">
+        <div class="container">
+            <div class="essence-content">
+                <p class="essence-question">What does it mean to write with blood?</p>
+                <p class="essence-body">
+                    Twenty-five years in the making, Missa Ad Astra is a contemporary mass unlike any other. 
+                    Composer Rui Paulo Teixeira and writer Alvaro Aspera didn't simply create new settings 
+                    of traditional texts. They made a sacred promise to themselves: to "write with blood" – to 
+                    write only what they had lived, what they had earned through experience, what had become 
+                    undeniably true.
+                </p>
+                <p class="essence-body">
+                    Each movement waited to be born until its truth had been lived.
+                </p>
+                <hr class="essence-divider">
+                <p class="essence-highlight">Traditional in structure, revolutionary in spirit.</p>
+                <p class="essence-details">
+                    Entirely new Latin texts. Original music for SATB soloists, mixed choir with water-tuned glasses, and orchestra with basso continuo. Also on period instruments. 25 minutes duration.
+                </p>
+                <p class="movements">KYRIE · GLORIA · CREDO · SANCTUS · AGNUS DEI</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience">
+        <div class="container">
+            <h2 class="section-title">Experience</h2>
+            <div class="experience-grid">
+                <div class="experience-card">
+                    <h3 class="experience-title">Watch</h3>
+                    <div class="experience-icon">▶</div>
+                    <p class="experience-subtitle">Experience the world premiere performance</p>
+                </div>
+                <div class="experience-card">
+                    <h3 class="experience-title">Listen</h3>
+                    <div class="experience-icon">♫</div>
+                    <p class="experience-subtitle">Immerse yourself in the complete recording</p>
+                </div>
+                <div class="experience-card">
+                    <h3 class="experience-title">Explore</h3>
+                    <div class="experience-icon">✦</div>
+                    <p class="experience-subtitle">Discover the texts and translations</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Words Section -->
+    <section id="words">
+        <div class="container">
+            <h2 class="section-title">The Words</h2>
+            <div class="words-content">
+                <!-- Kyrie -->
+                <div class="accordion">
+                    <div class="accordion-header">
+                        Kyrie
+                        <span class="accordion-arrow"></span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="text-columns">
+                            <div class="latin-column">
+                                <div class="text-block">Rosa florat.</div>
+                                <div class="text-block">Solitudo.<br>Ad nos fama Patris est.</div>
+                                <div class="text-block">Christe eleison.</div>
+                                <div class="text-block">Solitudo.<br>In nos gladius fixus est.</div>
+                                <div class="text-block">Kyrie eleison.</div>
+                            </div>
+                            <div class="english-column">
+                                <div class="text-block">Oh Rose, blossom...</div>
+                                <div class="text-block">All is emptiness.<br>We hear our Father. Is He calling us?</div>
+                                <div class="text-block">Oh Christ! Have mercy.</div>
+                                <div class="text-block">All is loneliness.<br>In us a blade has been stabbed.</div>
+                                <div class="text-block">Lord, do You hear our cry?</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gloria -->
+                <div class="accordion">
+                    <div class="accordion-header">
+                        Gloria
+                        <span class="accordion-arrow"></span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="text-columns">
+                            <div class="latin-column">
+                                <div class="text-block">Pater ex naturam omnem<br>et Filius in animi core<br>hominibus lucent exanclatis.</div>
+                                <div class="text-block">Laudamus te benedicimus te<br>Sol qui rapuit nos.</div>
+                                <div class="text-block">Gloria in excelsis Deo<br>et Pax in intimo Templo<br>hominibus bonae voluntatis.</div>
+                                <div class="text-block">Adoramus te glorificamus te<br>Sol qui rapuit nos.</div>
+                            </div>
+                            <div class="english-column">
+                                <div class="text-block">The Father who lies beyond all Creation,<br>and the Son in the core of the soul,<br>shine upon exhausted men.</div>
+                                <div class="text-block">We praise You, we bless You,<br>Oh, Sun who has enraptured us!</div>
+                                <div class="text-block">Glory to God in the highest<br>and Peace in the innermost Sanctum<br>to men of good will.</div>
+                                <div class="text-block">We adore You, we glorify You,<br>Oh, Sun who has enraptured us!</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Credo -->
+                <div class="accordion">
+                    <div class="accordion-header">
+                        Credo
+                        <span class="accordion-arrow"></span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="text-columns">
+                            <div class="latin-column">
+                                <div class="text-block roman">Quia signum meum etiam Ignis est</div>
+                                <div class="text-block">Credo in unum deum<br>Patrem me omnipotentem<br>oblitus at semper proximus<br>verum factorem coeli et terrae<br>in quo reveniunt omnia.</div>
+                                <div class="text-block">Expergo in lucem mundi<br>deum verum de vero<br>Filium Dei in Golgotha Christus<br>mortuum in me et sepultum<br>ad summum ressurrectum in excelsis.</div>
+                                <div class="text-block">Et nunc diem ex die occidit natura<br>in me se liberat aeternum mundum<br>magnificentiam ex magnificentia per Spiritum Sanctum<br>revenio in Unam Sanctam secundum scripturas.<br>Dei Gloria Intacta.</div>
+                                <div class="text-block">Pater, consummatum est.</div>
+                            </div>
+                            <div class="english-column">
+                                <div class="text-block italic">For Fire, too, is my sign</div>
+                                <div class="text-block">I believe in one God,<br>the Father and the might in everything that exists,<br>forgotten by me and yet always close,<br>true maker of heaven and earth,<br>to whom everything shall return.</div>
+                                <div class="text-block">I wake up in the Light of the world,<br>true God from the true God,<br>the Son of God dead in me and buried,<br>risen in the Sanctum of the Head, at last!<br>Christ in splendor!</div>
+                                <div class="text-block">And now I die day after day,<br>in me the eternal world frees itself,<br>from magnificence to magnificence, by the Holy Spirit,<br>I return Home according to the scriptures.<br>The Untouched Glory of God is now Perfect.</div>
+                                <div class="text-block">Father, it's done.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sanctus -->
+                <div class="accordion">
+                    <div class="accordion-header">
+                        Sanctus
+                        <span class="accordion-arrow"></span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="text-columns">
+                            <div class="latin-column">
+                                <div class="text-block">Sanctus! Sanctus! Sanctus!</div>
+                                <div class="text-block">Nunc in excelsis advenisti,<br>In oblivio nos relinques?</div>
+                                <div class="text-block">Sanctus! Sanctus! Sanctus!</div>
+                                <div class="text-block">Tu qui ad fugam ultra finiens orbis abdicasti<br>Et dolorem innefabilem secretae vitae elegisti.</div>
+                                <div class="text-block">Sanctum est Nomen Tuum.<br>Sanctum est Silentium Tuum.<br>Pleni sunt caeli et terra gloria tua!</div>
+                                <div class="text-block">(Hosanna in excelsis)<br>Benedictus qui venit in nomine Domini.</div>
+                                <div class="text-block">Tu Vivis.</div>
+                            </div>
+                            <div class="english-column">
+                                <div class="text-block">Holy! Holy! Oh Blessed One!</div>
+                                <div class="text-block">Now that you have come to the highest of the blue sky,<br>Are you going to leave us in oblivion?</div>
+                                <div class="text-block">Holy! Holy! Oh Blessed One!</div>
+                                <div class="text-block">You who have renounced vanishing from sight beyond the ends of the earth,<br>And have chosen the ineffable pain of the Secret Life.</div>
+                                <div class="text-block">Holy is Your Name.<br>Holy is Your Silence.<br>Heavens and earth are full of your glory!</div>
+                                <div class="text-block">(Hosanna in excelsis)<br>Blessed is he who comes in the name of the Lord.</div>
+                                <div class="text-block">You are the Living One.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Agnus Dei -->
+                <div class="accordion">
+                    <div class="accordion-header">
+                        Agnus Dei
+                        <span class="accordion-arrow"></span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="text-columns">
+                            <div class="latin-column">
+                                <div class="text-block">Agnus Dei,<br>Qui tollis peccata mundi,<br>Miserere nobis.</div>
+                                <div class="text-block">Tu qui Vitam Lucem decedisti,<br>Tu qui Viam Crucem eligisti,<br>Miserere nobis.</div>
+                                <div class="text-block">Agnus Dei,<br>Qui tollis peccata mundi,<br>Dona nobis pacem.</div>
+                                <div class="text-block">In nos gladius fixus est,<br>Ad nos fama Patris est,<br>Dona nobis pacem.</div>
+                                <div class="text-block">Rosa florat!</div>
+                            </div>
+                            <div class="english-column">
+                                <div class="text-block">Lamb of God,<br>Who takes away the sins of the world,<br>Have mercy on us.</div>
+                                <div class="text-block">You who renounced your Divine Life,<br>You who have chosen the Way of the Cross,<br>Have mercy on us.</div>
+                                <div class="text-block">Lamb of God,<br>Who takes away the sins of the world,<br>Grant us your inner peace.</div>
+                                <div class="text-block">In us a blade has been stabbed.<br>We hear our Father. Is He calling us?<br>Grant us your inner peace.</div>
+                                <div class="text-block">Oh Rose... blossom!</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Voices Section -->
+    <section id="voices">
+        <div class="container">
+            <h2 class="section-title">Voices</h2>
+            <div class="testimonial-carousel">
+		<div class="testimonial-wrapper">
+                <div class="testimonial active" data-index="0">
+                    <p class="testimonial-quote">
+                        Rui Paulo Teixeira writes with a truly silken hand that goes directly 
+                        to the interior of each person... He truly manages to bring out the 
+                        best in us through this music.
+                    </p>
+                    <hr class="testimonial-divider">
+                    <p class="testimonial-author">Sergio Alapont</p>
+                    <p class="testimonial-role">Musical Director, Orquestra Clássica do Centro</p>
+                </div>
+                <div class="testimonial" data-index="1">
+                    <p class="testimonial-quote">
+                        This is more than an exercise: it is a Work of Art. This work 
+                        restores our sense of wonder before the Mystery.
+                    </p>
+                    <hr class="testimonial-divider">
+                    <p class="testimonial-author">Father Joaquim Ganhão</p>
+                    <p class="testimonial-role">Director of the Liturgy Department, Sanctuary of Fátima</p>
+                </div>
+                <div class="testimonial" data-index="2">
+                    <p class="testimonial-quote">
+                        The experience of singing this text is truly sublime.
+                    </p>
+                    <hr class="testimonial-divider">
+                    <p class="testimonial-author">Pedro Teixeira</p>
+                    <p class="testimonial-role">Choir Conductor, Coro Ricercare</p>
+                </div>
+                <div class="testimonial" data-index="3">
+                    <p class="testimonial-quote">
+                        The decision to compose a Mass demonstrates a desire to provide, 
+                        beyond musical enjoyment, a spiritual experience – beyond the routines 
+                        and hustle of everyday life.
+                    </p>
+                    <hr class="testimonial-divider">
+                    <p class="testimonial-author">Father Carlos Cabecinhas</p>
+                    <p class="testimonial-role">Rector of the Sanctuary of Fátima</p>
+                </div>
+                <div class="testimonial" data-index="4">
+                    <p class="testimonial-quote">
+                        We are touching souls, in an act of unprecedented modernity.
+                    </p>
+                    <hr class="testimonial-divider">
+                    <p class="testimonial-author">Sergio Alapont</p>
+                    <p class="testimonial-role">Musical Director, Orquestra Clássica do Centro</p>
+                </div>
+                <div class="testimonial" data-index="5">
+                    <p class="testimonial-quote">
+                        Premiering a mass with these characteristics is a major event.
+                    </p>
+                    <hr class="testimonial-divider">
+                    <p class="testimonial-author">Pedro Teixeira</p>
+                    <p class="testimonial-role">Choir Conductor, Coro Ricercare</p>
+                </div>
+   		</div>
+				<div class="testimonial-dots">
+                    <span class="testimonial-dot active" onclick="goToTestimonial(0)"></span>
+                    <span class="testimonial-dot" onclick="goToTestimonial(1)"></span>
+                    <span class="testimonial-dot" onclick="goToTestimonial(2)"></span>
+                    <span class="testimonial-dot" onclick="goToTestimonial(3)"></span>
+                    <span class="testimonial-dot" onclick="goToTestimonial(4)"></span>
+                    <span class="testimonial-dot" onclick="goToTestimonial(5)"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Performances Section -->
+    <section id="performances">
+        <div class="container">
+            <h2 class="section-title">Performances</h2>
+            <div class="performances-container">
+                <div class="performance-preview">
+                    <p class="performance-status" id="performanceStatus">NEXT PERFORMANCE</p>
+                    <p class="performance-date" id="performanceDate">December 13, 2025</p>
+                    <p class="performance-location" id="performanceLocation">Lisbon, Portugal</p>
+                    <button class="performance-cta" id="detailsBtn" onclick="toggleDetails()">See Details</button>
+                    <div class="performance-details" id="performanceDetails">
+                        <div class="details-content" id="detailsContent">
+                            <!-- Details will be dynamically inserted here -->
+                        </div>
+                    </div>
+                </div>
+                <div class="performance-nav">
+                    <span class="nav-arrow" id="prevArrow">←</span>
+                    <span class="nav-counter" id="navCounter">4 / 4</span>
+                    <span class="nav-arrow" id="nextArrow">→</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Connect Section -->
+    <section id="connect">
+        <div class="container">
+            <div class="connect-content">
+                <h2 class="connect-title">Missa Ad Astra</h2>
+                <p class="connect-intro">For performance inquiries, sheet music, or press materials:</p>
+                <a href="mailto:contact@missaadastra.com" class="connect-email">contact@missaadastra.com</a>
+                <p class="composers">
+                    1999-2024<br>
+                    Rui Paulo Teixeira · Music<br>
+                    Alvaro Aspera · Text
+                </p>
+                <p class="copyright">© 2025 All rights reserved</p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Particle Animation for Hero - Improved constellation effect
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+        
+        const particles = [];
+        const particleCount = 150;
+        const connectionDistance = 150;
+        
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 1;
+                this.speedX = (Math.random() - 0.5) * 0.3;
+                this.speedY = (Math.random() - 0.5) * 0.3;
+                this.opacity = Math.random() * 0.5 + 0.5;
+                this.pulseSpeed = Math.random() * 0.02 + 0.01;
+                this.pulsePhase = Math.random() * Math.PI * 2;
+            }
+            
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                
+                // Wrap around edges instead of bouncing
+                if (this.x > canvas.width) this.x = 0;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.y > canvas.height) this.y = 0;
+                if (this.y < 0) this.y = canvas.height;
+                
+                // Pulsing effect
+                this.pulsePhase += this.pulseSpeed;
+            }
+            
+            draw() {
+                const pulseFactor = Math.sin(this.pulsePhase) * 0.3 + 0.7;
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity * pulseFactor})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size * pulseFactor, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Add glow effect
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = 'rgba(255, 255, 255, 0.5)';
+                ctx.fill();
+                ctx.shadowBlur = 0;
+            }
+        }
+        
+        function initParticles() {
+            particles.length = 0;
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+        }
+        
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw connections first (behind particles)
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < connectionDistance) {
+                        const opacity = (1 - distance / connectionDistance) * 0.3;
+                        ctx.strokeStyle = `rgba(100, 150, 255, ${opacity})`;
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                        
+                        // Add node highlights at connection points
+                        if (distance < connectionDistance / 2) {
+                            const midX = (particles[i].x + particles[j].x) / 2;
+                            const midY = (particles[i].y + particles[j].y) / 2;
+                            ctx.fillStyle = `rgba(150, 200, 255, ${opacity * 0.3})`;
+                            ctx.beginPath();
+                            ctx.arc(midX, midY, 1, 0, Math.PI * 2);
+                            ctx.fill();
+                        }
+                    }
+                }
+            }
+            
+            // Draw particles
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+            
+            requestAnimationFrame(animateParticles);
+        }
+        
+        initParticles();
+        animateParticles();
+
+        // Initialize navigation dots with correct colors
+        function initializeDots() {
+            const dots = document.querySelectorAll('.nav-dot');
+            dots.forEach((dot, index) => {
+                if (index === 0) {
+                    // Hero section - start with white active dot
+                    dot.style.background = 'rgba(255, 255, 255, 0.9)';
+                } else {
+                    dot.style.background = 'rgba(255, 255, 255, 0.3)';
+                }
+            });
+        }
+        
+        initializeDots();
+
+        // Accordion functionality for Words section
+        document.querySelectorAll('.accordion-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const accordion = header.parentElement;
+                const wasActive = accordion.classList.contains('active');
+                
+                // Close all accordions
+                document.querySelectorAll('.accordion').forEach(acc => {
+                    acc.classList.remove('active');
+                });
+                
+                // Toggle current accordion
+                if (!wasActive) {
+                    accordion.classList.add('active');
+                }
+            });
+        });
+
+        // Testimonial Carousel 
+        let currentTestimonial = 0;
+        let autoRotateTimer;
+        const testimonials = document.querySelectorAll('.testimonial');
+        const testimonialDots = document.querySelectorAll('.testimonial-dot');
+
+        // Function to show specific testimonial
+        function showTestimonial(index) {
+            // Ensure index is valid
+            if (index >= testimonials.length) index = 0;
+            if (index < 0) index = testimonials.length - 1;
+            
+            // Hide all testimonials first
+            testimonials.forEach(t => {
+                t.classList.remove('active');
+            });
+            
+            // Show the selected testimonial
+            setTimeout(() => {
+                testimonials[index].classList.add('active');
+            }, 10);
+            
+            // Update dots
+            testimonialDots.forEach((d, i) => {
+                if (i === index) {
+                    d.classList.add('active');
+                } else {
+                    d.classList.remove('active');
+                }
+            });
+            
+            currentTestimonial = index;
+        }
+
+        // Function to handle dot clicks
+        function goToTestimonial(index) {
+            // Clear auto-rotation
+            clearInterval(autoRotateTimer);
+            
+            // Show the selected testimonial
+            showTestimonial(index);
+            
+            // Restart auto-rotation after manual selection
+            startAutoRotate();
+        }
+
+        // Auto-rotate function 
+        function startAutoRotate() {
+            autoRotateTimer = setInterval(() => {
+                currentTestimonial = (currentTestimonial + 1) % testimonials.length;
+                showTestimonial(currentTestimonial);
+            }, 8000); // 8 seconds
+        }
+        
+        // Initialize carousel
+        showTestimonial(0);
+        startAutoRotate();
+
+        // Performance navigation with full details
+        const performances = [
+            {
+                status: 'WORLD PREMIERE',
+                date: 'November 23, 2024',
+                location: 'Santarém, Portugal',
+                time: '21:30',
+                venue: 'Santarém Cathedral',
+                context: 'World Premiere - Opening Concert of Fós 2024, as part of the celebration of the 50th Anniversary of the Diocese of Santarém',
+                performers: [
+                    'Orquestra Clássica do Centro (Coimbra, Portugal)',
+                    'Coro Ricercare (Lisbon, Portugal)',
+                    'Sergio Alapont, Musical Director',
+                    'Pedro Teixeira, Choir Conductor',
+                    'Eva Braga Simões, Soprano',
+                    'Maria João Gomes, Mezzo-Soprano',
+                    'Tiago Sousa, Tenor',
+                    'Nuno Mendes, Bass',
+                    'Ricardo Toste, Organ'
+                ]
+            },
+            {
+                status: 'PREVIOUS PERFORMANCE',
+                date: 'April 26, 2025',
+                location: 'Coimbra, Portugal',
+                time: '21:30',
+                venue: 'Sé Nova',
+                context: 'Easter Concert',
+                performers: [
+                    'Orquestra Clássica do Centro (Coimbra, Portugal)',
+                    'Coro Ricercare (Lisbon, Portugal)',
+                    'Sergio Alapont, Musical Director',
+                    'Pedro Teixeira, Choir Conductor',
+                    'Eva Braga Simões, Soprano',
+                    'Maria João Gomes, Mezzo-Soprano',
+                    'Tiago Sousa, Tenor',
+                    'Nuno Mendes, Bass',
+                    'Ricardo Toste, Organ'
+                ]
+            },
+            {
+                status: 'PREVIOUS PERFORMANCE',
+                date: 'April 27, 2025',
+                location: 'Shrine of Fatima, Portugal',
+                time: '15:30',
+                venue: 'Basilica of Our Lady of the Rosary of Fatima',
+                context: 'Easter Concert',
+                performers: [
+                    'Orquestra Clássica do Centro (Coimbra, Portugal)',
+                    'Coro Ricercare (Lisbon, Portugal)',
+                    'Sergio Alapont, Musical Director',
+                    'Pedro Teixeira, Choir Conductor',
+                    'Eva Braga Simões, Soprano',
+                    'Maria João Gomes, Mezzo-Soprano',
+                    'Tiago Sousa, Tenor',
+                    'Nuno Mendes, Bass',
+                    'Ricardo Toste, Organ'
+                ]
+            },
+            {
+                status: 'NEXT PERFORMANCE',
+                date: 'December 13, 2025',
+                location: 'Lisbon, Portugal',
+                time: 'Time to be confirmed',
+                venue: 'Church of St. Nicholas',
+                context: 'Christmas Concert',
+                performers: ['To be confirmed']
+            }
+        ];
+
+        let currentIndex = 3;
+        let detailsExpanded = false;
+
+        function updatePerformance() {
+            const perf = performances[currentIndex];
+            const status = document.getElementById('performanceStatus');
+            const date = document.getElementById('performanceDate');
+            const location = document.getElementById('performanceLocation');
+            const counter = document.getElementById('navCounter');
+            
+            status.textContent = perf.status;
+            date.textContent = perf.date;
+            location.textContent = perf.location;
+            counter.textContent = `${currentIndex + 1} / ${performances.length}`;
+            
+            // Update arrow states
+            document.getElementById('prevArrow').classList.toggle('disabled', currentIndex === 0);
+            document.getElementById('nextArrow').classList.toggle('disabled', currentIndex === performances.length - 1);
+            
+            // Close details when changing performance
+            if (detailsExpanded) {
+                toggleDetails();
+            }
+            
+            // Update details content
+            updateDetailsContent();
+        }
+
+        function updateDetailsContent() {
+            const perf = performances[currentIndex];
+            const detailsContent = document.getElementById('detailsContent');
+            
+            let performersHtml = perf.performers.map(p => p).join('<br>');
+            
+            detailsContent.innerHTML = `
+                <div class="detail-row">
+                    <div class="detail-label">Venue</div>
+                    <div class="detail-value">${perf.venue}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Date & Time</div>
+                    <div class="detail-value">${perf.date} · ${perf.time}</div>
+                </div>
+                ${perf.context ? `
+                <div class="detail-row">
+                    <div class="detail-label">Context</div>
+                    <div class="detail-value italic">${perf.context}</div>
+                </div>
+                ` : ''}
+                <div class="detail-row">
+                    <div class="detail-label">Performers</div>
+                    <div class="detail-value performers-list">${performersHtml}</div>
+                </div>
+            `;
+        }
+
+        function toggleDetails() {
+            const details = document.getElementById('performanceDetails');
+            const btn = document.getElementById('detailsBtn');
+            
+            detailsExpanded = !detailsExpanded;
+            
+            if (detailsExpanded) {
+                details.classList.add('expanded');
+                btn.textContent = 'Hide Details';
+            } else {
+                details.classList.remove('expanded');
+                btn.textContent = 'See Details';
+            }
+        }
+
+        document.getElementById('prevArrow').addEventListener('click', () => {
+            if (currentIndex > 0) {
+                currentIndex--;
+                updatePerformance();
+            }
+        });
+
+        document.getElementById('nextArrow').addEventListener('click', () => {
+            if (currentIndex < performances.length - 1) {
+                currentIndex++;
+                updatePerformance();
+            }
+        });
+        
+        // Initialize with details content
+        updateDetailsContent();
+
+        // Smooth scroll and dot navigation
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Update active dot on scroll
+        window.addEventListener('scroll', () => {
+            const sections = ['hero', 'essence', 'experience', 'words', 'voices', 'performances', 'connect'];
+            const dots = document.querySelectorAll('.nav-dot');
+            
+            let current = 0;
+            sections.forEach((section, index) => {
+                const element = document.getElementById(section);
+                const rect = element.getBoundingClientRect();
+                if (rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2) {
+                    current = index;
+                }
+            });
+            
+            dots.forEach((dot, index) => {
+                // For dark sections (hero and connect)
+                if (current === 0 || current === 6) {
+                    dot.style.background = 'rgba(255, 255, 255, 0.3)';
+                    if (index === current) {
+                        dot.style.background = 'rgba(255, 255, 255, 0.9)';
+                    }
+                } else {
+                    // For light sections
+                    dot.style.background = 'rgba(0, 0, 0, 0.2)';
+                    if (index === current) {
+                        dot.style.background = '#1a1a1a';
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
