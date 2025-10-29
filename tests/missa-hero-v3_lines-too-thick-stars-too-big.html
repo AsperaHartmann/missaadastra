@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Missa Ad Astra - Hero Section v3 (Music Reactive)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            color: #1a1a1a;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Hero Section with Generative Art - Exact copy from original */
+        #hero {
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: #000;
+        }
+
+        #canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            color: #fff;
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 8vw, 6rem);
+            font-weight: 300;
+            letter-spacing: 0.3em;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            animation: fadeIn 2s ease-in;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 2vw, 1.5rem);
+            font-weight: 300;
+            letter-spacing: 0.2em;
+            opacity: 0;
+            animation: fadeIn 2s ease-in 1s forwards;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0.7;
+            animation: bounce 2s infinite;
+            font-size: 1.5rem;
+            color: #fff;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+
+        /* Navigation Dots - From original */
+        .nav-dots {
+            position: fixed;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 100;
+        }
+
+        .nav-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-dot:hover {
+            background: rgba(255, 255, 255, 0.6);
+            transform: scale(1.2);
+        }
+
+        .nav-dot.active {
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Music Player */
+        .music-player {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 12px 20px;
+            z-index: 1000;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            color: #fff;
+            min-width: 320px;
+        }
+
+        .music-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .music-btn {
+            width: 32px;
+            height: 32px;
+            background: none;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.3s ease;
+            opacity: 0.7;
+        }
+
+        .music-btn:hover {
+            opacity: 1;
+        }
+
+        .music-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        .music-btn.play-pause svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .progress-container {
+            flex: 1;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.2);
+            position: relative;
+            cursor: pointer;
+            min-width: 100px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.8));
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        .song-name {
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            opacity: 0.9;
+            min-width: 80px;
+            text-align: right;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-dots {
+                right: 15px;
+            }
+            
+            .music-player {
+                bottom: 15px;
+                right: 15px;
+                left: 15px;
+                min-width: unset;
+                padding: 10px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section with Particle Animation -->
+    <section id="hero">
+        <canvas id="canvas"></canvas>
+        <div class="hero-content">
+            <h1 class="hero-title">MISSA AD ASTRA</h1>
+            <p class="hero-subtitle">A Contemporary Sacred Manifesto</p>
+        </div>
+        <div class="scroll-indicator">↓</div>
+    </section>
+
+    <!-- Navigation Dots -->
+    <div class="nav-dots">
+        <div class="nav-dot active" onclick="scrollToSection('hero')"></div>
+        <div class="nav-dot" onclick="scrollToSection('essence')"></div>
+        <div class="nav-dot" onclick="scrollToSection('experience')"></div>
+        <div class="nav-dot" onclick="scrollToSection('words')"></div>
+        <div class="nav-dot" onclick="scrollToSection('voices')"></div>
+        <div class="nav-dot" onclick="scrollToSection('performances')"></div>
+        <div class="nav-dot" onclick="scrollToSection('connect')"></div>
+    </div>
+
+    <!-- Music Player -->
+    <div class="music-player">
+        <div class="music-controls">
+            <button class="music-btn play-pause" id="playPauseBtn" aria-label="Play">
+                <svg id="playIcon" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z"/>
+                </svg>
+                <svg id="pauseIcon" viewBox="0 0 24 24" style="display: none;">
+                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                </svg>
+            </button>
+            <button class="music-btn" id="prevBtn" aria-label="Previous">
+                <svg viewBox="0 0 24 24">
+                    <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
+                </svg>
+            </button>
+            <button class="music-btn" id="nextBtn" aria-label="Next">
+                <svg viewBox="0 0 24 24">
+                    <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
+                </svg>
+            </button>
+        </div>
+        <div class="progress-container" id="progressContainer">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="song-name" id="songName">Ready</div>
+    </div>
+
+    <script>
+        // Song configuration
+        const songs = [
+            { name: 'Kyrie', url: 'https://www.missaadastra.com/assets/Exc1_KYRIE_25s.mp3', duration: 25 },
+            { name: 'Gloria', url: 'https://www.missaadastra.com/assets/Exc2_GLORIA_39s.mp3', duration: 39 },
+            { name: 'Credo', url: 'https://www.missaadastra.com/assets/Exc3_CREDO_59s.mp3', duration: 59 },
+            { name: 'Sanctus', url: 'https://www.missaadastra.com/assets/Exc4_SANCTUS_1m04s.mp3', duration: 64 },
+            { name: 'Agnus Dei', url: 'https://www.missaadastra.com/assets/Exc5_AGNUSDEI_1m49s.mp3', duration: 109 }
+        ];
+
+        let currentSong = 0;
+        let isPlaying = false;
+        let currentAudio = null;
+        let nextAudio = null;
+        let animationType = 0; // 0 = default, 1-5 = songs
+        
+        // Audio Analysis Variables
+        let audioContext = null;
+        let analyser = null;
+        let source = null;
+        let dataArray = null;
+        let audioData = {
+            volume: 0,
+            bass: 0,
+            mid: 0,
+            treble: 0,
+            average: 0
+        };
+
+        // Initialize audio elements
+        currentAudio = new Audio();
+        nextAudio = new Audio();
+        currentAudio.preload = 'auto';
+        nextAudio.preload = 'auto';
+        currentAudio.crossOrigin = 'anonymous'; // Enable CORS for audio analysis
+
+        // Initialize Web Audio API for music reactiveness
+        function initAudioAnalyzer() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                analyser = audioContext.createAnalyser();
+                analyser.fftSize = 256;
+                const bufferLength = analyser.frequencyBinCount;
+                dataArray = new Uint8Array(bufferLength);
+                
+                // Connect audio element to analyser
+                source = audioContext.createMediaElementSource(currentAudio);
+                source.connect(analyser);
+                analyser.connect(audioContext.destination);
+            }
+        }
+
+        // Analyze audio frequencies
+        function analyzeAudio() {
+            if (!analyser || !isPlaying) {
+                audioData = { volume: 0, bass: 0, mid: 0, treble: 0, average: 0 };
+                return;
+            }
+
+            analyser.getByteFrequencyData(dataArray);
+            
+            // Calculate frequency bands
+            const bassEnd = Math.floor(dataArray.length * 0.15); // ~0-250Hz
+            const midEnd = Math.floor(dataArray.length * 0.5);   // ~250-2000Hz
+            
+            let bass = 0, mid = 0, treble = 0, total = 0;
+            
+            // Bass frequencies
+            for (let i = 0; i < bassEnd; i++) {
+                bass += dataArray[i];
+            }
+            bass = bass / bassEnd / 255;
+            
+            // Mid frequencies
+            for (let i = bassEnd; i < midEnd; i++) {
+                mid += dataArray[i];
+            }
+            mid = mid / (midEnd - bassEnd) / 255;
+            
+            // Treble frequencies
+            for (let i = midEnd; i < dataArray.length; i++) {
+                treble += dataArray[i];
+            }
+            treble = treble / (dataArray.length - midEnd) / 255;
+            
+            // Overall volume
+            for (let i = 0; i < dataArray.length; i++) {
+                total += dataArray[i];
+            }
+            const average = total / dataArray.length / 255;
+            
+            audioData = {
+                volume: average,
+                bass: bass,
+                mid: mid,
+                treble: treble,
+                average: average
+            };
+        }
+
+        // Particle Animation for Hero - Original constellation effect with music reactiveness
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+        
+        let particles = [];
+        let particleCount = 150;
+        const baseConnectionDistance = 150;
+        let connectionDistance = baseConnectionDistance;
+        
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.baseSize = Math.random() * 2 + 1;
+                this.size = this.baseSize;
+                this.speedX = (Math.random() - 0.5) * 0.3;
+                this.speedY = (Math.random() - 0.5) * 0.3;
+                this.baseOpacity = Math.random() * 0.5 + 0.5;
+                this.opacity = this.baseOpacity;
+                this.pulseSpeed = Math.random() * 0.02 + 0.01;
+                this.pulsePhase = Math.random() * Math.PI * 2;
+            }
+            
+            update() {
+                // Base movement (Animation 0 - original)
+                let moveX = this.speedX;
+                let moveY = this.speedY;
+                
+                // Add animation-specific movements
+                if (animationType === 1 && isPlaying) {
+                    // Kyrie - slow dancing
+                    const time = Date.now() * 0.0001;
+                    moveX += Math.sin(time + this.pulsePhase) * 0.2;
+                    moveY += Math.cos(time + this.pulsePhase * 0.5) * 0.15;
+                } else if (animationType === 2 && isPlaying) {
+                    // Gloria - stellar winds
+                    const wind = Date.now() * 0.0003;
+                    moveX = Math.sin(wind + this.y * 0.01) * 1.5;
+                } else if (animationType === 3 && isPlaying) {
+                    // Credo - nebula swirl
+                    const angle = Date.now() * 0.0001;
+                    const centerX = canvas.width / 2;
+                    const centerY = canvas.height / 2;
+                    const dx = this.x - centerX;
+                    const dy = this.y - centerY;
+                    moveX = -dy * 0.001 * Math.sin(angle);
+                    moveY = dx * 0.001 * Math.sin(angle);
+                } else if (animationType === 4 && isPlaying) {
+                    // Sanctus - constellation dance
+                    const beat = Date.now() * 0.002;
+                    moveX *= 1 + Math.sin(beat) * 0.5;
+                    moveY *= 1 + Math.cos(beat) * 0.5;
+                } else if (animationType === 5 && isPlaying) {
+                    // Agnus Dei - dynamic supernova
+                    const centerX = canvas.width / 2;
+                    const centerY = canvas.height / 2;
+                    const dx = this.x - centerX;
+                    const dy = this.y - centerY;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance > canvas.width * 0.7) {
+                        // Respawn near center
+                        this.x = centerX + (Math.random() - 0.5) * 200;
+                        this.y = centerY + (Math.random() - 0.5) * 200;
+                    } else {
+                        const expansion = Math.sin(Date.now() * 0.0005) * 0.5 + 1;
+                        moveX = (dx / distance) * expansion;
+                        moveY = (dy / distance) * expansion;
+                    }
+                }
+                
+                // Apply music reactiveness
+                if (isPlaying && audioData.volume > 0) {
+                    // React to bass with movement speed
+                    moveX *= (1 + audioData.bass * 0.5);
+                    moveY *= (1 + audioData.bass * 0.5);
+                    
+                    // Size reacts to volume and bass
+                    this.size = this.baseSize * (1 + audioData.bass * 0.8 + audioData.volume * 0.3);
+                    
+                    // Opacity reacts to treble
+                    this.opacity = Math.min(1, this.baseOpacity + audioData.treble * 0.3);
+                    
+                    // Add vibration on high volume
+                    if (audioData.volume > 0.5) {
+                        moveX += (Math.random() - 0.5) * audioData.volume * 2;
+                        moveY += (Math.random() - 0.5) * audioData.volume * 2;
+                    }
+                } else {
+                    // Return to base values when not playing
+                    this.size = this.baseSize;
+                    this.opacity = this.baseOpacity;
+                }
+                
+                this.x += moveX;
+                this.y += moveY;
+                
+                // Wrap around edges
+                if (this.x > canvas.width) this.x = 0;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.y > canvas.height) this.y = 0;
+                if (this.y < 0) this.y = canvas.height;
+                
+                // Pulsing effect
+                this.pulsePhase += this.pulseSpeed;
+            }
+            
+            draw() {
+                const pulseFactor = Math.sin(this.pulsePhase) * 0.3 + 0.7;
+                
+                // Color based on animation and frequency
+                let r = 255, g = 255, b = 255;
+                
+                if (isPlaying && audioData.volume > 0) {
+                    if (animationType === 1) {
+                        // Kyrie - cool blues
+                        r = 200 - audioData.bass * 50;
+                        g = 220 - audioData.mid * 30;
+                        b = 255;
+                    } else if (animationType === 2) {
+                        // Gloria - warm golds
+                        r = 255;
+                        g = 230 - audioData.treble * 50;
+                        b = 180 - audioData.bass * 80;
+                    } else if (animationType === 3) {
+                        // Credo - purples
+                        r = 230 - audioData.treble * 50;
+                        g = 180 - audioData.mid * 80;
+                        b = 255;
+                    } else if (animationType === 4) {
+                        // Sanctus - pure white with blue tint
+                        r = 255 - audioData.bass * 30;
+                        g = 255 - audioData.bass * 30;
+                        b = 255;
+                    } else if (animationType === 5) {
+                        // Agnus Dei - spectrum based on frequency
+                        const hue = (Date.now() * 0.0001 + audioData.average * 360) % 360;
+                        const rgb = hslToRgb(hue / 360, 0.7 + audioData.volume * 0.3, 0.5 + audioData.treble * 0.3);
+                        r = rgb[0];
+                        g = rgb[1];
+                        b = rgb[2];
+                    }
+                }
+                
+                ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${this.opacity * pulseFactor})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size * pulseFactor, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Add glow effect
+                if (audioData.volume > 0.3) {
+                    ctx.shadowBlur = 10 + audioData.volume * 20;
+                    ctx.shadowColor = `rgba(${r}, ${g}, ${b}, 0.5)`;
+                    ctx.fill();
+                    ctx.shadowBlur = 0;
+                }
+            }
+        }
+        
+        function hslToRgb(h, s, l) {
+            let r, g, b;
+            if (s === 0) {
+                r = g = b = l;
+            } else {
+                const hue2rgb = (p, q, t) => {
+                    if (t < 0) t += 1;
+                    if (t > 1) t -= 1;
+                    if (t < 1/6) return p + (q - p) * 6 * t;
+                    if (t < 1/2) return q;
+                    if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+                    return p;
+                };
+                const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+                const p = 2 * l - q;
+                r = hue2rgb(p, q, h + 1/3);
+                g = hue2rgb(p, q, h);
+                b = hue2rgb(p, q, h - 1/3);
+            }
+            return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+        }
+        
+        function initParticles() {
+            particles.length = 0;
+            // Adjust particle count based on animation
+            let count = particleCount;
+            if (animationType === 5) {
+                count = 200 + Math.floor(audioData.volume * 100); // More particles for Agnus Dei
+            }
+            
+            for (let i = 0; i < count; i++) {
+                particles.push(new Particle());
+            }
+        }
+        
+        function drawBackground() {
+            if (animationType === 0 || animationType === 1) {
+                // Animation 0 & 1: Pure black
+                ctx.fillStyle = 'black';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            } else if (animationType === 2) {
+                // Gloria: Warm gold/ochre nebula
+                const gradient = ctx.createRadialGradient(canvas.width*0.7, canvas.height*0.3, 0, canvas.width*0.7, canvas.height*0.3, canvas.width);
+                gradient.addColorStop(0, `rgba(60, 40, 15, ${0.2 + audioData.bass * 0.1})`);
+                gradient.addColorStop(0.5, 'rgba(30, 20, 10, 0.1)');
+                gradient.addColorStop(1, 'rgba(0, 0, 0, 1)');
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            } else if (animationType === 3) {
+                // Credo: Purple nebula
+                const gradient = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 100, canvas.width/2, canvas.height/2, canvas.width*0.7);
+                gradient.addColorStop(0, `rgba(40, 10, 60, ${0.2 + audioData.mid * 0.1})`);
+                gradient.addColorStop(0.5, 'rgba(20, 5, 30, 0.1)');
+                gradient.addColorStop(1, 'rgba(0, 0, 0, 1)');
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            } else if (animationType === 4) {
+                // Sanctus: Midnight blue
+                const gradient = ctx.createRadialGradient(canvas.width/2, canvas.height*0.3, 0, canvas.width/2, canvas.height*0.3, canvas.width);
+                gradient.addColorStop(0, `rgba(10, 20, 50, ${0.15 + audioData.treble * 0.1})`);
+                gradient.addColorStop(0.5, 'rgba(5, 10, 25, 0.1)');
+                gradient.addColorStop(1, 'rgba(0, 0, 0, 1)');
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            } else if (animationType === 5) {
+                // Agnus Dei: Dynamic spectrum background
+                const time = Date.now() * 0.0001;
+                const hue = (time * 10 + audioData.average * 180) % 360;
+                const gradient = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, canvas.width);
+                gradient.addColorStop(0, `hsla(${hue}, 70%, 10%, ${0.3 + audioData.volume * 0.2})`);
+                gradient.addColorStop(0.5, `hsla(${hue + 60}, 50%, 5%, 0.2)`);
+                gradient.addColorStop(1, 'rgba(0, 0, 0, 1)');
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            }
+        }
+        
+        function animateParticles() {
+            // Analyze audio
+            analyzeAudio();
+            
+            // Draw background
+            drawBackground();
+            
+            // Update connection distance based on music
+            if (isPlaying && audioData.volume > 0) {
+                connectionDistance = baseConnectionDistance * (1 + audioData.mid * 0.5);
+            } else {
+                connectionDistance = baseConnectionDistance;
+            }
+            
+            // Spawn more particles during loud sections (Agnus Dei)
+            if (animationType === 5 && isPlaying && audioData.volume > 0.6 && particles.length < 300) {
+                for (let i = 0; i < 5; i++) {
+                    particles.push(new Particle());
+                }
+            }
+            
+            // Draw connections with music-reactive opacity
+            let connectionOpacity = 0.3;
+            if (animationType === 1 && isPlaying) {
+                connectionOpacity = 0.5; // More visible for Kyrie
+            }
+            if (isPlaying && audioData.volume > 0) {
+                connectionOpacity += audioData.average * 0.2;
+            }
+            
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < connectionDistance) {
+                        const opacity = (1 - distance / connectionDistance) * connectionOpacity;
+                        
+                        // Connection color based on animation
+                        let r = 100, g = 150, b = 255;
+                        
+                        if (animationType === 2) {
+                            r = 255; g = 200; b = 100;
+                        } else if (animationType === 3) {
+                            r = 200; g = 100; b = 255;
+                        } else if (animationType === 4) {
+                            r = 150; g = 200; b = 255;
+                        } else if (animationType === 5) {
+                            // Rainbow connections for Agnus Dei
+                            const hue = (Date.now() * 0.0002 + distance * 0.01) % 1;
+                            const rgb = hslToRgb(hue, 0.5, 0.5);
+                            r = rgb[0]; g = rgb[1]; b = rgb[2];
+                        }
+                        
+                        // Modulate with frequency data
+                        if (isPlaying && audioData.volume > 0) {
+                            r = Math.min(255, r + audioData.bass * 50);
+                            g = Math.min(255, g + audioData.mid * 50);
+                            b = Math.min(255, b + audioData.treble * 50);
+                        }
+                        
+                        ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${opacity})`;
+                        ctx.lineWidth = 1 + audioData.bass;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                        
+                        // Add node highlights at connection points
+                        if (distance < connectionDistance / 2 && audioData.volume > 0.4) {
+                            const midX = (particles[i].x + particles[j].x) / 2;
+                            const midY = (particles[i].y + particles[j].y) / 2;
+                            ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${opacity * 0.5})`;
+                            ctx.beginPath();
+                            ctx.arc(midX, midY, 1 + audioData.volume * 2, 0, Math.PI * 2);
+                            ctx.fill();
+                        }
+                    }
+                }
+            }
+            
+            // Draw particles
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+            
+            requestAnimationFrame(animateParticles);
+        }
+        
+        initParticles();
+        animateParticles();
+
+        // Music Player Logic
+        function loadSong(index) {
+            currentSong = index;
+            currentAudio.src = songs[index].url;
+            currentAudio.load();
+            document.getElementById('songName').textContent = songs[index].name;
+            
+            // Change animation type when song changes
+            if (isPlaying) {
+                animationType = index + 1; // 1-5 for songs
+            }
+        }
+
+        function togglePlayPause() {
+            if (isPlaying) {
+                currentAudio.pause();
+                isPlaying = false;
+                animationType = 0; // Back to default animation
+            } else {
+                // Initialize audio context on first play (browser requirement)
+                if (!audioContext) {
+                    initAudioAnalyzer();
+                }
+                if (audioContext && audioContext.state === 'suspended') {
+                    audioContext.resume();
+                }
+                
+                currentAudio.play();
+                isPlaying = true;
+                animationType = currentSong + 1; // Set to current song animation
+            }
+            
+            document.getElementById('playIcon').style.display = isPlaying ? 'none' : 'block';
+            document.getElementById('pauseIcon').style.display = isPlaying ? 'block' : 'none';
+        }
+
+        function playNext() {
+            currentSong = (currentSong + 1) % songs.length;
+            loadSong(currentSong);
+            if (isPlaying) {
+                currentAudio.play();
+            }
+        }
+
+        function playPrevious() {
+            currentSong = (currentSong - 1 + songs.length) % songs.length;
+            loadSong(currentSong);
+            if (isPlaying) {
+                currentAudio.play();
+            }
+        }
+
+        // Update progress bar
+        function updateProgress() {
+            if (currentAudio.duration) {
+                const progress = (currentAudio.currentTime / currentAudio.duration) * 100;
+                document.getElementById('progressBar').style.width = progress + '%';
+            }
+        }
+
+        // Handle song ending
+        currentAudio.addEventListener('ended', () => {
+            playNext(); // Auto-play next song
+        });
+
+        currentAudio.addEventListener('timeupdate', updateProgress);
+
+        // Progress bar click
+        document.getElementById('progressContainer').addEventListener('click', (e) => {
+            const rect = e.currentTarget.getBoundingClientRect();
+            const percent = (e.clientX - rect.left) / rect.width;
+            currentAudio.currentTime = percent * currentAudio.duration;
+        });
+
+        // Event listeners
+        document.getElementById('playPauseBtn').addEventListener('click', togglePlayPause);
+        document.getElementById('nextBtn').addEventListener('click', playNext);
+        document.getElementById('prevBtn').addEventListener('click', playPrevious);
+
+        // Initialize first song
+        loadSong(0);
+
+        // Placeholder for section scrolling
+        function scrollToSection(sectionId) {
+            console.log('Scrolling to:', sectionId);
+        }
+    </script>
+</body>
+</html>

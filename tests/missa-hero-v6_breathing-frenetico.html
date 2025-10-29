@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Missa Ad Astra - Hero Section with Music & Animations v6</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            color: #1a1a1a;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Hero Section with Generative Art - Exact copy from original */
+        #hero {
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: #000;
+        }
+
+        #canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            color: #fff;
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 8vw, 6rem);
+            font-weight: 300;
+            letter-spacing: 0.3em;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            animation: fadeIn 2s ease-in;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 2vw, 1.5rem);
+            font-weight: 300;
+            letter-spacing: 0.2em;
+            opacity: 0;
+            animation: fadeIn 2s ease-in 1s forwards;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0.7;
+            animation: bounce 2s infinite;
+            font-size: 1.5rem;
+            color: #fff;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+
+        /* Navigation Dots - From original */
+        .nav-dots {
+            position: fixed;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 100;
+        }
+
+        .nav-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-dot:hover {
+            background: rgba(255, 255, 255, 0.6);
+            transform: scale(1.2);
+        }
+
+        .nav-dot.active {
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Music Player */
+        .music-player {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 12px 20px;
+            z-index: 1000;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            color: #fff;
+            min-width: 320px;
+        }
+
+        .music-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .music-btn {
+            width: 32px;
+            height: 32px;
+            background: none;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.3s ease;
+            opacity: 0.7;
+        }
+
+        .music-btn:hover {
+            opacity: 1;
+        }
+
+        .music-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        .music-btn.play-pause svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .progress-container {
+            flex: 1;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.2);
+            position: relative;
+            cursor: pointer;
+            min-width: 100px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.8));
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        .song-name {
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            opacity: 0.9;
+            min-width: 80px;
+            text-align: right;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-dots {
+                right: 15px;
+            }
+            
+            .music-player {
+                bottom: 15px;
+                right: 15px;
+                left: 15px;
+                min-width: unset;
+                padding: 10px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section with Particle Animation -->
+    <section id="hero">
+        <canvas id="canvas"></canvas>
+        <div class="hero-content">
+            <h1 class="hero-title">MISSA AD ASTRA</h1>
+            <p class="hero-subtitle">A Contemporary Sacred Manifesto</p>
+        </div>
+        <div class="scroll-indicator">↓</div>
+    </section>
+
+    <!-- Navigation Dots -->
+    <div class="nav-dots">
+        <div class="nav-dot active" onclick="scrollToSection('hero')"></div>
+        <div class="nav-dot" onclick="scrollToSection('essence')"></div>
+        <div class="nav-dot" onclick="scrollToSection('experience')"></div>
+        <div class="nav-dot" onclick="scrollToSection('words')"></div>
+        <div class="nav-dot" onclick="scrollToSection('voices')"></div>
+        <div class="nav-dot" onclick="scrollToSection('performances')"></div>
+        <div class="nav-dot" onclick="scrollToSection('connect')"></div>
+    </div>
+
+    <!-- Music Player -->
+    <div class="music-player">
+        <div class="music-controls">
+            <button class="music-btn play-pause" id="playPauseBtn" aria-label="Play">
+                <svg id="playIcon" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z"/>
+                </svg>
+                <svg id="pauseIcon" viewBox="0 0 24 24" style="display: none;">
+                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                </svg>
+            </button>
+            <button class="music-btn" id="prevBtn" aria-label="Previous">
+                <svg viewBox="0 0 24 24">
+                    <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
+                </svg>
+            </button>
+            <button class="music-btn" id="nextBtn" aria-label="Next">
+                <svg viewBox="0 0 24 24">
+                    <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
+                </svg>
+            </button>
+        </div>
+        <div class="progress-container" id="progressContainer">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="song-name" id="songName">Ready</div>
+    </div>
+
+    <script>
+        // Song configuration
+        const songs = [
+            { name: 'Kyrie', url: 'https://www.missaadastra.com/assets/Exc1_KYRIE_25s.mp3', duration: 25 },
+            { name: 'Gloria', url: 'https://www.missaadastra.com/assets/Exc2_GLORIA_39s.mp3', duration: 39 },
+            { name: 'Credo', url: 'https://www.missaadastra.com/assets/Exc3_CREDO_59s.mp3', duration: 59 },
+            { name: 'Sanctus', url: 'https://www.missaadastra.com/assets/Exc4_SANCTUS_1m04s.mp3', duration: 64 },
+            { name: 'Agnus Dei', url: 'https://www.missaadastra.com/assets/Exc5_AGNUSDEI_1m49s.mp3', duration: 109 }
+        ];
+
+        let currentSong = 0;
+        let isPlaying = false;
+        let currentAudio = null;
+        let nextAudio = null;
+        let animationType = 0; // 0 = default, 1-5 = songs
+        let breathingPhase = 0; // For Kyrie breathing animation
+        
+        // Initialize audio elements
+        currentAudio = new Audio();
+        nextAudio = new Audio();
+        currentAudio.preload = 'auto';
+        nextAudio.preload = 'auto';
+
+        // Particle Animation for Hero - Improved constellation effect (from original mockup)
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+        
+        const particles = [];
+        const particleCount = 150;
+        const connectionDistance = 150;
+        
+        // Animation parameters that will change based on current animation type
+        let animationParams = {
+            speedMultiplier: 1,
+            connectionColor: { r: 100, g: 150, b: 255 },
+            particleColor: { r: 255, g: 255, b: 255 },
+            rotationSpeed: 0,
+            expansionFactor: 0,
+            pulseIntensity: 1,
+            swirl: false,
+            flowDirection: 0,
+            beatSync: false,
+            maxConnections: 100,
+            connectionOpacity: 0.3
+        };
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.z = Math.random(); // Depth value for Gloria animation
+                this.size = Math.random() * 2 + 1;
+                this.baseX = this.x; // Store original position for breathing effect
+                this.baseY = this.y;
+                this.baseSpeedX = (Math.random() - 0.5) * 0.3;
+                this.baseSpeedY = (Math.random() - 0.5) * 0.3;
+                this.speedX = this.baseSpeedX;
+                this.speedY = this.baseSpeedY;
+                this.opacity = Math.random() * 0.5 + 0.5;
+                this.pulseSpeed = Math.random() * 0.02 + 0.01;
+                this.pulsePhase = Math.random() * Math.PI * 2;
+                // For grid movement in Sanctus
+                this.gridTargetX = 0;
+                this.gridTargetY = 0;
+                this.gridTimer = 0;
+            }
+            
+            update() {
+                // Apply animation-specific movements
+                if (animationType === 0) {
+                    // Animation 0 - KEEP EXACTLY AS IS
+                    this.speedX = this.baseSpeedX;
+                    this.speedY = this.baseSpeedY;
+                } else if (animationType === 1) {
+                    // Animation 1 - Kyrie: Add breathing movement
+                    breathingPhase += 0.001; // Slow breathing rhythm
+                    const breathAmount = Math.sin(breathingPhase) * 0.3 + 0.7; // Oscillates between 0.4 and 1.0
+                    
+                    // Move particles toward/away from center for breathing effect
+                    const centerX = canvas.width / 2;
+                    const centerY = canvas.height / 2;
+                    const dx = this.baseX - centerX;
+                    const dy = this.baseY - centerY;
+                    
+                    this.x = centerX + dx * breathAmount;
+                    this.y = centerY + dy * breathAmount;
+                    
+                    // Keep slow base movement
+                    this.speedX = this.baseSpeedX * 0.2;
+                    this.speedY = this.baseSpeedY * 0.2;
+                } else if (animationType === 2) {
+                    // Animation 2 - Gloria: Improved depth and variable speed
+                    const wind = Date.now() * 0.0003;
+                    const centerX = canvas.width / 2;
+                    const centerY = canvas.height / 2;
+                    const distFromCenter = Math.sqrt(Math.pow(this.x - centerX, 2) + Math.pow(this.y - centerY, 2));
+                    const maxDist = Math.sqrt(Math.pow(centerX, 2) + Math.pow(centerY, 2));
+                    const speedFactor = 0.5 + (distFromCenter / maxDist) * 1.5; // Slower at center, faster at edges
+                    
+                    // Horizontal flow with variable speed
+                    this.speedX = Math.sin(wind + this.y * 0.01) * 2 * speedFactor;
+                    
+                    // Add z-axis movement for depth
+                    this.z += 0.01;
+                    if (this.z > 1) this.z = 0;
+                    
+                    // Vertical movement includes depth simulation
+                    this.speedY = this.baseSpeedY * speedFactor + Math.sin(this.z * Math.PI * 2) * 0.5;
+                    
+                    // Size varies with depth (smaller when "far", larger when "near") - but constrained
+                    const baseSize = Math.random() * 2 + 1;
+                    this.size = Math.min(3, baseSize * (0.5 + this.z * 0.5));
+                    // Opacity also varies with depth
+                    this.opacity = (Math.random() * 0.5 + 0.5) * (0.3 + this.z * 0.7);
+                } else if (animationType === 3) {
+                    // Animation 3 - Credo: KEEP EXACTLY AS IS
+                    const angle = Date.now() * 0.0001;
+                    const centerX = canvas.width / 2;
+                    const centerY = canvas.height / 2;
+                    const dx = this.x - centerX;
+                    const dy = this.y - centerY;
+                    this.speedX = -dy * 0.001 * Math.sin(angle);
+                    this.speedY = dx * 0.001 * Math.sin(angle);
+                } else if (animationType === 4) {
+                    // Animation 4 - Sanctus: Grid-like geometric movements
+                    this.gridTimer++;
+                    
+                    // Every 60 frames, choose new grid target
+                    if (this.gridTimer > 60) {
+                        this.gridTimer = 0;
+                        const gridSize = 100;
+                        this.gridTargetX = Math.floor(Math.random() * (canvas.width / gridSize)) * gridSize;
+                        this.gridTargetY = Math.floor(Math.random() * (canvas.height / gridSize)) * gridSize;
+                    }
+                    
+                    // Move toward grid target
+                    const dx = this.gridTargetX - this.x;
+                    const dy = this.gridTargetY - this.y;
+                    this.speedX = dx * 0.02;
+                    this.speedY = dy * 0.02;
+                    
+                    // Add slight oscillation
+                    const beat = Date.now() * 0.002;
+                    this.speedX += Math.sin(beat) * 0.5;
+                    this.speedY += Math.cos(beat) * 0.5;
+                } else if (animationType === 5) {
+                    // Animation 5 - Agnus Dei: Ember/spark-like movement
+                    // More chaotic, free-flowing movement
+                    const turbulence = Date.now() * 0.001;
+                    this.speedX = this.baseSpeedX * 2 + Math.sin(turbulence + this.y * 0.01) * 1.5;
+                    this.speedY = this.baseSpeedY * 2 + Math.cos(turbulence + this.x * 0.01) * 1.5;
+                    
+                    // Add upward drift like embers
+                    this.speedY -= 0.3;
+                    
+                    // Random bursts of speed
+                    if (Math.random() > 0.98) {
+                        this.speedX += (Math.random() - 0.5) * 5;
+                        this.speedY += (Math.random() - 0.5) * 5;
+                    }
+                }
+
+                this.x += this.speedX * animationParams.speedMultiplier;
+                this.y += this.speedY * animationParams.speedMultiplier;
+                
+                // Wrap around edges
+                if (this.x > canvas.width) this.x = 0;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.y > canvas.height) this.y = 0;
+                if (this.y < 0) this.y = canvas.height;
+                
+                // Update base position for breathing animation
+                if (animationType !== 1) {
+                    this.baseX = this.x;
+                    this.baseY = this.y;
+                }
+                
+                // Pulsing effect
+                this.pulsePhase += this.pulseSpeed * animationParams.pulseIntensity;
+            }
+            
+            draw() {
+                const pulseFactor = Math.sin(this.pulsePhase) * 0.3 + 0.7;
+                const r = animationParams.particleColor.r;
+                const g = animationParams.particleColor.g;
+                const b = animationParams.particleColor.b;
+                
+                ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${this.opacity * pulseFactor})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size * pulseFactor, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Add glow effect
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = `rgba(${r}, ${g}, ${b}, 0.5)`;
+                ctx.fill();
+                ctx.shadowBlur = 0;
+            }
+        }
+        
+        function initParticles() {
+            particles.length = 0;
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function updateAnimationParams() {
+            // Smooth transition to new animation parameters
+            switch (animationType) {
+                case 0: // Default - KEEP AS IS
+                    animationParams = {
+                        speedMultiplier: 1,
+                        connectionColor: { r: 100, g: 150, b: 255 },
+                        particleColor: { r: 255, g: 255, b: 255 },
+                        pulseIntensity: 1,
+                        maxConnections: 100,
+                        connectionOpacity: 0.3
+                    };
+                    break;
+                case 1: // Kyrie - Breathing
+                    animationParams = {
+                        speedMultiplier: 0.3,
+                        connectionColor: { r: 70, g: 130, b: 255 },
+                        particleColor: { r: 200, g: 220, b: 255 },
+                        pulseIntensity: 0.5,
+                        maxConnections: 50,
+                        connectionOpacity: 0.3
+                    };
+                    break;
+                case 2: // Gloria - Variable speed with depth
+                    animationParams = {
+                        speedMultiplier: 1,
+                        connectionColor: { r: 255, g: 200, b: 100 },
+                        particleColor: { r: 255, g: 230, b: 180 },
+                        pulseIntensity: 1.2,
+                        maxConnections: 150,
+                        connectionOpacity: 0.3
+                    };
+                    break;
+                case 3: // Credo - KEEP AS IS
+                    animationParams = {
+                        speedMultiplier: 1.5,
+                        connectionColor: { r: 200, g: 100, b: 255 },
+                        particleColor: { r: 230, g: 180, b: 255 },
+                        pulseIntensity: 0.8,
+                        maxConnections: 200,
+                        connectionOpacity: 0.3
+                    };
+                    break;
+                case 4: // Sanctus - Rainbow spectrum
+                    const time = Date.now() * 0.0001;
+                    const hue = (time * 20) % 360;
+                    const rgb = hslToRgb(hue / 360, 0.5, 0.6);
+                    animationParams = {
+                        speedMultiplier: 1.8,
+                        connectionColor: { r: rgb[0], g: rgb[1], b: rgb[2] },
+                        particleColor: { r: rgb[0], g: rgb[1], b: rgb[2] },
+                        pulseIntensity: 2,
+                        maxConnections: 80,
+                        connectionOpacity: 0.3
+                    };
+                    break;
+                case 5: // Agnus Dei - Fire colors with dimmed connections
+                    const fireHue = Math.random() * 60; // 0-60 for red to orange
+                    const fireRgb = hslToRgb(fireHue / 360, 0.8, 0.5);
+                    animationParams = {
+                        speedMultiplier: 2,
+                        connectionColor: { r: fireRgb[0], g: fireRgb[1] * 0.6, b: fireRgb[2] * 0.3 },
+                        particleColor: { r: 255, g: 100 + Math.random() * 100, b: Math.random() * 50 },
+                        pulseIntensity: 2.5,
+                        maxConnections: 50,
+                        connectionOpacity: 0.1 // Dimmed connections for ember effect
+                    };
+                    break;
+            }
+        }
+
+        function hslToRgb(h, s, l) {
+            let r, g, b;
+            if (s === 0) {
+                r = g = b = l;
+            } else {
+                const hue2rgb = (p, q, t) => {
+                    if (t < 0) t += 1;
+                    if (t > 1) t -= 1;
+                    if (t < 1/6) return p + (q - p) * 6 * t;
+                    if (t < 1/2) return q;
+                    if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+                    return p;
+                };
+                const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+                const p = 2 * l - q;
+                r = hue2rgb(p, q, h + 1/3);
+                g = hue2rgb(p, q, h);
+                b = hue2rgb(p, q, h - 1/3);
+            }
+            return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+        }
+        
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            updateAnimationParams();
+            
+            // Draw connections
+            let connectionCount = 0;
+            for (let i = 0; i < particles.length && connectionCount < animationParams.maxConnections; i++) {
+                for (let j = i + 1; j < particles.length && connectionCount < animationParams.maxConnections; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < connectionDistance) {
+                        const opacity = (1 - distance / connectionDistance) * animationParams.connectionOpacity;
+                        const r = animationParams.connectionColor.r;
+                        const g = animationParams.connectionColor.g;
+                        const b = animationParams.connectionColor.b;
+                        
+                        ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${opacity})`;
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                        
+                        connectionCount++;
+                        
+                        // Add node highlights at connection points for some animations
+                        if (animationType === 3 || animationType === 5) {
+                            if (distance < connectionDistance / 2) {
+                                const midX = (particles[i].x + particles[j].x) / 2;
+                                const midY = (particles[i].y + particles[j].y) / 2;
+                                ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${opacity * 0.3})`;
+                                ctx.beginPath();
+                                ctx.arc(midX, midY, 1, 0, Math.PI * 2);
+                                ctx.fill();
+                            }
+                        }
+                    }
+                }
+            }
+            
+            // Draw particles
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+            
+            requestAnimationFrame(animateParticles);
+        }
+        
+        initParticles();
+        animateParticles();
+
+        // Music Player Logic
+        function loadSong(index) {
+            currentSong = index;
+            currentAudio.src = songs[index].url;
+            currentAudio.load();
+            document.getElementById('songName').textContent = songs[index].name;
+            
+            // Change animation type when song changes
+            if (isPlaying) {
+                animationType = index + 1; // 1-5 for songs
+            }
+        }
+
+        function togglePlayPause() {
+            if (isPlaying) {
+                currentAudio.pause();
+                isPlaying = false;
+                animationType = 0; // Back to default animation
+                breathingPhase = 0; // Reset breathing
+            } else {
+                currentAudio.play();
+                isPlaying = true;
+                animationType = currentSong + 1; // Set to current song animation
+            }
+            
+            document.getElementById('playIcon').style.display = isPlaying ? 'none' : 'block';
+            document.getElementById('pauseIcon').style.display = isPlaying ? 'block' : 'none';
+        }
+
+        function playNext() {
+            currentSong = (currentSong + 1) % songs.length;
+            loadSong(currentSong);
+            if (isPlaying) {
+                currentAudio.play();
+            }
+        }
+
+        function playPrevious() {
+            currentSong = (currentSong - 1 + songs.length) % songs.length;
+            loadSong(currentSong);
+            if (isPlaying) {
+                currentAudio.play();
+            }
+        }
+
+        // Update progress bar
+        function updateProgress() {
+            if (currentAudio.duration) {
+                const progress = (currentAudio.currentTime / currentAudio.duration) * 100;
+                document.getElementById('progressBar').style.width = progress + '%';
+            }
+        }
+
+        // Handle song ending with crossfade
+        async function handleSongEnd() {
+            // Prepare next song
+            const nextIndex = (currentSong + 1) % songs.length;
+            nextAudio.src = songs[nextIndex].url;
+            nextAudio.load();
+            
+            // Start crossfade 2 seconds before end
+            const fadeTime = 2000; // 2 seconds
+            const steps = 20;
+            const stepTime = fadeTime / steps;
+            
+            nextAudio.volume = 0;
+            nextAudio.play();
+            
+            // Crossfade
+            for (let i = 0; i <= steps; i++) {
+                currentAudio.volume = 1 - (i / steps);
+                nextAudio.volume = i / steps;
+                await new Promise(resolve => setTimeout(resolve, stepTime));
+            }
+            
+            // Swap audio objects
+            const temp = currentAudio;
+            currentAudio = nextAudio;
+            nextAudio = temp;
+            
+            currentSong = nextIndex;
+            animationType = currentSong + 1;
+            document.getElementById('songName').textContent = songs[currentSong].name;
+        }
+
+        // Progress bar click
+        document.getElementById('progressContainer').addEventListener('click', (e) => {
+            const rect = e.currentTarget.getBoundingClientRect();
+            const percent = (e.clientX - rect.left) / rect.width;
+            currentAudio.currentTime = percent * currentAudio.duration;
+        });
+
+        // Event listeners
+        document.getElementById('playPauseBtn').addEventListener('click', togglePlayPause);
+        document.getElementById('nextBtn').addEventListener('click', playNext);
+        document.getElementById('prevBtn').addEventListener('click', playPrevious);
+        
+        currentAudio.addEventListener('timeupdate', updateProgress);
+        currentAudio.addEventListener('ended', () => {
+            playNext(); // Auto-play next song
+        });
+
+        // Monitor for near-end to prepare crossfade
+        setInterval(() => {
+            if (isPlaying && currentAudio.duration) {
+                const timeLeft = currentAudio.duration - currentAudio.currentTime;
+                if (timeLeft < 2.5 && timeLeft > 2) {
+                    // Preload next song
+                    const nextIndex = (currentSong + 1) % songs.length;
+                    nextAudio.src = songs[nextIndex].url;
+                    nextAudio.load();
+                }
+            }
+        }, 100);
+
+        // Initialize first song
+        loadSong(0);
+
+        // Placeholder for section scrolling
+        function scrollToSection(sectionId) {
+            console.log('Scrolling to:', sectionId);
+        }
+    </script>
+</body>
+</html>

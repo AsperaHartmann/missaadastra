@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Missa Ad Astra - Hero Section with Music & Animations</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            color: #1a1a1a;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Hero Section with Generative Art - Exact copy from original */
+        #hero {
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: #000;
+        }
+
+        #canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            color: #fff;
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 8vw, 6rem);
+            font-weight: 300;
+            letter-spacing: 0.3em;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            animation: fadeIn 2s ease-in;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 2vw, 1.5rem);
+            font-weight: 300;
+            letter-spacing: 0.2em;
+            opacity: 0;
+            animation: fadeIn 2s ease-in 1s forwards;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0.7;
+            animation: bounce 2s infinite;
+            font-size: 1.5rem;
+            color: #fff;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+
+        /* Navigation Dots - From original */
+        .nav-dots {
+            position: fixed;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 100;
+        }
+
+        .nav-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-dot:hover {
+            background: rgba(255, 255, 255, 0.6);
+            transform: scale(1.2);
+        }
+
+        .nav-dot.active {
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Music Player */
+        .music-player {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 12px 20px;
+            z-index: 1000;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            color: #fff;
+            min-width: 320px;
+        }
+
+        .music-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .music-btn {
+            width: 32px;
+            height: 32px;
+            background: none;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.3s ease;
+            opacity: 0.7;
+        }
+
+        .music-btn:hover {
+            opacity: 1;
+        }
+
+        .music-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        .music-btn.play-pause svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .progress-container {
+            flex: 1;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.2);
+            position: relative;
+            cursor: pointer;
+            min-width: 100px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.8));
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        .song-name {
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            opacity: 0.9;
+            min-width: 80px;
+            text-align: right;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-dots {
+                right: 15px;
+            }
+            
+            .music-player {
+                bottom: 15px;
+                right: 15px;
+                left: 15px;
+                min-width: unset;
+                padding: 10px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section with Particle Animation -->
+    <section id="hero">
+        <canvas id="canvas"></canvas>
+        <div class="hero-content">
+            <h1 class="hero-title">MISSA AD ASTRA</h1>
+            <p class="hero-subtitle">A Contemporary Sacred Manifesto</p>
+        </div>
+        <div class="scroll-indicator">↓</div>
+    </section>
+
+    <!-- Navigation Dots -->
+    <div class="nav-dots">
+        <div class="nav-dot active" onclick="scrollToSection('hero')"></div>
+        <div class="nav-dot" onclick="scrollToSection('essence')"></div>
+        <div class="nav-dot" onclick="scrollToSection('experience')"></div>
+        <div class="nav-dot" onclick="scrollToSection('words')"></div>
+        <div class="nav-dot" onclick="scrollToSection('voices')"></div>
+        <div class="nav-dot" onclick="scrollToSection('performances')"></div>
+        <div class="nav-dot" onclick="scrollToSection('connect')"></div>
+    </div>
+
+    <!-- Music Player -->
+    <div class="music-player">
+        <div class="music-controls">
+            <button class="music-btn play-pause" id="playPauseBtn" aria-label="Play">
+                <svg id="playIcon" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z"/>
+                </svg>
+                <svg id="pauseIcon" viewBox="0 0 24 24" style="display: none;">
+                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                </svg>
+            </button>
+            <button class="music-btn" id="prevBtn" aria-label="Previous">
+                <svg viewBox="0 0 24 24">
+                    <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
+                </svg>
+            </button>
+            <button class="music-btn" id="nextBtn" aria-label="Next">
+                <svg viewBox="0 0 24 24">
+                    <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
+                </svg>
+            </button>
+        </div>
+        <div class="progress-container" id="progressContainer">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="song-name" id="songName">Ready</div>
+    </div>
+
+    <script>
+        // Song configuration
+        const songs = [
+            { name: 'Kyrie', url: 'https://www.missaadastra.com/assets/Exc1_KYRIE_25s.mp3', duration: 25 },
+            { name: 'Gloria', url: 'https://www.missaadastra.com/assets/Exc2_GLORIA_39s.mp3', duration: 39 },
+            { name: 'Credo', url: 'https://www.missaadastra.com/assets/Exc3_CREDO_59s.mp3', duration: 59 },
+            { name: 'Sanctus', url: 'https://www.missaadastra.com/assets/Exc4_SANCTUS_1m04s.mp3', duration: 64 },
+            { name: 'Agnus Dei', url: 'https://www.missaadastra.com/assets/Exc5_AGNUSDEI_1m49s.mp3', duration: 109 }
+        ];
+
+        let currentSong = 0;
+        let isPlaying = false;
+        let currentAudio = null;
+        let nextAudio = null;
+        let animationType = 0; // 0 = default, 1-5 = songs
+        
+        // Initialize audio elements
+        currentAudio = new Audio();
+        nextAudio = new Audio();
+        currentAudio.preload = 'auto';
+        nextAudio.preload = 'auto';
+
+        // Particle Animation for Hero
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+        
+        let particles = [];
+        let backgroundParticles = [];
+        let shootingStars = [];
+        let particleCount = 150; // Will vary by animation
+        const connectionDistance = 150;
+        
+        // Animation parameters that will change based on current animation type
+        let animationParams = {
+            particleCount: 150,
+            speedMultiplier: 1,
+            connectionColor: { r: 100, g: 150, b: 255 },
+            particleColor: { r: 255, g: 255, b: 255 },
+            backgroundColor: { r: 0, g: 0, b: 0 },
+            pulseIntensity: 1,
+            maxConnections: 100,
+            sizeVariation: 2,
+            depthLayers: 1,
+            nebulaOpacity: 0
+        };
+
+        // Background gradient for atmosphere
+        function drawBackground() {
+            if (animationType === 0) {
+                // Default: pure black
+                ctx.fillStyle = 'black';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            } else if (animationType === 1) {
+                // Kyrie: Deep space with subtle blue gradient
+                const gradient = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, canvas.width);
+                gradient.addColorStop(0, 'rgba(10, 20, 40, 1)');
+                gradient.addColorStop(1, 'rgba(0, 0, 0, 1)');
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            } else if (animationType === 2) {
+                // Gloria: Warm cosmic dawn
+                const gradient = ctx.createRadialGradient(canvas.width*0.7, canvas.height*0.3, 0, canvas.width*0.7, canvas.height*0.3, canvas.width);
+                gradient.addColorStop(0, 'rgba(60, 30, 10, 0.3)');
+                gradient.addColorStop(0.5, 'rgba(20, 10, 5, 0.2)');
+                gradient.addColorStop(1, 'rgba(0, 0, 0, 1)');
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            } else if (animationType === 3) {
+                // Credo: Purple nebula clouds
+                const gradient = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 100, canvas.width/2, canvas.height/2, canvas.width*0.7);
+                gradient.addColorStop(0, 'rgba(40, 10, 60, 0.2)');
+                gradient.addColorStop(0.5, 'rgba(20, 5, 30, 0.1)');
+                gradient.addColorStop(1, 'rgba(0, 0, 0, 1)');
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Add nebula effect
+                ctx.save();
+                ctx.globalAlpha = animationParams.nebulaOpacity;
+                const time = Date.now() * 0.0001;
+                for (let i = 0; i < 3; i++) {
+                    const x = canvas.width * (0.3 + Math.sin(time + i) * 0.2);
+                    const y = canvas.height * (0.5 + Math.cos(time + i) * 0.2);
+                    const nebGradient = ctx.createRadialGradient(x, y, 0, x, y, 200);
+                    nebGradient.addColorStop(0, 'rgba(150, 50, 200, 0.1)');
+                    nebGradient.addColorStop(1, 'rgba(150, 50, 200, 0)');
+                    ctx.fillStyle = nebGradient;
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                }
+                ctx.restore();
+            } else if (animationType === 4) {
+                // Sanctus: Deep space with subtle geometric grid
+                ctx.fillStyle = 'rgba(0, 0, 10, 1)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            } else if (animationType === 5) {
+                // Agnus Dei: Dynamic supernova background
+                const time = Date.now() * 0.0001;
+                const gradient = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, canvas.width);
+                const hue = (time * 10) % 360;
+                gradient.addColorStop(0, `hsla(${hue}, 70%, 10%, 0.3)`);
+                gradient.addColorStop(0.5, `hsla(${hue + 60}, 50%, 5%, 0.2)`);
+                gradient.addColorStop(1, 'rgba(0, 0, 0, 1)');
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            } else {
+                ctx.fillStyle = 'black';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            }
+        }
+
+        class Particle {
+            constructor(layer = 0) {
+                this.reset();
+                this.layer = layer; // 0 = front, 1 = middle, 2 = back
+                this.depthFactor = 1 - (layer * 0.3); // Affects size and speed
+            }
+
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.z = Math.random() * 1000; // Depth for 3D effect
+                this.baseSize = Math.random() * animationParams.sizeVariation + 0.5;
+                this.size = this.baseSize;
+                this.baseSpeedX = (Math.random() - 0.5) * 0.3;
+                this.baseSpeedY = (Math.random() - 0.5) * 0.3;
+                this.speedX = this.baseSpeedX;
+                this.speedY = this.baseSpeedY;
+                this.opacity = Math.random() * 0.5 + 0.5;
+                this.pulseSpeed = Math.random() * 0.02 + 0.01;
+                this.pulsePhase = Math.random() * Math.PI * 2;
+                this.brightness = Math.random() * 0.5 + 0.5;
+            }
+            
+            update() {
+                const time = Date.now() * 0.001;
+                
+                // Apply animation-specific movements
+                if (animationType === 0) {
+                    // Default animation (original)
+                    this.speedX = this.baseSpeedX;
+                    this.speedY = this.baseSpeedY;
+                } else if (animationType === 1) {
+                    // Kyrie - Cosmic Dawn: stars slowly rising like dawn
+                    this.speedX = this.baseSpeedX * 0.1;
+                    this.speedY = -Math.abs(this.baseSpeedY) * 0.5 - 0.1; // Gentle upward drift
+                    this.size = this.baseSize * (1 + Math.sin(time * 0.5 + this.pulsePhase) * 0.3);
+                } else if (animationType === 2) {
+                    // Gloria - Stellar Winds with varying speeds
+                    const windSpeed = Math.sin(time * 0.2 + this.x * 0.001) * 0.5 + 1; // Speed variation
+                    const wind = time * 0.3 * windSpeed;
+                    this.speedX = Math.sin(wind + this.y * 0.01) * 3 * windSpeed;
+                    this.speedY = this.baseSpeedY * 0.5;
+                } else if (animationType === 3) {
+                    // Credo - Nebula Formation: swirling with depth
+                    const angle = time * 0.1;
+                    const centerX = canvas.width / 2;
+                    const centerY = canvas.height / 2;
+                    const dx = this.x - centerX;
+                    const dy = this.y - centerY;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    this.speedX = -dy * 0.002 * Math.sin(angle) + Math.cos(angle + distance * 0.01) * 0.5;
+                    this.speedY = dx * 0.002 * Math.sin(angle) + Math.sin(angle + distance * 0.01) * 0.5;
+                    this.z = 500 + Math.sin(time * 0.3 + this.pulsePhase) * 300;
+                } else if (animationType === 4) {
+                    // Sanctus - Constellation Dance: sharp geometric patterns
+                    const beat = time * 2;
+                    const pulse = Math.sin(beat) * 0.8;
+                    const gridX = Math.floor(this.x / 100) * 100;
+                    const gridY = Math.floor(this.y / 100) * 100;
+                    this.speedX = (gridX - this.x) * 0.01 + this.baseSpeedX * pulse;
+                    this.speedY = (gridY - this.y) * 0.01 + this.baseSpeedY * pulse;
+                } else if (animationType === 5) {
+                    // Agnus Dei - Supernova: controlled explosion with respawn
+                    const centerX = canvas.width / 2;
+                    const centerY = canvas.height / 2;
+                    const dx = this.x - centerX;
+                    const dy = this.y - centerY;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < 10) {
+                        // Respawn at center when too close
+                        this.x = centerX + (Math.random() - 0.5) * 50;
+                        this.y = centerY + (Math.random() - 0.5) * 50;
+                    } else if (distance > canvas.width * 0.8) {
+                        // Respawn near center when too far
+                        this.x = centerX + (Math.random() - 0.5) * 100;
+                        this.y = centerY + (Math.random() - 0.5) * 100;
+                    } else {
+                        const expansion = Math.sin(time * 0.5) * 0.3 + 0.7;
+                        this.speedX = (dx / distance) * expansion * 3;
+                        this.speedY = (dy / distance) * expansion * 3;
+                    }
+                }
+
+                this.x += this.speedX * animationParams.speedMultiplier * this.depthFactor;
+                this.y += this.speedY * animationParams.speedMultiplier * this.depthFactor;
+                
+                // Wrap around edges or respawn
+                if (this.x > canvas.width + 50) this.x = -50;
+                if (this.x < -50) this.x = canvas.width + 50;
+                if (this.y > canvas.height + 50) this.y = -50;
+                if (this.y < -50) this.y = canvas.height + 50;
+                
+                // Pulsing effect
+                this.pulsePhase += this.pulseSpeed * animationParams.pulseIntensity;
+            }
+            
+            draw() {
+                const pulseFactor = Math.sin(this.pulsePhase) * 0.3 + 0.7;
+                const depthScale = (1000 - this.z) / 1000; // Perspective scaling
+                let r = animationParams.particleColor.r;
+                let g = animationParams.particleColor.g;
+                let b = animationParams.particleColor.b;
+                
+                // Vary color based on depth and brightness
+                r = Math.min(255, r * this.brightness * depthScale);
+                g = Math.min(255, g * this.brightness * depthScale);
+                b = Math.min(255, b * this.brightness * depthScale);
+                
+                const finalSize = this.size * pulseFactor * this.depthFactor * depthScale;
+                const finalOpacity = this.opacity * pulseFactor * this.depthFactor;
+                
+                ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${finalOpacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, finalSize, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Add glow effect for brighter stars
+                if (this.brightness > 0.7 && this.layer === 0) {
+                    ctx.shadowBlur = 15;
+                    ctx.shadowColor = `rgba(${r}, ${g}, ${b}, 0.8)`;
+                    ctx.fill();
+                    ctx.shadowBlur = 0;
+                }
+            }
+        }
+
+        class ShootingStar {
+            constructor() {
+                this.reset();
+            }
+            
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height * 0.5;
+                this.length = Math.random() * 80 + 40;
+                this.speed = Math.random() * 10 + 5;
+                this.opacity = 0;
+                this.targetOpacity = Math.random() * 0.8 + 0.2;
+                this.angle = Math.random() * Math.PI * 0.5 + Math.PI * 0.25;
+            }
+            
+            update() {
+                this.x += Math.cos(this.angle) * this.speed;
+                this.y += Math.sin(this.angle) * this.speed;
+                
+                // Fade in and out
+                if (this.opacity < this.targetOpacity) {
+                    this.opacity += 0.02;
+                } else {
+                    this.opacity -= 0.01;
+                }
+                
+                // Reset when faded or off screen
+                if (this.opacity <= 0 || this.x > canvas.width + 100 || this.y > canvas.height + 100) {
+                    this.reset();
+                }
+            }
+            
+            draw() {
+                const gradient = ctx.createLinearGradient(
+                    this.x, this.y,
+                    this.x - Math.cos(this.angle) * this.length,
+                    this.y - Math.sin(this.angle) * this.length
+                );
+                gradient.addColorStop(0, `rgba(255, 255, 255, ${this.opacity})`);
+                gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+                
+                ctx.strokeStyle = gradient;
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.y);
+                ctx.lineTo(
+                    this.x - Math.cos(this.angle) * this.length,
+                    this.y - Math.sin(this.angle) * this.length
+                );
+                ctx.stroke();
+            }
+        }
+        
+        function initParticles() {
+            particles.length = 0;
+            backgroundParticles.length = 0;
+            shootingStars.length = 0;
+            
+            // Create particles in layers for depth
+            const layers = animationParams.depthLayers || 1;
+            const particlesPerLayer = Math.floor(animationParams.particleCount / layers);
+            
+            for (let layer = 0; layer < layers; layer++) {
+                for (let i = 0; i < particlesPerLayer; i++) {
+                    particles.push(new Particle(layer));
+                }
+            }
+            
+            // Add background particles for certain animations
+            if (animationType === 3 || animationType === 5) {
+                for (let i = 0; i < 50; i++) {
+                    backgroundParticles.push(new Particle(2));
+                }
+            }
+            
+            // Add shooting stars for Gloria
+            if (animationType === 2) {
+                for (let i = 0; i < 3; i++) {
+                    shootingStars.push(new ShootingStar());
+                }
+            }
+        }
+
+        function updateAnimationParams() {
+            // Smooth transition to new animation parameters
+            switch (animationType) {
+                case 0: // Default
+                    animationParams = {
+                        particleCount: 150,
+                        speedMultiplier: 1,
+                        connectionColor: { r: 100, g: 150, b: 255 },
+                        particleColor: { r: 255, g: 255, b: 255 },
+                        pulseIntensity: 1,
+                        maxConnections: 100,
+                        sizeVariation: 2,
+                        depthLayers: 1,
+                        nebulaOpacity: 0
+                    };
+                    break;
+                case 1: // Kyrie - Cosmic Dawn (fewer, larger stars emerging)
+                    animationParams = {
+                        particleCount: 80,
+                        speedMultiplier: 0.3,
+                        connectionColor: { r: 100, g: 150, b: 255 },
+                        particleColor: { r: 180, g: 200, b: 255 },
+                        pulseIntensity: 0.5,
+                        maxConnections: 30,
+                        sizeVariation: 4,
+                        depthLayers: 2,
+                        nebulaOpacity: 0
+                    };
+                    break;
+                case 2: // Gloria - Stellar Winds (many particles, varied sizes)
+                    animationParams = {
+                        particleCount: 200,
+                        speedMultiplier: 1.5,
+                        connectionColor: { r: 255, g: 200, b: 100 },
+                        particleColor: { r: 255, g: 230, b: 180 },
+                        pulseIntensity: 1.2,
+                        maxConnections: 50,
+                        sizeVariation: 3,
+                        depthLayers: 3,
+                        nebulaOpacity: 0
+                    };
+                    break;
+                case 3: // Credo - Nebula Formation (medium density, rich colors)
+                    animationParams = {
+                        particleCount: 120,
+                        speedMultiplier: 1,
+                        connectionColor: { r: 200, g: 100, b: 255 },
+                        particleColor: { r: 230, g: 180, b: 255 },
+                        pulseIntensity: 0.8,
+                        maxConnections: 150,
+                        sizeVariation: 5,
+                        depthLayers: 3,
+                        nebulaOpacity: 0.3
+                    };
+                    break;
+                case 4: // Sanctus - Constellation Dance (precise, geometric)
+                    animationParams = {
+                        particleCount: 100,
+                        speedMultiplier: 1.5,
+                        connectionColor: { r: 255, g: 255, b: 255 },
+                        particleColor: { r: 255, g: 255, b: 255 },
+                        pulseIntensity: 2,
+                        maxConnections: 80,
+                        sizeVariation: 2,
+                        depthLayers: 1,
+                        nebulaOpacity: 0
+                    };
+                    break;
+                case 5: // Agnus Dei - Supernova (many particles, explosive)
+                    animationParams = {
+                        particleCount: 300,
+                        speedMultiplier: 1.5,
+                        connectionColor: { r: 255, g: 100, b: 100 },
+                        particleColor: { r: 255, g: 200, b: 150 },
+                        pulseIntensity: 2.5,
+                        maxConnections: 200,
+                        sizeVariation: 6,
+                        depthLayers: 4,
+                        nebulaOpacity: 0.5
+                    };
+                    // Add rainbow effect for Agnus Dei
+                    const hue = (Date.now() * 0.0001) % 1;
+                    const rgb = hslToRgb(hue, 0.7, 0.6);
+                    animationParams.particleColor = { r: rgb[0], g: rgb[1], b: rgb[2] };
+                    break;
+            }
+            
+            // Reinitialize particles if count changed significantly
+            if (Math.abs(particles.length - animationParams.particleCount) > 20) {
+                initParticles();
+            }
+        }
+
+        function hslToRgb(h, s, l) {
+            let r, g, b;
+            if (s === 0) {
+                r = g = b = l;
+            } else {
+                const hue2rgb = (p, q, t) => {
+                    if (t < 0) t += 1;
+                    if (t > 1) t -= 1;
+                    if (t < 1/6) return p + (q - p) * 6 * t;
+                    if (t < 1/2) return q;
+                    if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+                    return p;
+                };
+                const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+                const p = 2 * l - q;
+                r = hue2rgb(p, q, h + 1/3);
+                g = hue2rgb(p, q, h);
+                b = hue2rgb(p, q, h - 1/3);
+            }
+            return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+        }
+        
+        function animateParticles() {
+            // Draw background
+            drawBackground();
+            
+            updateAnimationParams();
+            
+            // Draw shooting stars (Gloria only)
+            shootingStars.forEach(star => {
+                star.update();
+                star.draw();
+            });
+            
+            // Draw background particles
+            backgroundParticles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+            
+            // Draw connections
+            let connectionCount = 0;
+            for (let i = 0; i < particles.length && connectionCount < animationParams.maxConnections; i++) {
+                for (let j = i + 1; j < particles.length && connectionCount < animationParams.maxConnections; j++) {
+                    // Only connect particles in same or adjacent layers
+                    if (Math.abs(particles[i].layer - particles[j].layer) > 1) continue;
+                    
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < connectionDistance) {
+                        const opacity = (1 - distance / connectionDistance) * 0.3 * particles[i].depthFactor;
+                        let r = animationParams.connectionColor.r;
+                        let g = animationParams.connectionColor.g;
+                        let b = animationParams.connectionColor.b;
+                        
+                        // Vary connection color slightly
+                        if (animationType === 5) {
+                            // Rainbow connections for Agnus Dei
+                            const hue = (Date.now() * 0.0002 + distance * 0.01) % 1;
+                            const rgb = hslToRgb(hue, 0.5, 0.5);
+                            r = rgb[0];
+                            g = rgb[1];
+                            b = rgb[2];
+                        }
+                        
+                        ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${opacity})`;
+                        ctx.lineWidth = particles[i].layer === 0 ? 1.5 : 1;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                        
+                        connectionCount++;
+                    }
+                }
+            }
+            
+            // Draw particles
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+            
+            requestAnimationFrame(animateParticles);
+        }
+        
+        initParticles();
+        animateParticles();
+
+        // Music Player Logic
+        function loadSong(index) {
+            currentSong = index;
+            currentAudio.src = songs[index].url;
+            currentAudio.load();
+            document.getElementById('songName').textContent = songs[index].name;
+            
+            // Change animation type when song changes
+            if (isPlaying) {
+                animationType = index + 1; // 1-5 for songs
+            }
+        }
+
+        function togglePlayPause() {
+            if (isPlaying) {
+                currentAudio.pause();
+                isPlaying = false;
+                animationType = 0; // Back to default animation
+            } else {
+                currentAudio.play();
+                isPlaying = true;
+                animationType = currentSong + 1; // Set to current song animation
+            }
+            
+            document.getElementById('playIcon').style.display = isPlaying ? 'none' : 'block';
+            document.getElementById('pauseIcon').style.display = isPlaying ? 'block' : 'none';
+        }
+
+        function playNext() {
+            currentSong = (currentSong + 1) % songs.length;
+            loadSong(currentSong);
+            if (isPlaying) {
+                currentAudio.play();
+            }
+        }
+
+        function playPrevious() {
+            currentSong = (currentSong - 1 + songs.length) % songs.length;
+            loadSong(currentSong);
+            if (isPlaying) {
+                currentAudio.play();
+            }
+        }
+
+        // Update progress bar
+        function updateProgress() {
+            if (currentAudio.duration) {
+                const progress = (currentAudio.currentTime / currentAudio.duration) * 100;
+                document.getElementById('progressBar').style.width = progress + '%';
+            }
+        }
+
+        // Handle song ending with crossfade
+        async function handleSongEnd() {
+            // Prepare next song
+            const nextIndex = (currentSong + 1) % songs.length;
+            nextAudio.src = songs[nextIndex].url;
+            nextAudio.load();
+            
+            // Start crossfade 2 seconds before end
+            const fadeTime = 2000; // 2 seconds
+            const steps = 20;
+            const stepTime = fadeTime / steps;
+            
+            nextAudio.volume = 0;
+            nextAudio.play();
+            
+            // Crossfade
+            for (let i = 0; i <= steps; i++) {
+                currentAudio.volume = 1 - (i / steps);
+                nextAudio.volume = i / steps;
+                await new Promise(resolve => setTimeout(resolve, stepTime));
+            }
+            
+            // Swap audio objects
+            const temp = currentAudio;
+            currentAudio = nextAudio;
+            nextAudio = temp;
+            
+            currentSong = nextIndex;
+            animationType = currentSong + 1;
+            document.getElementById('songName').textContent = songs[currentSong].name;
+        }
+
+        // Progress bar click
+        document.getElementById('progressContainer').addEventListener('click', (e) => {
+            const rect = e.currentTarget.getBoundingClientRect();
+            const percent = (e.clientX - rect.left) / rect.width;
+            currentAudio.currentTime = percent * currentAudio.duration;
+        });
+
+        // Event listeners
+        document.getElementById('playPauseBtn').addEventListener('click', togglePlayPause);
+        document.getElementById('nextBtn').addEventListener('click', playNext);
+        document.getElementById('prevBtn').addEventListener('click', playPrevious);
+        
+        currentAudio.addEventListener('timeupdate', updateProgress);
+        currentAudio.addEventListener('ended', () => {
+            playNext(); // Auto-play next song
+        });
+
+        // Monitor for near-end to prepare crossfade
+        setInterval(() => {
+            if (isPlaying && currentAudio.duration) {
+                const timeLeft = currentAudio.duration - currentAudio.currentTime;
+                if (timeLeft < 2.5 && timeLeft > 2) {
+                    // Preload next song
+                    const nextIndex = (currentSong + 1) % songs.length;
+                    nextAudio.src = songs[nextIndex].url;
+                    nextAudio.load();
+                }
+            }
+        }, 100);
+
+        // Initialize first song
+        loadSong(0);
+
+        // Placeholder for section scrolling
+        function scrollToSection(sectionId) {
+            console.log('Scrolling to:', sectionId);
+        }
+    </script>
+</body>
+</html>

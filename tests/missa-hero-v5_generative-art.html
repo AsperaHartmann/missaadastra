@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Missa Ad Astra - Hero Section v5 (Generative Art)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            color: #1a1a1a;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Hero Section with Generative Art */
+        #hero {
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: #000;
+        }
+
+        #canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            color: #fff;
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 8vw, 6rem);
+            font-weight: 300;
+            letter-spacing: 0.3em;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            animation: fadeIn 2s ease-in;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 2vw, 1.5rem);
+            font-weight: 300;
+            letter-spacing: 0.2em;
+            opacity: 0;
+            animation: fadeIn 2s ease-in 1s forwards;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0.7;
+            animation: bounce 2s infinite;
+            font-size: 1.5rem;
+            color: #fff;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+
+        /* Navigation Dots */
+        .nav-dots {
+            position: fixed;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 100;
+        }
+
+        .nav-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-dot:hover {
+            background: rgba(255, 255, 255, 0.6);
+            transform: scale(1.2);
+        }
+
+        .nav-dot.active {
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Music Player */
+        .music-player {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 12px 20px;
+            z-index: 1000;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            color: #fff;
+            min-width: 320px;
+        }
+
+        .music-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .music-btn {
+            width: 32px;
+            height: 32px;
+            background: none;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.3s ease;
+            opacity: 0.7;
+        }
+
+        .music-btn:hover {
+            opacity: 1;
+        }
+
+        .music-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        .music-btn.play-pause svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .progress-container {
+            flex: 1;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.2);
+            position: relative;
+            cursor: pointer;
+            min-width: 100px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.8));
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        .song-name {
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            opacity: 0.9;
+            min-width: 80px;
+            text-align: right;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-dots {
+                right: 15px;
+            }
+            
+            .music-player {
+                bottom: 15px;
+                right: 15px;
+                left: 15px;
+                min-width: unset;
+                padding: 10px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section with Generative Art -->
+    <section id="hero">
+        <canvas id="canvas"></canvas>
+        <div class="hero-content">
+            <h1 class="hero-title">MISSA AD ASTRA</h1>
+            <p class="hero-subtitle">A Contemporary Sacred Manifesto</p>
+        </div>
+        <div class="scroll-indicator">↓</div>
+    </section>
+
+    <!-- Navigation Dots -->
+    <div class="nav-dots">
+        <div class="nav-dot active" onclick="scrollToSection('hero')"></div>
+        <div class="nav-dot" onclick="scrollToSection('essence')"></div>
+        <div class="nav-dot" onclick="scrollToSection('experience')"></div>
+        <div class="nav-dot" onclick="scrollToSection('words')"></div>
+        <div class="nav-dot" onclick="scrollToSection('voices')"></div>
+        <div class="nav-dot" onclick="scrollToSection('performances')"></div>
+        <div class="nav-dot" onclick="scrollToSection('connect')"></div>
+    </div>
+
+    <!-- Music Player -->
+    <div class="music-player">
+        <div class="music-controls">
+            <button class="music-btn play-pause" id="playPauseBtn" aria-label="Play">
+                <svg id="playIcon" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z"/>
+                </svg>
+                <svg id="pauseIcon" viewBox="0 0 24 24" style="display: none;">
+                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                </svg>
+            </button>
+            <button class="music-btn" id="prevBtn" aria-label="Previous">
+                <svg viewBox="0 0 24 24">
+                    <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
+                </svg>
+            </button>
+            <button class="music-btn" id="nextBtn" aria-label="Next">
+                <svg viewBox="0 0 24 24">
+                    <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
+                </svg>
+            </button>
+        </div>
+        <div class="progress-container" id="progressContainer">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="song-name" id="songName">Ready</div>
+    </div>
+
+    <script>
+        // Song configuration
+        const songs = [
+            { name: 'Kyrie', url: 'https://www.missaadastra.com/assets/Exc1_KYRIE_25s.mp3', duration: 25 },
+            { name: 'Gloria', url: 'https://www.missaadastra.com/assets/Exc2_GLORIA_39s.mp3', duration: 39 },
+            { name: 'Credo', url: 'https://www.missaadastra.com/assets/Exc3_CREDO_59s.mp3', duration: 59 },
+            { name: 'Sanctus', url: 'https://www.missaadastra.com/assets/Exc4_SANCTUS_1m04s.mp3', duration: 64 },
+            { name: 'Agnus Dei', url: 'https://www.missaadastra.com/assets/Exc5_AGNUSDEI_1m49s.mp3', duration: 109 }
+        ];
+
+        let currentSong = 0;
+        let isPlaying = false;
+        let currentAudio = null;
+        let nextAudio = null;
+        let animationType = 0; // 0 = default, 1-5 = songs
+        
+        // Audio Analysis Variables
+        let audioContext = null;
+        let analyser = null;
+        let source = null;
+        let dataArray = null;
+        let audioData = {
+            volume: 0,
+            bass: 0,
+            mid: 0,
+            treble: 0,
+            average: 0
+        };
+
+        // Initialize audio elements
+        currentAudio = new Audio();
+        nextAudio = new Audio();
+        currentAudio.preload = 'auto';
+        nextAudio.preload = 'auto';
+        currentAudio.crossOrigin = 'anonymous';
+
+        // Initialize Web Audio API for music reactiveness
+        function initAudioAnalyzer() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                analyser = audioContext.createAnalyser();
+                analyser.fftSize = 512; // Higher resolution for generative art
+                const bufferLength = analyser.frequencyBinCount;
+                dataArray = new Uint8Array(bufferLength);
+                
+                source = audioContext.createMediaElementSource(currentAudio);
+                source.connect(analyser);
+                analyser.connect(audioContext.destination);
+            }
+        }
+
+        // Analyze audio frequencies
+        function analyzeAudio() {
+            if (!analyser || !isPlaying) {
+                audioData = { volume: 0, bass: 0, mid: 0, treble: 0, average: 0 };
+                return;
+            }
+
+            analyser.getByteFrequencyData(dataArray);
+            
+            const bassEnd = Math.floor(dataArray.length * 0.15);
+            const midEnd = Math.floor(dataArray.length * 0.5);
+            
+            let bass = 0, mid = 0, treble = 0, total = 0;
+            
+            for (let i = 0; i < bassEnd; i++) {
+                bass += dataArray[i];
+            }
+            bass = bass / bassEnd / 255;
+            
+            for (let i = bassEnd; i < midEnd; i++) {
+                mid += dataArray[i];
+            }
+            mid = mid / (midEnd - bassEnd) / 255;
+            
+            for (let i = midEnd; i < dataArray.length; i++) {
+                treble += dataArray[i];
+            }
+            treble = treble / (dataArray.length - midEnd) / 255;
+            
+            for (let i = 0; i < dataArray.length; i++) {
+                total += dataArray[i];
+            }
+            const average = total / dataArray.length / 255;
+            
+            audioData = {
+                volume: average,
+                bass: bass,
+                mid: mid,
+                treble: treble,
+                average: average
+            };
+        }
+
+        // Canvas setup
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+        
+        // Generative Art Elements
+        let particles = [];
+        let geometricShapes = [];
+        let flowFields = [];
+        let celestialBodies = [];
+        let sacrificialFragments = [];
+        let time = 0;
+        
+        // Original Animation 0 particles
+        class BaseParticle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 1;
+                this.speedX = (Math.random() - 0.5) * 0.3;
+                this.speedY = (Math.random() - 0.5) * 0.3;
+                this.opacity = Math.random() * 0.5 + 0.5;
+                this.pulseSpeed = Math.random() * 0.02 + 0.01;
+                this.pulsePhase = Math.random() * Math.PI * 2;
+            }
+            
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                
+                if (this.x > canvas.width) this.x = 0;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.y > canvas.height) this.y = 0;
+                if (this.y < 0) this.y = canvas.height;
+                
+                this.pulsePhase += this.pulseSpeed;
+            }
+            
+            draw() {
+                const pulseFactor = Math.sin(this.pulsePhase) * 0.3 + 0.7;
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity * pulseFactor})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size * pulseFactor, 0, Math.PI * 2);
+                ctx.fill();
+                
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = 'rgba(255, 255, 255, 0.5)';
+                ctx.fill();
+                ctx.shadowBlur = 0;
+            }
+        }
+
+        // KYRIE - Request/Solitude: Isolated souls reaching outward
+        class SolitudeParticle {
+            constructor(index) {
+                this.reset();
+                this.index = index;
+                this.connectionRadius = 100;
+                this.reachPhase = Math.random() * Math.PI * 2;
+            }
+
+            reset() {
+                // Particles start in isolation
+                const angle = Math.random() * Math.PI * 2;
+                const distance = 200 + Math.random() * 300;
+                this.x = canvas.width/2 + Math.cos(angle) * distance;
+                this.y = canvas.height/2 + Math.sin(angle) * distance;
+                this.targetX = this.x;
+                this.targetY = this.y;
+                this.size = Math.random() * 3 + 1;
+                this.opacity = 0.3 + Math.random() * 0.3;
+                this.pulseSpeed = 0.01 + Math.random() * 0.01;
+                this.pulsePhase = Math.random() * Math.PI * 2;
+                this.reaching = false;
+                this.reachTimer = 0;
+            }
+
+            update() {
+                // Slowly reach toward center when music intensifies
+                if (audioData.volume > 0.3) {
+                    this.reaching = true;
+                    this.targetX = canvas.width/2 + (this.x - canvas.width/2) * 0.7;
+                    this.targetY = canvas.height/2 + (this.y - canvas.height/2) * 0.7;
+                } else {
+                    this.reaching = false;
+                    this.targetX = this.x;
+                    this.targetY = this.y;
+                }
+
+                // Gentle movement toward target
+                const dx = this.targetX - this.x;
+                const dy = this.targetY - this.y;
+                this.x += dx * 0.02;
+                this.y += dy * 0.02;
+
+                // Orbital drift
+                const centerDx = this.x - canvas.width/2;
+                const centerDy = this.y - canvas.height/2;
+                const angle = Math.atan2(centerDy, centerDx) + 0.001;
+                const dist = Math.sqrt(centerDx * centerDx + centerDy * centerDy);
+                this.x = canvas.width/2 + Math.cos(angle) * dist;
+                this.y = canvas.height/2 + Math.sin(angle) * dist;
+
+                this.pulsePhase += this.pulseSpeed * (1 + audioData.mid);
+                this.reachPhase += 0.02;
+            }
+
+            draw() {
+                const pulseFactor = Math.sin(this.pulsePhase) * 0.3 + 0.7;
+                
+                // Draw reach tendrils when reaching
+                if (this.reaching) {
+                    ctx.save();
+                    ctx.strokeStyle = `rgba(100, 150, 255, ${0.1 * pulseFactor})`;
+                    ctx.lineWidth = 0.5;
+                    ctx.setLineDash([5, 15]);
+                    ctx.beginPath();
+                    ctx.moveTo(this.x, this.y);
+                    ctx.lineTo(canvas.width/2, canvas.height/2);
+                    ctx.stroke();
+                    ctx.restore();
+                }
+
+                // Core particle with longing glow
+                const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size * 5);
+                gradient.addColorStop(0, `rgba(150, 180, 255, ${this.opacity})`);
+                gradient.addColorStop(0.5, `rgba(100, 150, 255, ${this.opacity * 0.5})`);
+                gradient.addColorStop(1, 'rgba(50, 100, 200, 0)');
+                
+                ctx.fillStyle = gradient;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size * pulseFactor * 5, 0, Math.PI * 2);
+                ctx.fill();
+
+                // White core
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity * pulseFactor})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size * pulseFactor, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        // GLORIA - Praise/Joy: Explosive celebration patterns
+        class JoyBurst {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = canvas.width/2 + (Math.random() - 0.5) * 100;
+                this.y = canvas.height/2 + (Math.random() - 0.5) * 100;
+                this.particles = [];
+                this.life = 0;
+                this.maxLife = 100 + Math.random() * 100;
+                this.color = {
+                    h: 30 + Math.random() * 60, // Gold to orange
+                    s: 70,
+                    l: 50
+                };
+                
+                // Create burst particles
+                const count = 20 + Math.floor(audioData.volume * 30);
+                for (let i = 0; i < count; i++) {
+                    const angle = (Math.PI * 2 / count) * i + Math.random() * 0.2;
+                    this.particles.push({
+                        x: this.x,
+                        y: this.y,
+                        vx: Math.cos(angle) * (2 + audioData.bass * 5),
+                        vy: Math.sin(angle) * (2 + audioData.bass * 5),
+                        size: 1 + Math.random() * 2,
+                        life: 1
+                    });
+                }
+            }
+
+            update() {
+                this.life++;
+                
+                this.particles.forEach(p => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.vx *= 0.98;
+                    p.vy *= 0.98;
+                    p.vy += 0.1; // Gravity
+                    p.life *= 0.98;
+                });
+
+                // Remove dead particles and reset if needed
+                this.particles = this.particles.filter(p => p.life > 0.01);
+                
+                if (this.life > this.maxLife || this.particles.length === 0) {
+                    if (audioData.volume > 0.4) {
+                        this.reset();
+                    }
+                }
+            }
+
+            draw() {
+                this.particles.forEach(p => {
+                    const alpha = p.life * (1 - this.life / this.maxLife);
+                    
+                    // Glowing trail
+                    const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size * 3);
+                    gradient.addColorStop(0, `hsla(${this.color.h}, ${this.color.s}%, ${this.color.l + 20}%, ${alpha})`);
+                    gradient.addColorStop(1, `hsla(${this.color.h}, ${this.color.s}%, ${this.color.l}%, 0)`);
+                    
+                    ctx.fillStyle = gradient;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size * 3, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    // Core
+                    ctx.fillStyle = `hsla(${this.color.h}, ${this.color.s}%, 90%, ${alpha})`;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+            }
+        }
+
+        // CREDO - Confession/Divine Presence: Sacred geometry and mandala patterns
+        class SacredGeometry {
+            constructor(index) {
+                this.index = index;
+                this.angle = (Math.PI * 2 / 12) * index;
+                this.radius = 100 + index * 20;
+                this.rotation = 0;
+                this.points = [];
+                this.generateMandala();
+            }
+
+            generateMandala() {
+                const sides = 3 + Math.floor(this.index / 2);
+                for (let i = 0; i < sides; i++) {
+                    const angle = (Math.PI * 2 / sides) * i;
+                    this.points.push({
+                        x: Math.cos(angle) * this.radius,
+                        y: Math.sin(angle) * this.radius
+                    });
+                }
+            }
+
+            update() {
+                this.rotation += 0.001 * (1 + audioData.mid * 2);
+                this.radius = 100 + this.index * 20 + Math.sin(time * 0.001 + this.index) * 20 * audioData.volume;
+            }
+
+            draw() {
+                ctx.save();
+                ctx.translate(canvas.width/2, canvas.height/2);
+                ctx.rotate(this.rotation);
+                
+                // Draw mandala pattern
+                ctx.strokeStyle = `rgba(200, 150, 255, ${0.3 + audioData.treble * 0.5})`;
+                ctx.lineWidth = 1;
+                
+                // Connect points
+                ctx.beginPath();
+                this.points.forEach((p, i) => {
+                    if (i === 0) ctx.moveTo(p.x, p.y);
+                    else ctx.lineTo(p.x, p.y);
+                });
+                ctx.closePath();
+                ctx.stroke();
+                
+                // Draw inner connections
+                this.points.forEach((p1, i) => {
+                    this.points.forEach((p2, j) => {
+                        if (i < j) {
+                            ctx.beginPath();
+                            ctx.moveTo(p1.x, p1.y);
+                            ctx.lineTo(p2.x, p2.y);
+                            ctx.strokeStyle = `rgba(180, 120, 255, ${0.1 + audioData.average * 0.2})`;
+                            ctx.stroke();
+                        }
+                    });
+                });
+                
+                // Draw nodes
+                this.points.forEach(p => {
+                    const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, 5);
+                    gradient.addColorStop(0, 'rgba(255, 255, 255, 0.8)');
+                    gradient.addColorStop(1, 'rgba(200, 150, 255, 0.2)');
+                    ctx.fillStyle = gradient;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, 3 + audioData.bass * 2, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+                
+                ctx.restore();
+            }
+        }
+
+        // SANCTUS - Exaltation/Celestial Spheres: Orbital mechanics and cosmic dance
+        class CelestialOrbit {
+            constructor(index) {
+                this.index = index;
+                this.orbitRadius = 50 + index * 40;
+                this.orbitSpeed = 0.001 + index * 0.0002;
+                this.angle = Math.random() * Math.PI * 2;
+                this.size = 2 + Math.random() * 3;
+                this.moons = [];
+                
+                // Create moons
+                const moonCount = Math.floor(Math.random() * 3);
+                for (let i = 0; i < moonCount; i++) {
+                    this.moons.push({
+                        angle: Math.random() * Math.PI * 2,
+                        distance: 10 + Math.random() * 20,
+                        speed: 0.02 + Math.random() * 0.02,
+                        size: 0.5 + Math.random() * 1
+                    });
+                }
+            }
+
+            update() {
+                this.angle += this.orbitSpeed * (1 + audioData.bass * 2);
+                this.x = canvas.width/2 + Math.cos(this.angle) * this.orbitRadius;
+                this.y = canvas.height/2 + Math.sin(this.angle) * this.orbitRadius;
+                
+                // Update moons
+                this.moons.forEach(moon => {
+                    moon.angle += moon.speed * (1 + audioData.treble);
+                });
+                
+                // Orbital resonance - adjust radius based on music
+                this.orbitRadius = (50 + this.index * 40) * (1 + Math.sin(time * 0.001) * audioData.mid * 0.2);
+            }
+
+            draw() {
+                // Draw orbit path
+                ctx.strokeStyle = `rgba(100, 150, 255, ${0.1 + audioData.average * 0.1})`;
+                ctx.lineWidth = 0.5;
+                ctx.setLineDash([2, 8]);
+                ctx.beginPath();
+                ctx.arc(canvas.width/2, canvas.height/2, this.orbitRadius, 0, Math.PI * 2);
+                ctx.stroke();
+                ctx.setLineDash([]);
+                
+                // Draw planet with atmosphere
+                const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size * 3);
+                gradient.addColorStop(0, `rgba(255, 255, 255, ${0.9})`);
+                gradient.addColorStop(0.3, `rgba(200, 220, 255, ${0.5})`);
+                gradient.addColorStop(0.6, `rgba(100, 150, 255, ${0.3})`);
+                gradient.addColorStop(1, 'rgba(50, 100, 200, 0)');
+                
+                ctx.fillStyle = gradient;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size * 3 * (1 + audioData.volume * 0.5), 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Planet core
+                ctx.fillStyle = `rgba(255, 255, 255, ${0.9})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Draw moons
+                this.moons.forEach(moon => {
+                    const mx = this.x + Math.cos(moon.angle) * moon.distance;
+                    const my = this.y + Math.sin(moon.angle) * moon.distance;
+                    
+                    ctx.fillStyle = `rgba(255, 255, 255, ${0.6})`;
+                    ctx.beginPath();
+                    ctx.arc(mx, my, moon.size, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+                
+                // Draw gravitational field lines
+                if (audioData.bass > 0.3) {
+                    for (let i = 0; i < 8; i++) {
+                        const angle = (Math.PI * 2 / 8) * i + time * 0.001;
+                        ctx.strokeStyle = `rgba(150, 200, 255, ${0.05 * audioData.bass})`;
+                        ctx.beginPath();
+                        ctx.moveTo(this.x, this.y);
+                        ctx.lineTo(
+                            this.x + Math.cos(angle) * 100 * audioData.bass,
+                            this.y + Math.sin(angle) * 100 * audioData.bass
+                        );
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        // AGNUS DEI - Supplication/Sacrifice: Fragments dissolving and reforming
+        class SacrificeFragment {
+            constructor() {
+                this.reset();
+                this.dissolving = false;
+                this.reforming = false;
+            }
+
+            reset() {
+                // Start as complete form at center
+                const angle = Math.random() * Math.PI * 2;
+                const dist = Math.random() * 50;
+                this.x = canvas.width/2 + Math.cos(angle) * dist;
+                this.y = canvas.height/2 + Math.sin(angle) * dist;
+                this.targetX = this.x;
+                this.targetY = this.y;
+                this.size = 1 + Math.random() * 3;
+                this.opacity = 0.8;
+                this.fragments = [];
+                this.color = {
+                    h: Math.random() * 60 + 320, // Red to magenta spectrum
+                    s: 50 + Math.random() * 30,
+                    l: 50
+                };
+                
+                // Create fragment pieces
+                for (let i = 0; i < 6; i++) {
+                    this.fragments.push({
+                        angle: (Math.PI * 2 / 6) * i,
+                        distance: 0,
+                        size: this.size * 0.3,
+                        opacity: 1
+                    });
+                }
+            }
+
+            update() {
+                // Dissolve on bass hits
+                if (audioData.bass > 0.5 && !this.dissolving) {
+                    this.dissolving = true;
+                    this.reforming = false;
+                }
+                
+                // Reform on quiet moments
+                if (audioData.volume < 0.2 && this.dissolving) {
+                    this.dissolving = false;
+                    this.reforming = true;
+                }
+                
+                // Update fragments
+                this.fragments.forEach(f => {
+                    if (this.dissolving) {
+                        f.distance += 2 * (1 + audioData.bass * 3);
+                        f.opacity *= 0.98;
+                    } else if (this.reforming) {
+                        f.distance *= 0.95;
+                        f.opacity = Math.min(1, f.opacity * 1.02);
+                    }
+                    
+                    // Rotate fragments
+                    f.angle += 0.01 * (1 + audioData.treble);
+                });
+                
+                // Float upward (ascension)
+                this.y -= 0.5 * (1 + audioData.mid);
+                if (this.y < -50) {
+                    this.y = canvas.height + 50;
+                    this.x = canvas.width/2 + (Math.random() - 0.5) * canvas.width * 0.8;
+                }
+                
+                // Gentle horizontal drift
+                this.x += Math.sin(time * 0.001 + this.y * 0.01) * 0.5;
+            }
+
+            draw() {
+                // Draw fragments
+                this.fragments.forEach(f => {
+                    const fx = this.x + Math.cos(f.angle) * f.distance;
+                    const fy = this.y + Math.sin(f.angle) * f.distance;
+                    
+                    // Fragment glow
+                    const gradient = ctx.createRadialGradient(fx, fy, 0, fx, fy, f.size * 2);
+                    gradient.addColorStop(0, `hsla(${this.color.h}, ${this.color.s}%, ${this.color.l + 30}%, ${f.opacity * 0.8})`);
+                    gradient.addColorStop(0.5, `hsla(${this.color.h}, ${this.color.s}%, ${this.color.l}%, ${f.opacity * 0.4})`);
+                    gradient.addColorStop(1, `hsla(${this.color.h}, ${this.color.s}%, ${this.color.l - 20}%, 0)`);
+                    
+                    ctx.fillStyle = gradient;
+                    ctx.beginPath();
+                    ctx.arc(fx, fy, f.size * 2, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    // Fragment core
+                    ctx.fillStyle = `rgba(255, 255, 255, ${f.opacity * 0.9})`;
+                    ctx.beginPath();
+                    ctx.arc(fx, fy, f.size * 0.5, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+                
+                // Draw connecting light when reforming
+                if (this.reforming && this.fragments[0].distance < 30) {
+                    ctx.strokeStyle = `hsla(${this.color.h}, ${this.color.s}%, 70%, ${0.2 * (1 - this.fragments[0].distance / 30)})`;
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    this.fragments.forEach((f, i) => {
+                        const fx = this.x + Math.cos(f.angle) * f.distance;
+                        const fy = this.y + Math.sin(f.angle) * f.distance;
+                        if (i === 0) ctx.moveTo(fx, fy);
+                        else ctx.lineTo(fx, fy);
+                    });
+                    ctx.closePath();
+                    ctx.stroke();
+                }
+                
+                // Central light source
+                const coreOpacity = this.reforming ? (1 - this.fragments[0].distance / 30) : 0.3;
+                ctx.fillStyle = `rgba(255, 255, 255, ${coreOpacity * this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        // Initialize animation elements
+        function initAnimation() {
+            particles = [];
+            geometricShapes = [];
+            flowFields = [];
+            celestialBodies = [];
+            sacrificialFragments = [];
+
+            if (animationType === 0) {
+                // Original constellation animation
+                for (let i = 0; i < 150; i++) {
+                    particles.push(new BaseParticle());
+                }
+            } else if (animationType === 1) {
+                // KYRIE - Solitude particles
+                for (let i = 0; i < 30; i++) {
+                    particles.push(new SolitudeParticle(i));
+                }
+            } else if (animationType === 2) {
+                // GLORIA - Joy bursts
+                for (let i = 0; i < 10; i++) {
+                    flowFields.push(new JoyBurst());
+                }
+            } else if (animationType === 3) {
+                // CREDO - Sacred geometry
+                for (let i = 0; i < 8; i++) {
+                    geometricShapes.push(new SacredGeometry(i));
+                }
+            } else if (animationType === 4) {
+                // SANCTUS - Celestial orbits
+                for (let i = 0; i < 7; i++) {
+                    celestialBodies.push(new CelestialOrbit(i));
+                }
+            } else if (animationType === 5) {
+                // AGNUS DEI - Sacrifice fragments
+                for (let i = 0; i < 20; i++) {
+                    sacrificialFragments.push(new SacrificeFragment());
+                }
+            }
+        }
+
+        // Draw background with thematic gradients
+        function drawBackground() {
+            if (animationType === 0) {
+                ctx.fillStyle = 'black';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            } else if (animationType === 1) {
+                // KYRIE - Deep blue solitude
+                const gradient = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, canvas.width);
+                gradient.addColorStop(0, `rgba(20, 30, 60, ${1 - audioData.volume * 0.3})`);
+                gradient.addColorStop(0.5, 'rgba(10, 15, 30, 1)');
+                gradient.addColorStop(1, 'rgba(0, 0, 0, 1)');
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            } else if (animationType === 2) {
+                // GLORIA - Golden dawn
+                const gradient = ctx.createRadialGradient(canvas.width*0.7, canvas.height*0.3, 0, canvas.width*0.7, canvas.height*0.3, canvas.width);
+                gradient.addColorStop(0, `rgba(80, 60, 20, ${0.3 + audioData.bass * 0.2})`);
+                gradient.addColorStop(0.3, 'rgba(40, 30, 10, 0.2)');
+                gradient.addColorStop(1, 'rgba(0, 0, 0, 1)');
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            } else if (animationType === 3) {
+                // CREDO - Divine purple
+                const gradient = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 100, canvas.width/2, canvas.height/2, canvas.width*0.7);
+                gradient.addColorStop(0, `rgba(60, 20, 80, ${0.2 + audioData.mid * 0.1})`);
+                gradient.addColorStop(0.5, 'rgba(30, 10, 40, 0.1)');
+                gradient.addColorStop(1, 'rgba(0, 0, 0, 1)');
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            } else if (animationType === 4) {
+                // SANCTUS - Cosmic deep blue
+                const gradient = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, canvas.width);
+                gradient.addColorStop(0, `rgba(10, 20, 50, ${0.2 + audioData.treble * 0.1})`);
+                gradient.addColorStop(0.3, 'rgba(5, 10, 30, 0.15)');
+                gradient.addColorStop(0.6, 'rgba(0, 5, 20, 0.1)');
+                gradient.addColorStop(1, 'rgba(0, 0, 0, 1)');
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Add stars
+                for (let i = 0; i < 200; i++) {
+                    const x = Math.random() * canvas.width;
+                    const y = Math.random() * canvas.height;
+                    const size = Math.random() * 1;
+                    const brightness = Math.random();
+                    ctx.fillStyle = `rgba(255, 255, 255, ${brightness * 0.5})`;
+                    ctx.beginPath();
+                    ctx.arc(x, y, size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            } else if (animationType === 5) {
+                // AGNUS DEI - Sacrificial red-black
+                const gradient = ctx.createRadialGradient(canvas.width/2, canvas.height*0.7, 0, canvas.width/2, canvas.height*0.7, canvas.width);
+                const intensity = 0.1 + audioData.volume * 0.1;
+                gradient.addColorStop(0, `rgba(60, 10, 20, ${intensity})`);
+                gradient.addColorStop(0.5, `rgba(30, 5, 10, ${intensity * 0.5})`);
+                gradient.addColorStop(1, 'rgba(0, 0, 0, 1)');
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            }
+        }
+
+        // Draw connections for Animation 0
+        function drawConnections() {
+            if (animationType === 0) {
+                for (let i = 0; i < particles.length; i++) {
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        
+                        if (distance < 150) {
+                            const opacity = (1 - distance / 150) * 0.3;
+                            ctx.strokeStyle = `rgba(100, 150, 255, ${opacity})`;
+                            ctx.lineWidth = 1;
+                            ctx.beginPath();
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.stroke();
+                            
+                            if (distance < 75) {
+                                const midX = (particles[i].x + particles[j].x) / 2;
+                                const midY = (particles[i].y + particles[j].y) / 2;
+                                ctx.fillStyle = `rgba(150, 200, 255, ${opacity * 0.3})`;
+                                ctx.beginPath();
+                                ctx.arc(midX, midY, 1, 0, Math.PI * 2);
+                                ctx.fill();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Main animation loop
+        function animate() {
+            time++;
+            analyzeAudio();
+            
+            // Clear and draw background
+            drawBackground();
+            
+            // Draw elements based on animation type
+            if (animationType === 0) {
+                drawConnections();
+                particles.forEach(p => {
+                    p.update();
+                    p.draw();
+                });
+            } else if (animationType === 1) {
+                // KYRIE
+                particles.forEach((p, i) => {
+                    p.update();
+                    p.draw();
+                    
+                    // Draw faint connections between reaching souls
+                    particles.forEach((p2, j) => {
+                        if (i < j) {
+                            const dx = p.x - p2.x;
+                            const dy = p.y - p2.y;
+                            const dist = Math.sqrt(dx * dx + dy * dy);
+                            if (dist < 150 && p.reaching && p2.reaching) {
+                                ctx.strokeStyle = `rgba(100, 150, 255, ${0.1 * audioData.mid})`;
+                                ctx.lineWidth = 0.5;
+                                ctx.beginPath();
+                                ctx.moveTo(p.x, p.y);
+                                ctx.lineTo(p2.x, p2.y);
+                                ctx.stroke();
+                            }
+                        }
+                    });
+                });
+            } else if (animationType === 2) {
+                // GLORIA
+                flowFields.forEach(f => {
+                    f.update();
+                    f.draw();
+                });
+                
+                // Create new bursts on beats
+                if (audioData.bass > 0.6 && Math.random() > 0.7) {
+                    flowFields.push(new JoyBurst());
+                }
+                
+                // Limit burst count
+                if (flowFields.length > 20) {
+                    flowFields = flowFields.slice(-20);
+                }
+            } else if (animationType === 3) {
+                // CREDO
+                geometricShapes.forEach(g => {
+                    g.update();
+                    g.draw();
+                });
+            } else if (animationType === 4) {
+                // SANCTUS
+                celestialBodies.forEach(c => {
+                    c.update();
+                    c.draw();
+                });
+            } else if (animationType === 5) {
+                // AGNUS DEI
+                sacrificialFragments.forEach(s => {
+                    s.update();
+                    s.draw();
+                });
+            }
+            
+            requestAnimationFrame(animate);
+        }
+
+        // Initialize and start
+        initAnimation();
+        animate();
+
+        // Music Player Logic
+        function loadSong(index) {
+            currentSong = index;
+            currentAudio.src = songs[index].url;
+            currentAudio.load();
+            document.getElementById('songName').textContent = songs[index].name;
+            
+            if (isPlaying) {
+                animationType = index + 1;
+                initAnimation();
+            }
+        }
+
+        function togglePlayPause() {
+            if (isPlaying) {
+                currentAudio.pause();
+                isPlaying = false;
+                animationType = 0;
+                initAnimation();
+            } else {
+                if (!audioContext) {
+                    initAudioAnalyzer();
+                }
+                if (audioContext && audioContext.state === 'suspended') {
+                    audioContext.resume();
+                }
+                
+                currentAudio.play();
+                isPlaying = true;
+                animationType = currentSong + 1;
+                initAnimation();
+            }
+            
+            document.getElementById('playIcon').style.display = isPlaying ? 'none' : 'block';
+            document.getElementById('pauseIcon').style.display = isPlaying ? 'block' : 'none';
+        }
+
+        function playNext() {
+            currentSong = (currentSong + 1) % songs.length;
+            loadSong(currentSong);
+            if (isPlaying) {
+                currentAudio.play();
+            }
+        }
+
+        function playPrevious() {
+            currentSong = (currentSong - 1 + songs.length) % songs.length;
+            loadSong(currentSong);
+            if (isPlaying) {
+                currentAudio.play();
+            }
+        }
+
+        // Update progress bar
+        function updateProgress() {
+            if (currentAudio.duration) {
+                const progress = (currentAudio.currentTime / currentAudio.duration) * 100;
+                document.getElementById('progressBar').style.width = progress + '%';
+            }
+        }
+
+        // Handle song ending
+        currentAudio.addEventListener('ended', () => {
+            playNext();
+        });
+
+        currentAudio.addEventListener('timeupdate', updateProgress);
+
+        // Progress bar click
+        document.getElementById('progressContainer').addEventListener('click', (e) => {
+            const rect = e.currentTarget.getBoundingClientRect();
+            const percent = (e.clientX - rect.left) / rect.width;
+            currentAudio.currentTime = percent * currentAudio.duration;
+        });
+
+        // Event listeners
+        document.getElementById('playPauseBtn').addEventListener('click', togglePlayPause);
+        document.getElementById('nextBtn').addEventListener('click', playNext);
+        document.getElementById('prevBtn').addEventListener('click', playPrevious);
+
+        // Initialize first song
+        loadSong(0);
+
+        // Placeholder for section scrolling
+        function scrollToSection(sectionId) {
+            console.log('Scrolling to:', sectionId);
+        }
+    </script>
+</body>
+</html>
