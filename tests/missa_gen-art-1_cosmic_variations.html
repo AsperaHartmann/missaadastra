@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MISSA AD ASTRA - Cosmic Variations</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #000;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        #canvas-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        
+        #controls {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            background: rgba(10, 10, 30, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(100, 100, 255, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            width: 320px;
+            z-index: 100;
+            box-shadow: 0 0 40px rgba(100, 100, 255, 0.2);
+            transition: transform 0.3s ease;
+        }
+        
+        #controls.minimized {
+            transform: translateX(340px);
+        }
+        
+        .toggle-btn {
+            position: absolute;
+            left: -40px;
+            top: 20px;
+            background: rgba(10, 10, 30, 0.95);
+            border: 1px solid rgba(100, 100, 255, 0.3);
+            border-radius: 10px 0 0 10px;
+            padding: 10px;
+            cursor: pointer;
+            color: #8888ff;
+            font-size: 20px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .toggle-btn:hover {
+            background: rgba(100, 100, 255, 0.2);
+        }
+        
+        h2 {
+            font-family: 'Orbitron', monospace;
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #aaaaff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
+        }
+        
+        .presets {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(100, 100, 255, 0.2);
+        }
+        
+        .preset-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #6666ff;
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+        
+        .preset-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+        
+        .preset-btn {
+            background: linear-gradient(135deg, rgba(50, 50, 150, 0.3), rgba(100, 50, 200, 0.3));
+            border: 1px solid rgba(100, 100, 255, 0.4);
+            color: #fff;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 12px;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .preset-btn:hover {
+            background: linear-gradient(135deg, rgba(50, 50, 150, 0.5), rgba(100, 50, 200, 0.5));
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(100, 100, 255, 0.3);
+        }
+        
+        .preset-btn.active {
+            background: linear-gradient(135deg, rgba(100, 100, 255, 0.5), rgba(150, 100, 255, 0.5));
+            border-color: #8888ff;
+            box-shadow: 0 0 20px rgba(100, 100, 255, 0.4);
+        }
+        
+        .preset-btn .preset-name {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 2px;
+        }
+        
+        .preset-btn .preset-desc {
+            font-size: 10px;
+            opacity: 0.7;
+        }
+        
+        .control-group {
+            margin-bottom: 18px;
+        }
+        
+        .control-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 11px;
+            color: #8888ff;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        input[type="range"] {
+            flex: 1;
+            -webkit-appearance: none;
+            appearance: none;
+            height: 4px;
+            background: rgba(100, 100, 255, 0.2);
+            border-radius: 2px;
+            outline: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 14px;
+            height: 14px;
+            background: #8888ff;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb:hover {
+            background: #aaaaff;
+            box-shadow: 0 0 10px rgba(100, 100, 255, 0.6);
+        }
+        
+        .value-display {
+            font-size: 12px;
+            color: #aaaaff;
+            min-width: 40px;
+            text-align: right;
+            font-family: 'Orbitron', monospace;
+        }
+        
+        .seed-controls {
+            background: rgba(50, 50, 100, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .seed-display {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        
+        .seed-value {
+            font-family: 'Orbitron', monospace;
+            font-size: 16px;
+            color: #fff;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 5px 10px;
+            border-radius: 5px;
+            flex: 1;
+            text-align: center;
+        }
+        
+        .seed-nav {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+        }
+        
+        .btn {
+            background: rgba(100, 100, 255, 0.2);
+            border: 1px solid rgba(100, 100, 255, 0.4);
+            color: #fff;
+            padding: 8px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 11px;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+        
+        .btn:hover {
+            background: rgba(100, 100, 255, 0.4);
+            transform: translateY(-1px);
+        }
+        
+        .color-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        input[type="color"] {
+            width: 40px;
+            height: 30px;
+            border: 1px solid rgba(100, 100, 255, 0.4);
+            border-radius: 5px;
+            cursor: pointer;
+            background: transparent;
+        }
+        
+        .actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(100, 100, 255, 0.2);
+        }
+        
+        .current-preset {
+            font-size: 10px;
+            color: #6666ff;
+            margin-top: 10px;
+            text-align: center;
+            font-style: italic;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.7; }
+        }
+        
+        .exploring-indicator {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-family: 'Orbitron', monospace;
+            font-size: 12px;
+            color: #8888ff;
+            padding: 10px 15px;
+            background: rgba(10, 10, 30, 0.8);
+            border: 1px solid rgba(100, 100, 255, 0.3);
+            border-radius: 8px;
+            z-index: 50;
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div id="canvas-container"></div>
+    
+    <div id="exploring-indicator" class="exploring-indicator" style="display: none;">
+        EXPLORING VARIATIONS...
+    </div>
+    
+    <div id="controls">
+        <div class="toggle-btn" onclick="toggleControls()">☰</div>
+        
+        <h2>Cosmic Variations</h2>
+        
+        <!-- PRESET VARIATIONS -->
+        <div class="presets">
+            <div class="preset-title">Select Variation</div>
+            <div class="preset-buttons">
+                <button class="preset-btn" onclick="loadPreset('nebula')" id="preset-nebula">
+                    <span class="preset-name">Stellar Nebula</span>
+                    <span class="preset-desc">Seed 47 • Calm</span>
+                </button>
+                <button class="preset-btn" onclick="loadPreset('birth')" id="preset-birth">
+                    <span class="preset-name">Star Birth</span>
+                    <span class="preset-desc">Seed 892 • Explosive</span>
+                </button>
+                <button class="preset-btn" onclick="loadPreset('quantum')" id="preset-quantum">
+                    <span class="preset-name">Quantum Field</span>
+                    <span class="preset-desc">Seed 1337 • Geometric</span>
+                </button>
+                <button class="preset-btn" onclick="loadPreset('void')" id="preset-void">
+                    <span class="preset-name">Deep Void</span>
+                    <span class="preset-desc">Seed 2001 • Minimal</span>
+                </button>
+            </div>
+            <div class="current-preset" id="current-preset">Custom Settings</div>
+        </div>
+        
+        <!-- SEED CONTROLS -->
+        <div class="seed-controls">
+            <div class="seed-display">
+                <label style="margin: 0;">SEED:</label>
+                <input type="number" class="seed-value" id="seed-input" value="47" onchange="updateSeed(this.value)">
+            </div>
+            <div class="seed-nav">
+                <button class="btn" onclick="prevSeed()">← Prev</button>
+                <button class="btn" onclick="randomSeed()">Random</button>
+                <button class="btn" onclick="nextSeed()">Next →</button>
+            </div>
+        </div>
+        
+        <!-- PARAMETER CONTROLS -->
+        <div class="control-group">
+            <label>Particle Count</label>
+            <div class="slider-container">
+                <input type="range" id="particleCount" min="100" max="2000" value="800" 
+                       oninput="updateParam('particleCount', this.value)">
+                <span class="value-display" id="particleCount-value">800</span>
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <label>Gravity Strength</label>
+            <div class="slider-container">
+                <input type="range" id="gravity" min="0" max="1" step="0.01" value="0.5" 
+                       oninput="updateParam('gravity', this.value)">
+                <span class="value-display" id="gravity-value">0.50</span>
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <label>Turbulence</label>
+            <div class="slider-container">
+                <input type="range" id="turbulence" min="0" max="1" step="0.01" value="0.3" 
+                       oninput="updateParam('turbulence', this.value)">
+                <span class="value-display" id="turbulence-value">0.30</span>
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <label>Trail Length</label>
+            <div class="slider-container">
+                <input type="range" id="trailLength" min="0" max="100" value="20" 
+                       oninput="updateParam('trailLength', this.value)">
+                <span class="value-display" id="trailLength-value">20</span>
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <label>Star Colors</label>
+            <div class="color-controls">
+                <input type="color" id="color1" value="#4444ff" onchange="updateColors()">
+                <input type="color" id="color2" value="#ff44ff" onchange="updateColors()">
+                <input type="color" id="color3" value="#44ffff" onchange="updateColors()">
+            </div>
+        </div>
+        
+        <!-- ACTION BUTTONS -->
+        <div class="actions">
+            <button class="btn" onclick="regenerate()">Regenerate</button>
+            <button class="btn" onclick="resetParams()">Reset</button>
+            <button class="btn" onclick="downloadImage()">Save PNG</button>
+            <button class="btn" onclick="exploreVariations()">Auto-Explore</button>
+        </div>
+    </div>
+    
+    <script>
+        // Preset configurations
+        const presets = {
+            nebula: {
+                name: "Stellar Nebula",
+                seed: 47,
+                params: {
+                    particleCount: 1200,
+                    gravity: 0.3,
+                    turbulence: 0.5,
+                    trailLength: 40
+                },
+                colors: ['#6644ff', '#ff66dd', '#44ddff']
+            },
+            birth: {
+                name: "Star Birth",
+                seed: 892,
+                params: {
+                    particleCount: 2000,
+                    gravity: 0.8,
+                    turbulence: 0.7,
+                    trailLength: 10
+                },
+                colors: ['#ffaa00', '#ff4400', '#ffff00']
+            },
+            quantum: {
+                name: "Quantum Field",
+                seed: 1337,
+                params: {
+                    particleCount: 500,
+                    gravity: 0.1,
+                    turbulence: 0.2,
+                    trailLength: 80
+                },
+                colors: ['#00ffff', '#0088ff', '#ffffff']
+            },
+            void: {
+                name: "Deep Void",
+                seed: 2001,
+                params: {
+                    particleCount: 300,
+                    gravity: 0.05,
+                    turbulence: 0.1,
+                    trailLength: 100
+                },
+                colors: ['#2222aa', '#4422ff', '#110066']
+            }
+        };
+        
+        // Global parameters
+        let params = {
+            seed: 47,
+            particleCount: 800,
+            gravity: 0.5,
+            turbulence: 0.3,
+            trailLength: 20,
+            colors: ['#4444ff', '#ff44ff', '#44ffff']
+        };
+        
+        let particles = [];
+        let attractors = [];
+        let needsRegeneration = false;
+        let currentPreset = null;
+        let explorationInterval = null;
+        
+        // Particle class
+        class Particle {
+            constructor(x, y) {
+                this.pos = createVector(x, y);
+                this.vel = createVector(random(-1, 1), random(-1, 1));
+                this.acc = createVector(0, 0);
+                this.trail = [];
+                this.maxTrail = params.trailLength;
+                this.life = 1.0;
+                this.colorIndex = floor(random(3));
+            }
+            
+            applyForce(force) {
+                this.acc.add(force);
+            }
+            
+            update() {
+                // Apply gravity to attractors
+                for (let attractor of attractors) {
+                    let force = p5.Vector.sub(attractor, this.pos);
+                    let dist = force.mag();
+                    dist = constrain(dist, 5, 200);
+                    let strength = (params.gravity * 50) / (dist * dist);
+                    force.setMag(strength);
+                    this.applyForce(force);
+                }
+                
+                // Apply turbulence
+                if (params.turbulence > 0) {
+                    let noiseForce = createVector(
+                        noise(this.pos.x * 0.01, this.pos.y * 0.01, frameCount * 0.01) - 0.5,
+                        noise(this.pos.x * 0.01 + 1000, this.pos.y * 0.01, frameCount * 0.01) - 0.5
+                    );
+                    noiseForce.mult(params.turbulence * 2);
+                    this.applyForce(noiseForce);
+                }
+                
+                this.vel.add(this.acc);
+                this.vel.limit(3);
+                this.pos.add(this.vel);
+                this.acc.mult(0);
+                
+                // Update trail
+                if (params.trailLength > 0) {
+                    this.trail.push(this.pos.copy());
+                    if (this.trail.length > this.maxTrail) {
+                        this.trail.shift();
+                    }
+                }
+                
+                // Wrap around edges
+                if (this.pos.x < 0) this.pos.x = width;
+                if (this.pos.x > width) this.pos.x = 0;
+                if (this.pos.y < 0) this.pos.y = height;
+                if (this.pos.y > height) this.pos.y = 0;
+                
+                // Update life
+                this.life *= 0.995;
+                if (this.life < 0.01) {
+                    this.reset();
+                }
+            }
+            
+            reset() {
+                this.pos = createVector(random(width), random(height));
+                this.vel = createVector(random(-1, 1), random(-1, 1));
+                this.trail = [];
+                this.life = 1.0;
+            }
+            
+            display() {
+                // Draw trail
+                if (this.trail.length > 1) {
+                    noFill();
+                    for (let i = 0; i < this.trail.length - 1; i++) {
+                        let alpha = map(i, 0, this.trail.length, 0, 100) * this.life;
+                        stroke(red(params.colors[this.colorIndex]), 
+                               green(params.colors[this.colorIndex]), 
+                               blue(params.colors[this.colorIndex]), 
+                               alpha);
+                        strokeWeight(map(i, 0, this.trail.length, 0.5, 2));
+                        line(this.trail[i].x, this.trail[i].y, 
+                             this.trail[i + 1].x, this.trail[i + 1].y);
+                    }
+                }
+                
+                // Draw particle
+                push();
+                let c = color(params.colors[this.colorIndex]);
+                fill(red(c), green(c), blue(c), 255 * this.life);
+                noStroke();
+                circle(this.pos.x, this.pos.y, 4);
+                
+                // Glow effect
+                fill(red(c), green(c), blue(c), 50 * this.life);
+                circle(this.pos.x, this.pos.y, 12);
+                pop();
+            }
+        }
+        
+        // p5.js functions
+        function setup() {
+            let canvas = createCanvas(windowWidth, windowHeight);
+            canvas.parent('canvas-container');
+            
+            // Set initial seed
+            randomSeed(params.seed);
+            noiseSeed(params.seed);
+            
+            // Create attractors based on seed
+            attractors = [];
+            let numAttractors = floor(random(2, 5));
+            for (let i = 0; i < numAttractors; i++) {
+                attractors.push(createVector(
+                    random(width * 0.2, width * 0.8),
+                    random(height * 0.2, height * 0.8)
+                ));
+            }
+            
+            // Initialize particles
+            particles = [];
+            for (let i = 0; i < params.particleCount; i++) {
+                particles.push(new Particle(random(width), random(height)));
+            }
+            
+            background(0);
+        }
+        
+        function draw() {
+            // Dark background with subtle fade
+            fill(0, 0, 10, 25);
+            noStroke();
+            rect(0, 0, width, height);
+            
+            // Update and display particles
+            for (let particle of particles) {
+                particle.update();
+                particle.display();
+            }
+            
+            // Regenerate if needed
+            if (needsRegeneration) {
+                regenerateSystem();
+                needsRegeneration = false;
+            }
+        }
+        
+        function windowResized() {
+            resizeCanvas(windowWidth, windowHeight);
+            background(0);
+        }
+        
+        // Control functions
+        function loadPreset(presetName) {
+            const preset = presets[presetName];
+            
+            // Update all parameters
+            params.seed = preset.seed;
+            params.particleCount = preset.params.particleCount;
+            params.gravity = preset.params.gravity;
+            params.turbulence = preset.params.turbulence;
+            params.trailLength = preset.params.trailLength;
+            params.colors = preset.colors;
+            
+            // Update UI
+            document.getElementById('seed-input').value = preset.seed;
+            document.getElementById('particleCount').value = preset.params.particleCount;
+            document.getElementById('particleCount-value').textContent = preset.params.particleCount;
+            document.getElementById('gravity').value = preset.params.gravity;
+            document.getElementById('gravity-value').textContent = preset.params.gravity.toFixed(2);
+            document.getElementById('turbulence').value = preset.params.turbulence;
+            document.getElementById('turbulence-value').textContent = preset.params.turbulence.toFixed(2);
+            document.getElementById('trailLength').value = preset.params.trailLength;
+            document.getElementById('trailLength-value').textContent = preset.params.trailLength;
+            
+            // Update color pickers
+            document.getElementById('color1').value = preset.colors[0];
+            document.getElementById('color2').value = preset.colors[1];
+            document.getElementById('color3').value = preset.colors[2];
+            
+            // Update active preset button
+            document.querySelectorAll('.preset-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`preset-${presetName}`).classList.add('active');
+            
+            // Update current preset display
+            currentPreset = presetName;
+            document.getElementById('current-preset').textContent = `Active: ${preset.name}`;
+            
+            // Regenerate with new settings
+            regenerateSystem();
+        }
+        
+        function updateParam(paramName, value) {
+            if (paramName === 'particleCount') {
+                params[paramName] = parseInt(value);
+                document.getElementById(`${paramName}-value`).textContent = value;
+            } else if (paramName === 'gravity' || paramName === 'turbulence') {
+                params[paramName] = parseFloat(value);
+                document.getElementById(`${paramName}-value`).textContent = parseFloat(value).toFixed(2);
+            } else if (paramName === 'trailLength') {
+                params[paramName] = parseInt(value);
+                document.getElementById(`${paramName}-value`).textContent = value;
+                // Update trail length for existing particles
+                particles.forEach(p => p.maxTrail = params.trailLength);
+            }
+            
+            // Clear active preset when manually adjusting
+            document.querySelectorAll('.preset-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('current-preset').textContent = 'Custom Settings';
+            currentPreset = null;
+        }
+        
+        function updateColors() {
+            params.colors = [
+                document.getElementById('color1').value,
+                document.getElementById('color2').value,
+                document.getElementById('color3').value
+            ];
+            
+            // Clear active preset
+            document.querySelectorAll('.preset-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('current-preset').textContent = 'Custom Settings';
+            currentPreset = null;
+        }
+        
+        function updateSeed(value) {
+            params.seed = parseInt(value);
+            regenerateSystem();
+            
+            // Clear active preset
+            document.querySelectorAll('.preset-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('current-preset').textContent = 'Custom Settings';
+            currentPreset = null;
+        }
+        
+        function prevSeed() {
+            params.seed--;
+            document.getElementById('seed-input').value = params.seed;
+            regenerateSystem();
+            
+            // Clear active preset
+            document.querySelectorAll('.preset-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('current-preset').textContent = 'Custom Settings';
+            currentPreset = null;
+        }
+        
+        function nextSeed() {
+            params.seed++;
+            document.getElementById('seed-input').value = params.seed;
+            regenerateSystem();
+            
+            // Clear active preset
+            document.querySelectorAll('.preset-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('current-preset').textContent = 'Custom Settings';
+            currentPreset = null;
+        }
+        
+        function randomSeed() {
+            params.seed = floor(random(1, 10000));
+            document.getElementById('seed-input').value = params.seed;
+            regenerateSystem();
+            
+            // Clear active preset
+            document.querySelectorAll('.preset-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('current-preset').textContent = 'Custom Settings';
+            currentPreset = null;
+        }
+        
+        function regenerate() {
+            regenerateSystem();
+        }
+        
+        function regenerateSystem() {
+            // Reset random seeds
+            randomSeed(params.seed);
+            noiseSeed(params.seed);
+            
+            // Recreate attractors
+            attractors = [];
+            let numAttractors = floor(random(2, 5));
+            for (let i = 0; i < numAttractors; i++) {
+                attractors.push(createVector(
+                    random(width * 0.2, width * 0.8),
+                    random(height * 0.2, height * 0.8)
+                ));
+            }
+            
+            // Adjust particle count
+            while (particles.length < params.particleCount) {
+                particles.push(new Particle(random(width), random(height)));
+            }
+            while (particles.length > params.particleCount) {
+                particles.pop();
+            }
+            
+            // Reset all particles
+            particles.forEach(p => p.reset());
+            
+            // Clear background
+            background(0);
+        }
+        
+        function resetParams() {
+            // Reset to default values
+            params = {
+                seed: 47,
+                particleCount: 800,
+                gravity: 0.5,
+                turbulence: 0.3,
+                trailLength: 20,
+                colors: ['#4444ff', '#ff44ff', '#44ffff']
+            };
+            
+            // Update all UI elements
+            document.getElementById('seed-input').value = params.seed;
+            document.getElementById('particleCount').value = params.particleCount;
+            document.getElementById('particleCount-value').textContent = params.particleCount;
+            document.getElementById('gravity').value = params.gravity;
+            document.getElementById('gravity-value').textContent = params.gravity.toFixed(2);
+            document.getElementById('turbulence').value = params.turbulence;
+            document.getElementById('turbulence-value').textContent = params.turbulence.toFixed(2);
+            document.getElementById('trailLength').value = params.trailLength;
+            document.getElementById('trailLength-value').textContent = params.trailLength;
+            document.getElementById('color1').value = params.colors[0];
+            document.getElementById('color2').value = params.colors[1];
+            document.getElementById('color3').value = params.colors[2];
+            
+            // Clear active preset
+            document.querySelectorAll('.preset-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('current-preset').textContent = 'Custom Settings';
+            currentPreset = null;
+            
+            regenerateSystem();
+        }
+        
+        function downloadImage() {
+            saveCanvas('missa-cosmic-variation-seed-' + params.seed, 'png');
+        }
+        
+        function toggleControls() {
+            document.getElementById('controls').classList.toggle('minimized');
+        }
+        
+        function exploreVariations() {
+            if (explorationInterval) {
+                // Stop exploration
+                clearInterval(explorationInterval);
+                explorationInterval = null;
+                document.getElementById('exploring-indicator').style.display = 'none';
+            } else {
+                // Start exploration
+                document.getElementById('exploring-indicator').style.display = 'block';
+                explorationInterval = setInterval(() => {
+                    nextSeed();
+                }, 2000); // Change seed every 2 seconds
+            }
+        }
+        
+        // Initialize with first preset on load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                loadPreset('nebula');
+            }, 100);
+        });
+    </script>
+</body>
+</html>

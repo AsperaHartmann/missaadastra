@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gravitational Symphony - MISSA AD ASTRA</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Lora:wght@400&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            overflow: hidden;
+        }
+        
+        #canvas-container {
+            flex: 1;
+            position: relative;
+        }
+        
+        #sidebar {
+            width: 320px;
+            background: white;
+            box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+            padding: 30px 20px;
+            overflow-y: auto;
+            max-height: 100vh;
+        }
+        
+        h1 {
+            font-family: 'Lora', serif;
+            font-size: 24px;
+            margin-bottom: 8px;
+            color: #2c3e50;
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 12px;
+            margin-bottom: 25px;
+            font-weight: 300;
+        }
+        
+        .section {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        
+        .section:last-child {
+            border-bottom: none;
+        }
+        
+        .section-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #95a5a6;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+        
+        .control-group {
+            margin-bottom: 18px;
+        }
+        
+        .control-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 12px;
+            color: #34495e;
+            font-weight: 400;
+        }
+        
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        input[type="range"] {
+            flex: 1;
+            -webkit-appearance: none;
+            appearance: none;
+            height: 6px;
+            background: #ecf0f1;
+            border-radius: 3px;
+            outline: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #3498db;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb:hover {
+            background: #2980b9;
+        }
+        
+        .value-display {
+            font-size: 11px;
+            color: #7f8c8d;
+            min-width: 40px;
+            text-align: right;
+            font-family: monospace;
+        }
+        
+        .seed-controls {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 6px;
+        }
+        
+        .seed-display {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .seed-display label {
+            font-size: 12px;
+            color: #34495e;
+            margin: 0;
+        }
+        
+        .seed-input {
+            flex: 1;
+            padding: 5px 8px;
+            border: 1px solid #dfe4ea;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        
+        .seed-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+        }
+        
+        .btn {
+            padding: 6px 10px;
+            background: white;
+            border: 1px solid #dfe4ea;
+            border-radius: 4px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 400;
+        }
+        
+        .btn:hover {
+            background: #f8f9fa;
+            border-color: #3498db;
+            color: #3498db;
+        }
+        
+        .btn-primary {
+            background: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+        
+        .btn-primary:hover {
+            background: #2980b9;
+            border-color: #2980b9;
+        }
+        
+        .color-controls {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .color-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .color-input-wrapper label {
+            font-size: 10px;
+            color: #7f8c8d;
+            margin: 0;
+        }
+        
+        input[type="color"] {
+            width: 32px;
+            height: 32px;
+            border: 1px solid #dfe4ea;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .actions {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+        }
+        
+        .preset-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .preset-btn {
+            padding: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 500;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .preset-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        .preset-btn.active {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        
+        .info-text {
+            font-size: 10px;
+            color: #95a5a6;
+            margin-top: 10px;
+            line-height: 1.4;
+        }
+        
+        canvas {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div id="canvas-container"></div>
+    
+    <div id="sidebar">
+        <h1>Gravitational Symphony</h1>
+        <p class="subtitle">Rhythmic particle flows through pulsing gravity wells</p>
+        
+        <!-- Presets -->
+        <div class="section">
+            <div class="section-title">Performance Presets</div>
+            <div class="preset-buttons">
+                <button class="preset-btn" onclick="loadPreset('adagio')">Adagio</button>
+                <button class="preset-btn" onclick="loadPreset('andante')">Andante</button>
+                <button class="preset-btn" onclick="loadPreset('allegro')">Allegro</button>
+                <button class="preset-btn" onclick="loadPreset('presto')">Presto</button>
+            </div>
+        </div>
+        
+        <!-- Seed Controls -->
+        <div class="section">
+            <div class="section-title">Seed</div>
+            <div class="seed-controls">
+                <div class="seed-display">
+                    <label>Seed:</label>
+                    <input type="number" class="seed-input" id="seed-input" value="42" onchange="updateSeed(this.value)">
+                </div>
+                <div class="seed-buttons">
+                    <button class="btn" onclick="prevSeed()">Previous</button>
+                    <button class="btn" onclick="nextSeed()">Next</button>
+                    <button class="btn" onclick="randomSeed()">Random</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Symphony Parameters -->
+        <div class="section">
+            <div class="section-title">Symphony Parameters</div>
+            
+            <div class="control-group">
+                <label>Particle Count</label>
+                <div class="slider-container">
+                    <input type="range" id="particleCount" min="50" max="500" value="200" 
+                           oninput="updateParam('particleCount', this.value)">
+                    <span class="value-display" id="particleCount-value">200</span>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label>Gravity Wells</label>
+                <div class="slider-container">
+                    <input type="range" id="wellCount" min="2" max="6" value="3" 
+                           oninput="updateParam('wellCount', this.value)">
+                    <span class="value-display" id="wellCount-value">3</span>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label>Pulse Rate (BPM)</label>
+                <div class="slider-container">
+                    <input type="range" id="pulseRate" min="30" max="180" value="60" 
+                           oninput="updateParam('pulseRate', this.value)">
+                    <span class="value-display" id="pulseRate-value">60</span>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label>Pulse Strength</label>
+                <div class="slider-container">
+                    <input type="range" id="pulseStrength" min="0" max="1" step="0.01" value="0.5" 
+                           oninput="updateParam('pulseStrength', this.value)">
+                    <span class="value-display" id="pulseStrength-value">0.50</span>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label>Base Gravity</label>
+                <div class="slider-container">
+                    <input type="range" id="baseGravity" min="0" max="1" step="0.01" value="0.3" 
+                           oninput="updateParam('baseGravity', this.value)">
+                    <span class="value-display" id="baseGravity-value">0.30</span>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label>Trail Length</label>
+                <div class="slider-container">
+                    <input type="range" id="trailLength" min="0" max="50" value="20" 
+                           oninput="updateParam('trailLength', this.value)">
+                    <span class="value-display" id="trailLength-value">20</span>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label>Flow Turbulence</label>
+                <div class="slider-container">
+                    <input type="range" id="turbulence" min="0" max="1" step="0.01" value="0.1" 
+                           oninput="updateParam('turbulence', this.value)">
+                    <span class="value-display" id="turbulence-value">0.10</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Colors -->
+        <div class="section">
+            <div class="section-title">Color Palette</div>
+            <div class="color-controls">
+                <div class="color-input-wrapper">
+                    <label>Hot</label>
+                    <input type="color" id="colorHot" value="#ff6b35" onchange="updateColors()">
+                </div>
+                <div class="color-input-wrapper">
+                    <label>Warm</label>
+                    <input type="color" id="colorWarm" value="#f7931e" onchange="updateColors()">
+                </div>
+                <div class="color-input-wrapper">
+                    <label>Cool</label>
+                    <input type="color" id="colorCool" value="#4a90e2" onchange="updateColors()">
+                </div>
+                <div class="color-input-wrapper">
+                    <label>Cold</label>
+                    <input type="color" id="colorCold" value="#7b68ee" onchange="updateColors()">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Actions -->
+        <div class="section">
+            <div class="section-title">Actions</div>
+            <div class="actions">
+                <button class="btn btn-primary" onclick="regenerate()">Regenerate</button>
+                <button class="btn" onclick="resetParams()">Reset Parameters</button>
+                <button class="btn" onclick="downloadImage()">Download PNG</button>
+            </div>
+            <p class="info-text">
+                Each gravity well pulses with its own phase, creating polyrhythmic patterns. 
+                Particles leave trails that fade based on velocity - watch for moments of resonance!
+            </p>
+        </div>
+    </div>
+    
+    <script>
+        // Global parameters
+        let params = {
+            seed: 42,
+            particleCount: 200,
+            wellCount: 3,
+            pulseRate: 60,
+            pulseStrength: 0.5,
+            baseGravity: 0.3,
+            trailLength: 20,
+            turbulence: 0.1,
+            colors: {
+                hot: '#ff6b35',
+                warm: '#f7931e',
+                cool: '#4a90e2',
+                cold: '#7b68ee'
+            }
+        };
+        
+        // Presets
+        const presets = {
+            adagio: {
+                name: "Adagio",
+                pulseRate: 40,
+                pulseStrength: 0.7,
+                baseGravity: 0.2,
+                trailLength: 30,
+                turbulence: 0.05,
+                particleCount: 150
+            },
+            andante: {
+                name: "Andante",
+                pulseRate: 60,
+                pulseStrength: 0.5,
+                baseGravity: 0.3,
+                trailLength: 20,
+                turbulence: 0.1,
+                particleCount: 200
+            },
+            allegro: {
+                name: "Allegro",
+                pulseRate: 120,
+                pulseStrength: 0.4,
+                baseGravity: 0.4,
+                trailLength: 15,
+                turbulence: 0.2,
+                particleCount: 300
+            },
+            presto: {
+                name: "Presto",
+                pulseRate: 160,
+                pulseStrength: 0.3,
+                baseGravity: 0.5,
+                trailLength: 10,
+                turbulence: 0.3,
+                particleCount: 400
+            }
+        };
+        
+        let particles = [];
+        let gravityWells = [];
+        let needsRegeneration = false;
+        let time = 0;
+        
+        // Particle class
+        class Particle {
+            constructor(x, y) {
+                this.pos = createVector(x, y);
+                this.vel = createVector(0, 0);
+                this.acc = createVector(0, 0);
+                this.trail = [];
+                this.maxTrail = params.trailLength;
+                this.mass = random(0.5, 1.5);
+                this.hue = random(TWO_PI);
+            }
+            
+            applyForce(force) {
+                let f = p5.Vector.div(force, this.mass);
+                this.acc.add(f);
+            }
+            
+            update() {
+                // Apply forces from gravity wells
+                for (let well of gravityWells) {
+                    let force = p5.Vector.sub(well.pos, this.pos);
+                    let distance = force.mag();
+                    distance = constrain(distance, 20, 500);
+                    
+                    // Calculate pulsing strength
+                    let pulsePhase = (time * params.pulseRate / 60 + well.phase) * TWO_PI;
+                    let pulseMod = 1 + sin(pulsePhase) * params.pulseStrength;
+                    let strength = (params.baseGravity * 100 * well.mass * pulseMod) / (distance * distance);
+                    
+                    force.setMag(strength);
+                    this.applyForce(force);
+                }
+                
+                // Apply turbulence
+                if (params.turbulence > 0) {
+                    let turb = createVector(
+                        (noise(this.pos.x * 0.01, this.pos.y * 0.01, time * 0.1) - 0.5) * params.turbulence,
+                        (noise(this.pos.x * 0.01 + 100, this.pos.y * 0.01, time * 0.1) - 0.5) * params.turbulence
+                    );
+                    this.applyForce(turb);
+                }
+                
+                // Update physics
+                this.vel.add(this.acc);
+                this.vel.limit(5);
+                this.pos.add(this.vel);
+                this.acc.mult(0);
+                
+                // Update trail
+                if (params.trailLength > 0) {
+                    this.trail.push({
+                        x: this.pos.x,
+                        y: this.pos.y,
+                        vel: this.vel.mag()
+                    });
+                    while (this.trail.length > this.maxTrail) {
+                        this.trail.shift();
+                    }
+                }
+                
+                // Wrap edges
+                if (this.pos.x < 0 || this.pos.x > width) {
+                    this.pos.x = (this.pos.x + width) % width;
+                    this.trail = [];
+                }
+                if (this.pos.y < 0 || this.pos.y > height) {
+                    this.pos.y = (this.pos.y + height) % height;
+                    this.trail = [];
+                }
+                
+                // Update color based on velocity and proximity to wells
+                let minDist = Infinity;
+                for (let well of gravityWells) {
+                    let d = p5.Vector.dist(this.pos, well.pos);
+                    if (d < minDist) minDist = d;
+                }
+                this.hue = map(minDist, 0, 300, 0, 1);
+            }
+            
+            display() {
+                // Draw trail
+                if (this.trail.length > 1) {
+                    noFill();
+                    for (let i = 0; i < this.trail.length - 1; i++) {
+                        let alpha = map(i, 0, this.trail.length, 0, 60);
+                        let vel = this.trail[i].vel;
+                        
+                        // Interpolate color based on velocity and position
+                        let c;
+                        if (this.hue < 0.25) {
+                            c = lerpColor(color(params.colors.hot), color(params.colors.warm), this.hue * 4);
+                        } else if (this.hue < 0.5) {
+                            c = lerpColor(color(params.colors.warm), color(params.colors.cool), (this.hue - 0.25) * 4);
+                        } else if (this.hue < 0.75) {
+                            c = lerpColor(color(params.colors.cool), color(params.colors.cold), (this.hue - 0.5) * 4);
+                        } else {
+                            c = color(params.colors.cold);
+                        }
+                        
+                        stroke(red(c), green(c), blue(c), alpha * (1 + vel * 0.2));
+                        strokeWeight(map(vel, 0, 5, 0.5, 2));
+                        line(this.trail[i].x, this.trail[i].y, this.trail[i + 1].x, this.trail[i + 1].y);
+                    }
+                }
+                
+                // Draw particle
+                push();
+                let c = this.hue < 0.5 ? 
+                    lerpColor(color(params.colors.hot), color(params.colors.cool), this.hue * 2) :
+                    lerpColor(color(params.colors.cool), color(params.colors.cold), (this.hue - 0.5) * 2);
+                    
+                fill(red(c), green(c), blue(c), 200);
+                noStroke();
+                circle(this.pos.x, this.pos.y, 3 * this.mass);
+                pop();
+            }
+        }
+        
+        // Gravity Well class
+        class GravityWell {
+            constructor(x, y, phase) {
+                this.pos = createVector(x, y);
+                this.mass = random(0.8, 1.2);
+                this.phase = phase;
+            }
+            
+            display() {
+                push();
+                noFill();
+                
+                // Show pulsing influence
+                let pulsePhase = (time * params.pulseRate / 60 + this.phase) * TWO_PI;
+                let pulseMod = 1 + sin(pulsePhase) * params.pulseStrength;
+                
+                for (let i = 0; i < 3; i++) {
+                    let alpha = map(i, 0, 3, 30, 5) * pulseMod;
+                    stroke(150, 150, 255, alpha);
+                    strokeWeight(1);
+                    circle(this.pos.x, this.pos.y, 50 * (i + 1) * pulseMod);
+                }
+                
+                // Center point
+                fill(150, 150, 255, 100);
+                noStroke();
+                circle(this.pos.x, this.pos.y, 8 * pulseMod);
+                pop();
+            }
+        }
+        
+        function setup() {
+            let canvas = createCanvas(windowWidth - 320, windowHeight);
+            canvas.parent('canvas-container');
+            
+            colorMode(RGB);
+            
+            initializeSystem();
+        }
+        
+        function draw() {
+            // Dark space background with subtle fade
+            background(5, 5, 15, 50);
+            
+            // Update time for pulsing
+            time += 0.016; // ~60fps
+            
+            // Display gravity wells
+            for (let well of gravityWells) {
+                well.display();
+            }
+            
+            // Update and display particles
+            for (let particle of particles) {
+                particle.update();
+                particle.display();
+            }
+            
+            // Regenerate if needed
+            if (needsRegeneration) {
+                initializeSystem();
+                needsRegeneration = false;
+            }
+        }
+        
+        function initializeSystem() {
+            // Reset random seed
+            randomSeed(params.seed);
+            noiseSeed(params.seed);
+            
+            // Create gravity wells with different phases for polyrhythm
+            gravityWells = [];
+            for (let i = 0; i < params.wellCount; i++) {
+                let angle = (TWO_PI / params.wellCount) * i + random(-0.3, 0.3);
+                let radius = min(width, height) * 0.25;
+                let x = width/2 + cos(angle) * radius;
+                let y = height/2 + sin(angle) * radius;
+                let phase = (i / params.wellCount) * TWO_PI; // Evenly distributed phases
+                gravityWells.push(new GravityWell(x, y, phase));
+            }
+            
+            // Create particles
+            particles = [];
+            for (let i = 0; i < params.particleCount; i++) {
+                particles.push(new Particle(random(width), random(height)));
+            }
+            
+            // Clear background
+            background(5, 5, 15);
+        }
+        
+        function windowResized() {
+            resizeCanvas(windowWidth - 320, windowHeight);
+            initializeSystem();
+        }
+        
+        // Control functions
+        function loadPreset(presetName) {
+            const preset = presets[presetName];
+            
+            // Update parameters
+            Object.keys(preset).forEach(key => {
+                if (key !== 'name') {
+                    params[key] = preset[key];
+                    
+                    // Update UI
+                    const input = document.getElementById(key);
+                    const display = document.getElementById(key + '-value');
+                    if (input && display) {
+                        input.value = preset[key];
+                        display.textContent = typeof preset[key] === 'number' && preset[key] < 1 ? 
+                            preset[key].toFixed(2) : preset[key];
+                    }
+                }
+            });
+            
+            // Update button states
+            document.querySelectorAll('.preset-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            needsRegeneration = true;
+        }
+        
+        function updateParam(name, value) {
+            if (name === 'particleCount' || name === 'wellCount' || name === 'pulseRate' || name === 'trailLength') {
+                params[name] = parseInt(value);
+            } else {
+                params[name] = parseFloat(value);
+            }
+            
+            document.getElementById(name + '-value').textContent = 
+                params[name] < 1 ? params[name].toFixed(2) : params[name];
+            
+            // Update trail length for existing particles
+            if (name === 'trailLength') {
+                particles.forEach(p => p.maxTrail = params.trailLength);
+            }
+            
+            // Regenerate if well count changes
+            if (name === 'wellCount' || name === 'particleCount') {
+                needsRegeneration = true;
+            }
+        }
+        
+        function updateColors() {
+            params.colors = {
+                hot: document.getElementById('colorHot').value,
+                warm: document.getElementById('colorWarm').value,
+                cool: document.getElementById('colorCool').value,
+                cold: document.getElementById('colorCold').value
+            };
+        }
+        
+        function updateSeed(value) {
+            params.seed = parseInt(value);
+            needsRegeneration = true;
+        }
+        
+        function prevSeed() {
+            params.seed--;
+            document.getElementById('seed-input').value = params.seed;
+            needsRegeneration = true;
+        }
+        
+        function nextSeed() {
+            params.seed++;
+            document.getElementById('seed-input').value = params.seed;
+            needsRegeneration = true;
+        }
+        
+        function randomSeed() {
+            params.seed = floor(random(1, 10000));
+            document.getElementById('seed-input').value = params.seed;
+            needsRegeneration = true;
+        }
+        
+        function regenerate() {
+            needsRegeneration = true;
+        }
+        
+        function resetParams() {
+            // Reset to defaults
+            params = {
+                seed: 42,
+                particleCount: 200,
+                wellCount: 3,
+                pulseRate: 60,
+                pulseStrength: 0.5,
+                baseGravity: 0.3,
+                trailLength: 20,
+                turbulence: 0.1,
+                colors: {
+                    hot: '#ff6b35',
+                    warm: '#f7931e',
+                    cool: '#4a90e2',
+                    cold: '#7b68ee'
+                }
+            };
+            
+            // Update all UI
+            document.getElementById('seed-input').value = params.seed;
+            document.getElementById('particleCount').value = params.particleCount;
+            document.getElementById('particleCount-value').textContent = params.particleCount;
+            document.getElementById('wellCount').value = params.wellCount;
+            document.getElementById('wellCount-value').textContent = params.wellCount;
+            document.getElementById('pulseRate').value = params.pulseRate;
+            document.getElementById('pulseRate-value').textContent = params.pulseRate;
+            document.getElementById('pulseStrength').value = params.pulseStrength;
+            document.getElementById('pulseStrength-value').textContent = params.pulseStrength.toFixed(2);
+            document.getElementById('baseGravity').value = params.baseGravity;
+            document.getElementById('baseGravity-value').textContent = params.baseGravity.toFixed(2);
+            document.getElementById('trailLength').value = params.trailLength;
+            document.getElementById('trailLength-value').textContent = params.trailLength;
+            document.getElementById('turbulence').value = params.turbulence;
+            document.getElementById('turbulence-value').textContent = params.turbulence.toFixed(2);
+            
+            document.getElementById('colorHot').value = params.colors.hot;
+            document.getElementById('colorWarm').value = params.colors.warm;
+            document.getElementById('colorCool').value = params.colors.cool;
+            document.getElementById('colorCold').value = params.colors.cold;
+            
+            document.querySelectorAll('.preset-btn').forEach(btn => btn.classList.remove('active'));
+            
+            needsRegeneration = true;
+        }
+        
+        function downloadImage() {
+            saveCanvas('gravitational-symphony-seed-' + params.seed, 'png');
+        }
+    </script>
+</body>
+</html>

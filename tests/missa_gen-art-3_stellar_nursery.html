@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stellar Nursery - MISSA AD ASTRA</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Lora:wght@400&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #000;
+            min-height: 100vh;
+            display: flex;
+            overflow: hidden;
+        }
+        
+        #canvas-container {
+            flex: 1;
+            position: relative;
+            background: radial-gradient(ellipse at center, #0a0a1a 0%, #000000 100%);
+        }
+        
+        #sidebar {
+            width: 320px;
+            background: linear-gradient(180deg, #0a0a1a 0%, #151530 100%);
+            box-shadow: -2px 0 20px rgba(100, 100, 255, 0.1);
+            padding: 30px 20px;
+            overflow-y: auto;
+            max-height: 100vh;
+            border-left: 1px solid rgba(100, 100, 255, 0.2);
+            color: #fff;
+        }
+        
+        h1 {
+            font-family: 'Lora', serif;
+            font-size: 24px;
+            margin-bottom: 8px;
+            color: #fff;
+            text-shadow: 0 0 20px rgba(100, 100, 255, 0.5);
+        }
+        
+        .subtitle {
+            color: #8888ff;
+            font-size: 12px;
+            margin-bottom: 25px;
+            font-weight: 300;
+            opacity: 0.9;
+        }
+        
+        .section {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(100, 100, 255, 0.2);
+        }
+        
+        .section:last-child {
+            border-bottom: none;
+        }
+        
+        .section-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #6666ff;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+        
+        .control-group {
+            margin-bottom: 18px;
+        }
+        
+        .control-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 12px;
+            color: #aaaaff;
+            font-weight: 400;
+        }
+        
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        input[type="range"] {
+            flex: 1;
+            -webkit-appearance: none;
+            appearance: none;
+            height: 4px;
+            background: rgba(100, 100, 255, 0.3);
+            border-radius: 2px;
+            outline: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 14px;
+            height: 14px;
+            background: #8888ff;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 0 10px rgba(100, 100, 255, 0.5);
+        }
+        
+        input[type="range"]::-webkit-slider-thumb:hover {
+            background: #aaaaff;
+            box-shadow: 0 0 15px rgba(100, 100, 255, 0.8);
+        }
+        
+        .value-display {
+            font-size: 11px;
+            color: #fff;
+            min-width: 40px;
+            text-align: right;
+            font-family: monospace;
+            text-shadow: 0 0 5px rgba(100, 100, 255, 0.5);
+        }
+        
+        .seed-controls {
+            background: rgba(100, 100, 255, 0.1);
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid rgba(100, 100, 255, 0.2);
+        }
+        
+        .seed-display {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .seed-display label {
+            font-size: 12px;
+            color: #aaaaff;
+            margin: 0;
+        }
+        
+        .seed-input {
+            flex: 1;
+            padding: 5px 8px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(100, 100, 255, 0.3);
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+            color: #fff;
+        }
+        
+        .seed-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+        }
+        
+        .btn {
+            padding: 6px 10px;
+            background: rgba(100, 100, 255, 0.2);
+            border: 1px solid rgba(100, 100, 255, 0.4);
+            border-radius: 4px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 400;
+            color: #fff;
+        }
+        
+        .btn:hover {
+            background: rgba(100, 100, 255, 0.4);
+            border-color: #8888ff;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 10px rgba(100, 100, 255, 0.4);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #4444ff, #8844ff);
+            border-color: #6666ff;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #6666ff, #aa66ff);
+            box-shadow: 0 4px 15px rgba(100, 100, 255, 0.6);
+        }
+        
+        .actions {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+        }
+        
+        .stats {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            color: #8888ff;
+            line-height: 1.6;
+            font-family: monospace;
+            border: 1px solid rgba(100, 100, 255, 0.2);
+        }
+        
+        .stat-line {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 4px;
+        }
+        
+        .stat-value {
+            color: #fff;
+            text-shadow: 0 0 5px currentColor;
+        }
+        
+        .info-text {
+            font-size: 10px;
+            color: #6666ff;
+            margin-top: 15px;
+            line-height: 1.5;
+            padding: 10px;
+            background: rgba(100, 100, 255, 0.05);
+            border-radius: 4px;
+            border-left: 2px solid #4444ff;
+        }
+        
+        canvas {
+            display: block;
+        }
+        
+        @keyframes birth-flash {
+            0% { box-shadow: 0 0 0 rgba(255, 255, 255, 0); }
+            50% { box-shadow: 0 0 100px rgba(255, 255, 255, 0.8); }
+            100% { box-shadow: 0 0 0 rgba(255, 255, 255, 0); }
+        }
+        
+        .birth-indicator {
+            animation: birth-flash 1s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div id="canvas-container"></div>
+    
+    <div id="sidebar">
+        <h1>Stellar Nursery</h1>
+        <p class="subtitle">Watch the universe create itself from darkness</p>
+        
+        <!-- Live Stats -->
+        <div class="section">
+            <div class="section-title">Cosmic Activity</div>
+            <div class="stats">
+                <div class="stat-line">
+                    <span>Active Particles:</span>
+                    <span class="stat-value" id="stat-particles">0</span>
+                </div>
+                <div class="stat-line">
+                    <span>Density Clusters:</span>
+                    <span class="stat-value" id="stat-clusters">0</span>
+                </div>
+                <div class="stat-line">
+                    <span>Stars Born:</span>
+                    <span class="stat-value" id="stat-births">0</span>
+                </div>
+                <div class="stat-line">
+                    <span>Peak Density:</span>
+                    <span class="stat-value" id="stat-density">0%</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Seed Controls -->
+        <div class="section">
+            <div class="section-title">Universe Seed</div>
+            <div class="seed-controls">
+                <div class="seed-display">
+                    <label>Seed:</label>
+                    <input type="number" class="seed-input" id="seed-input" value="777" onchange="updateSeed(this.value)">
+                </div>
+                <div class="seed-buttons">
+                    <button class="btn" onclick="prevSeed()">Previous</button>
+                    <button class="btn" onclick="nextSeed()">Next</button>
+                    <button class="btn" onclick="randomSeed()">Random</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Creation Parameters -->
+        <div class="section">
+            <div class="section-title">Creation Parameters</div>
+            
+            <div class="control-group">
+                <label>Cosmic Dust Amount</label>
+                <div class="slider-container">
+                    <input type="range" id="particleCount" min="100" max="1000" value="500" 
+                           oninput="updateParam('particleCount', this.value)">
+                    <span class="value-display" id="particleCount-value">500</span>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label>Gravity Strength</label>
+                <div class="slider-container">
+                    <input type="range" id="gravityStrength" min="0.1" max="1" step="0.01" value="0.4" 
+                           oninput="updateParam('gravityStrength', this.value)">
+                    <span class="value-display" id="gravityStrength-value">0.40</span>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label>Birth Threshold</label>
+                <div class="slider-container">
+                    <input type="range" id="birthThreshold" min="10" max="50" value="25" 
+                           oninput="updateParam('birthThreshold', this.value)">
+                    <span class="value-display" id="birthThreshold-value">25</span>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label>Birth Energy</label>
+                <div class="slider-container">
+                    <input type="range" id="birthEnergy" min="1" max="10" step="0.1" value="5" 
+                           oninput="updateParam('birthEnergy', this.value)">
+                    <span class="value-display" id="birthEnergy-value">5.0</span>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label>Drift Speed</label>
+                <div class="slider-container">
+                    <input type="range" id="driftSpeed" min="0" max="1" step="0.01" value="0.2" 
+                           oninput="updateParam('driftSpeed', this.value)">
+                    <span class="value-display" id="driftSpeed-value">0.20</span>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label>Trail Persistence</label>
+                <div class="slider-container">
+                    <input type="range" id="trailLength" min="0" max="30" value="10" 
+                           oninput="updateParam('trailLength', this.value)">
+                    <span class="value-display" id="trailLength-value">10</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Actions -->
+        <div class="section">
+            <div class="section-title">Actions</div>
+            <div class="actions">
+                <button class="btn btn-primary" onclick="regenerate()">New Universe</button>
+                <button class="btn" onclick="resetParams()">Reset Parameters</button>
+                <button class="btn" onclick="downloadImage()">Capture Moment</button>
+            </div>
+            <p class="info-text">
+                Particles emerge from the void and cluster through gravity. 
+                When density reaches critical mass, a star is born in a brilliant flash. 
+                Each universe seed creates unique patterns of stellar formation.
+            </p>
+        </div>
+    </div>
+    
+    <script>
+        // Global parameters
+        let params = {
+            seed: 777,
+            particleCount: 500,
+            gravityStrength: 0.4,
+            birthThreshold: 25,
+            birthEnergy: 5,
+            driftSpeed: 0.2,
+            trailLength: 10
+        };
+        
+        // System variables
+        let particles = [];
+        let clusters = [];
+        let births = [];
+        let totalBirths = 0;
+        let needsRegeneration = false;
+        let densityGrid;
+        let gridSize = 20;
+        
+        // Particle class
+        class Particle {
+            constructor(x, y) {
+                this.pos = createVector(x, y);
+                this.vel = createVector(random(-0.5, 0.5), random(-0.5, 0.5));
+                this.vel.mult(params.driftSpeed);
+                this.acc = createVector(0, 0);
+                this.trail = [];
+                this.maxTrail = params.trailLength;
+                this.life = 1.0;
+                this.heat = 0;
+                this.mass = random(0.5, 1.5);
+                this.age = 0;
+            }
+            
+            applyForce(force) {
+                let f = p5.Vector.div(force, this.mass);
+                this.acc.add(f);
+            }
+            
+            update() {
+                // Age the particle
+                this.age++;
+                
+                // Apply gravity based on nearby density
+                let gridX = floor(this.pos.x / gridSize);
+                let gridY = floor(this.pos.y / gridSize);
+                let cols = floor(width / gridSize);
+                let rows = floor(height / gridSize);
+                
+                // Check surrounding cells for density
+                for (let i = -2; i <= 2; i++) {
+                    for (let j = -2; j <= 2; j++) {
+                        let gx = gridX + i;
+                        let gy = gridY + j;
+                        
+                        if (gx >= 0 && gx < cols && gy >= 0 && gy < rows) {
+                            let density = densityGrid[gx][gy];
+                            if (density > 0) {
+                                let center = createVector(gx * gridSize + gridSize/2, gy * gridSize + gridSize/2);
+                                let force = p5.Vector.sub(center, this.pos);
+                                let distance = force.mag();
+                                distance = constrain(distance, 10, 100);
+                                
+                                // Stronger attraction to denser regions
+                                let strength = (params.gravityStrength * density * 10) / (distance * distance);
+                                force.setMag(strength);
+                                this.applyForce(force);
+                            }
+                        }
+                    }
+                }
+                
+                // Add cosmic drift
+                let drift = createVector(
+                    noise(this.pos.x * 0.001, this.pos.y * 0.001) - 0.5,
+                    noise(this.pos.x * 0.001 + 100, this.pos.y * 0.001) - 0.5
+                );
+                drift.mult(params.driftSpeed * 0.1);
+                this.applyForce(drift);
+                
+                // Update physics
+                this.vel.add(this.acc);
+                this.vel.limit(2 + this.heat * 3);
+                this.pos.add(this.vel);
+                this.acc.mult(0);
+                
+                // Cool down heat
+                this.heat *= 0.98;
+                
+                // Update trail
+                if (params.trailLength > 0 && (this.heat > 0.1 || this.vel.mag() > 1)) {
+                    this.trail.push({
+                        x: this.pos.x,
+                        y: this.pos.y,
+                        heat: this.heat
+                    });
+                    while (this.trail.length > this.maxTrail) {
+                        this.trail.shift();
+                    }
+                }
+                
+                // Wrap or respawn at edges
+                if (this.pos.x < -50 || this.pos.x > width + 50 || 
+                    this.pos.y < -50 || this.pos.y > height + 50) {
+                    this.respawn();
+                }
+            }
+            
+            respawn() {
+                // Respawn from edges
+                if (random() < 0.5) {
+                    this.pos.x = random() < 0.5 ? -20 : width + 20;
+                    this.pos.y = random(height);
+                } else {
+                    this.pos.x = random(width);
+                    this.pos.y = random() < 0.5 ? -20 : height + 20;
+                }
+                this.vel = createVector(random(-0.5, 0.5), random(-0.5, 0.5));
+                this.vel.mult(params.driftSpeed);
+                this.trail = [];
+                this.heat = 0;
+                this.age = 0;
+            }
+            
+            explode(center, force) {
+                let blastForce = p5.Vector.sub(this.pos, center);
+                let distance = blastForce.mag();
+                if (distance < 150) {
+                    let strength = map(distance, 0, 150, force, 0);
+                    blastForce.setMag(strength);
+                    this.vel.add(blastForce);
+                    this.heat = map(distance, 0, 150, 1, 0);
+                }
+            }
+            
+            display() {
+                // Draw trail
+                if (this.trail.length > 1) {
+                    noFill();
+                    for (let i = 0; i < this.trail.length - 1; i++) {
+                        let alpha = map(i, 0, this.trail.length, 0, 30);
+                        let heat = this.trail[i].heat;
+                        
+                        if (heat > 0.5) {
+                            stroke(255, 200, 100, alpha * (1 + heat));
+                        } else if (heat > 0.1) {
+                            stroke(255, 150, 200, alpha);
+                        } else {
+                            stroke(100, 100, 255, alpha);
+                        }
+                        
+                        strokeWeight(0.5 + heat);
+                        line(this.trail[i].x, this.trail[i].y, 
+                             this.trail[i + 1].x, this.trail[i + 1].y);
+                    }
+                }
+                
+                // Color based on heat and density
+                let c;
+                if (this.heat > 0.7) {
+                    c = color(255, 255, 200, 255);
+                } else if (this.heat > 0.3) {
+                    c = lerpColor(color(255, 150, 50), color(255, 255, 150), (this.heat - 0.3) / 0.4);
+                } else if (this.heat > 0) {
+                    c = lerpColor(color(150, 100, 255), color(255, 150, 50), this.heat / 0.3);
+                } else {
+                    // Color based on local density
+                    let gridX = floor(this.pos.x / gridSize);
+                    let gridY = floor(this.pos.y / gridSize);
+                    let cols = floor(width / gridSize);
+                    let rows = floor(height / gridSize);
+                    
+                    if (gridX >= 0 && gridX < cols && gridY >= 0 && gridY < rows) {
+                        let density = densityGrid[gridX][gridY];
+                        if (density > 10) {
+                            c = lerpColor(color(100, 50, 150), color(200, 100, 150), map(density, 10, 30, 0, 1));
+                        } else if (density > 5) {
+                            c = lerpColor(color(50, 50, 100), color(100, 50, 150), map(density, 5, 10, 0, 1));
+                        } else {
+                            c = color(30, 30, 60, map(this.age, 0, 500, 50, 200));
+                        }
+                    } else {
+                        c = color(30, 30, 60, 100);
+                    }
+                }
+                
+                // Draw particle
+                push();
+                fill(red(c), green(c), blue(c), alpha(c));
+                noStroke();
+                let size = 1 + this.mass + this.heat * 3;
+                circle(this.pos.x, this.pos.y, size);
+                
+                // Glow for hot particles
+                if (this.heat > 0.1) {
+                    fill(255, 200, 100, 20 * this.heat);
+                    circle(this.pos.x, this.pos.y, size * 3);
+                }
+                pop();
+            }
+        }
+        
+        // Star Birth class
+        class StarBirth {
+            constructor(x, y, intensity) {
+                this.pos = createVector(x, y);
+                this.age = 0;
+                this.maxAge = 60;
+                this.intensity = intensity;
+            }
+            
+            update() {
+                this.age++;
+            }
+            
+            display() {
+                if (this.age < this.maxAge) {
+                    push();
+                    let progress = this.age / this.maxAge;
+                    let alpha = (1 - progress) * 255;
+                    
+                    // Expanding shockwave
+                    noFill();
+                    stroke(255, 255, 200, alpha * 0.5);
+                    strokeWeight(2);
+                    circle(this.pos.x, this.pos.y, progress * 200 * this.intensity);
+                    
+                    // Bright core
+                    fill(255, 255, 255, alpha);
+                    noStroke();
+                    circle(this.pos.x, this.pos.y, (1 - progress) * 30 * this.intensity);
+                    
+                    // Radiating light
+                    for (let i = 0; i < 8; i++) {
+                        let angle = (TWO_PI / 8) * i;
+                        let len = progress * 100 * this.intensity;
+                        stroke(255, 200, 100, alpha * 0.3);
+                        strokeWeight(1);
+                        line(this.pos.x, this.pos.y, 
+                             this.pos.x + cos(angle) * len, 
+                             this.pos.y + sin(angle) * len);
+                    }
+                    pop();
+                }
+            }
+            
+            isDead() {
+                return this.age > this.maxAge;
+            }
+        }
+        
+        function setup() {
+            let canvas = createCanvas(windowWidth - 320, windowHeight);
+            canvas.parent('canvas-container');
+            
+            initializeSystem();
+        }
+        
+        function draw() {
+            // Deep space background
+            background(0, 0, 5);
+            
+            // Very subtle nebula background
+            push();
+            for (let i = 0; i < 3; i++) {
+                fill(20, 10, 40, 10);
+                noStroke();
+                ellipse(width * (0.3 + i * 0.3), height * 0.5, width * 0.6, height * 0.4);
+            }
+            pop();
+            
+            // Update density grid
+            updateDensityGrid();
+            
+            // Check for star births
+            checkForBirths();
+            
+            // Update and display particles
+            for (let particle of particles) {
+                particle.update();
+                particle.display();
+            }
+            
+            // Update and display births
+            for (let i = births.length - 1; i >= 0; i--) {
+                births[i].update();
+                births[i].display();
+                if (births[i].isDead()) {
+                    births.splice(i, 1);
+                }
+            }
+            
+            // Update stats
+            updateStats();
+            
+            // Regenerate if needed
+            if (needsRegeneration) {
+                initializeSystem();
+                needsRegeneration = false;
+            }
+        }
+        
+        function initializeSystem() {
+            // Reset random seed
+            randomSeed(params.seed);
+            noiseSeed(params.seed);
+            
+            // Initialize density grid
+            let cols = floor(width / gridSize);
+            let rows = floor(height / gridSize);
+            densityGrid = new Array(cols);
+            for (let i = 0; i < cols; i++) {
+                densityGrid[i] = new Array(rows).fill(0);
+            }
+            
+            // Create particles emerging from edges
+            particles = [];
+            for (let i = 0; i < params.particleCount; i++) {
+                let x, y;
+                if (random() < 0.5) {
+                    x = random() < 0.5 ? -20 : width + 20;
+                    y = random(height);
+                } else {
+                    x = random(width);
+                    y = random() < 0.5 ? -20 : height + 20;
+                }
+                particles.push(new Particle(x, y));
+            }
+            
+            // Reset births
+            births = [];
+            totalBirths = 0;
+            
+            // Clear background
+            background(0, 0, 5);
+        }
+        
+        function updateDensityGrid() {
+            let cols = floor(width / gridSize);
+            let rows = floor(height / gridSize);
+            
+            // Reset grid
+            for (let i = 0; i < cols; i++) {
+                for (let j = 0; j < rows; j++) {
+                    densityGrid[i][j] = 0;
+                }
+            }
+            
+            // Count particles in each cell
+            for (let particle of particles) {
+                let gridX = floor(particle.pos.x / gridSize);
+                let gridY = floor(particle.pos.y / gridSize);
+                
+                if (gridX >= 0 && gridX < cols && gridY >= 0 && gridY < rows) {
+                    densityGrid[gridX][gridY]++;
+                }
+            }
+            
+            // Smooth density with neighbors
+            let smoothed = new Array(cols);
+            for (let i = 0; i < cols; i++) {
+                smoothed[i] = new Array(rows).fill(0);
+            }
+            
+            for (let i = 1; i < cols - 1; i++) {
+                for (let j = 1; j < rows - 1; j++) {
+                    let sum = 0;
+                    for (let di = -1; di <= 1; di++) {
+                        for (let dj = -1; dj <= 1; dj++) {
+                            sum += densityGrid[i + di][j + dj];
+                        }
+                    }
+                    smoothed[i][j] = sum / 9;
+                }
+            }
+            
+            densityGrid = smoothed;
+        }
+        
+        function checkForBirths() {
+            let cols = floor(width / gridSize);
+            let rows = floor(height / gridSize);
+            
+            for (let i = 0; i < cols; i++) {
+                for (let j = 0; j < rows; j++) {
+                    if (densityGrid[i][j] > params.birthThreshold) {
+                        // Star birth!
+                        let x = i * gridSize + gridSize / 2;
+                        let y = j * gridSize + gridSize / 2;
+                        
+                        births.push(new StarBirth(x, y, map(densityGrid[i][j], params.birthThreshold, params.birthThreshold * 2, 0.5, 1)));
+                        totalBirths++;
+                        
+                        // Explode nearby particles
+                        for (let particle of particles) {
+                            particle.explode(createVector(x, y), params.birthEnergy);
+                        }
+                        
+                        // Clear the area
+                        for (let di = -2; di <= 2; di++) {
+                            for (let dj = -2; dj <= 2; dj++) {
+                                if (i + di >= 0 && i + di < cols && j + dj >= 0 && j + dj < rows) {
+                                    densityGrid[i + di][j + dj] = 0;
+                                }
+                            }
+                        }
+                        
+                        // Flash effect on canvas
+                        document.getElementById('canvas-container').classList.add('birth-indicator');
+                        setTimeout(() => {
+                            document.getElementById('canvas-container').classList.remove('birth-indicator');
+                        }, 1000);
+                    }
+                }
+            }
+        }
+        
+        function updateStats() {
+            // Count clusters
+            let cols = floor(width / gridSize);
+            let rows = floor(height / gridSize);
+            let clusterCount = 0;
+            let maxDensity = 0;
+            
+            for (let i = 0; i < cols; i++) {
+                for (let j = 0; j < rows; j++) {
+                    if (densityGrid[i][j] > 5) {
+                        clusterCount++;
+                    }
+                    if (densityGrid[i][j] > maxDensity) {
+                        maxDensity = densityGrid[i][j];
+                    }
+                }
+            }
+            
+            document.getElementById('stat-particles').textContent = particles.length;
+            document.getElementById('stat-clusters').textContent = clusterCount;
+            document.getElementById('stat-births').textContent = totalBirths;
+            document.getElementById('stat-density').textContent = 
+                Math.round((maxDensity / params.birthThreshold) * 100) + '%';
+        }
+        
+        function windowResized() {
+            resizeCanvas(windowWidth - 320, windowHeight);
+            initializeSystem();
+        }
+        
+        // Control functions
+        function updateParam(name, value) {
+            if (name === 'particleCount' || name === 'birthThreshold' || name === 'trailLength') {
+                params[name] = parseInt(value);
+            } else {
+                params[name] = parseFloat(value);
+            }
+            
+            document.getElementById(name + '-value').textContent = 
+                params[name] < 1 ? params[name].toFixed(2) : 
+                (Number.isInteger(params[name]) ? params[name] : params[name].toFixed(1));
+            
+            // Update trail length for existing particles
+            if (name === 'trailLength') {
+                particles.forEach(p => p.maxTrail = params.trailLength);
+            }
+            
+            // Regenerate if particle count changes
+            if (name === 'particleCount') {
+                needsRegeneration = true;
+            }
+        }
+        
+        function updateSeed(value) {
+            params.seed = parseInt(value);
+            needsRegeneration = true;
+        }
+        
+        function prevSeed() {
+            params.seed--;
+            document.getElementById('seed-input').value = params.seed;
+            needsRegeneration = true;
+        }
+        
+        function nextSeed() {
+            params.seed++;
+            document.getElementById('seed-input').value = params.seed;
+            needsRegeneration = true;
+        }
+        
+        function randomSeed() {
+            params.seed = floor(random(1, 10000));
+            document.getElementById('seed-input').value = params.seed;
+            needsRegeneration = true;
+        }
+        
+        function regenerate() {
+            needsRegeneration = true;
+        }
+        
+        function resetParams() {
+            params = {
+                seed: 777,
+                particleCount: 500,
+                gravityStrength: 0.4,
+                birthThreshold: 25,
+                birthEnergy: 5,
+                driftSpeed: 0.2,
+                trailLength: 10
+            };
+            
+            // Update all UI
+            document.getElementById('seed-input').value = params.seed;
+            document.getElementById('particleCount').value = params.particleCount;
+            document.getElementById('particleCount-value').textContent = params.particleCount;
+            document.getElementById('gravityStrength').value = params.gravityStrength;
+            document.getElementById('gravityStrength-value').textContent = params.gravityStrength.toFixed(2);
+            document.getElementById('birthThreshold').value = params.birthThreshold;
+            document.getElementById('birthThreshold-value').textContent = params.birthThreshold;
+            document.getElementById('birthEnergy').value = params.birthEnergy;
+            document.getElementById('birthEnergy-value').textContent = params.birthEnergy.toFixed(1);
+            document.getElementById('driftSpeed').value = params.driftSpeed;
+            document.getElementById('driftSpeed-value').textContent = params.driftSpeed.toFixed(2);
+            document.getElementById('trailLength').value = params.trailLength;
+            document.getElementById('trailLength-value').textContent = params.trailLength;
+            
+            needsRegeneration = true;
+        }
+        
+        function downloadImage() {
+            saveCanvas('stellar-nursery-seed-' + params.seed, 'png');
+        }
+    </script>
+</body>
+</html>
