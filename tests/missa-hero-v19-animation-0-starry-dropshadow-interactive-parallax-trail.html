@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Missa Ad Astra - Hero v19 Animation 0 Enhanced</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            color: #1a1a1a;
+            line-height: 1.6;
+            overflow: hidden;
+        }
+
+        #hero {
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: #000;
+        }
+
+        #canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            color: #fff;
+            pointer-events: none;
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 8vw, 6rem);
+            font-weight: 300;
+            letter-spacing: 0.3em;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            animation: fadeIn 2s ease-in;
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.7), 0 2px 6px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 2vw, 1.5rem);
+            font-weight: 300;
+            letter-spacing: 0.2em;
+            opacity: 0;
+            animation: fadeIn 2s ease-in 1s forwards;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8), 0 1px 4px rgba(0, 0, 0, 0.6);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0.7;
+            animation: bounce 2s infinite;
+            font-size: 1.5rem;
+            color: #fff;
+            pointer-events: none;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+
+        /* Music Player */
+        .music-player {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 12px 20px;
+            z-index: 1000;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            color: #fff;
+            min-width: 320px;
+        }
+
+        .music-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .music-btn {
+            width: 32px;
+            height: 32px;
+            background: none;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.3s ease;
+            opacity: 0.7;
+        }
+
+        .music-btn:hover {
+            opacity: 1;
+        }
+
+        .music-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        .music-btn.play-pause svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .progress-container {
+            flex: 1;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.2);
+            position: relative;
+            cursor: pointer;
+            min-width: 100px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.8));
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        .song-name {
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            opacity: 0.9;
+            min-width: 80px;
+            text-align: right;
+        }
+
+        @media (max-width: 768px) {
+            .music-player {
+                bottom: 15px;
+                right: 15px;
+                left: 15px;
+                min-width: unset;
+                padding: 10px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section id="hero">
+        <canvas id="canvas"></canvas>
+        <div class="hero-content">
+            <h1 class="hero-title">MISSA AD ASTRA</h1>
+            <p class="hero-subtitle">A Contemporary Sacred Manifesto</p>
+        </div>
+        <div class="scroll-indicator">↓</div>
+    </section>
+
+    <!-- Music Player -->
+    <div class="music-player">
+        <div class="music-controls">
+            <button class="music-btn play-pause" id="playPauseBtn" aria-label="Play/Pause">
+                <svg id="playIcon" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z"/>
+                </svg>
+                <svg id="pauseIcon" viewBox="0 0 24 24" style="display:none;">
+                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                </svg>
+            </button>
+            <button class="music-btn" id="prevBtn" aria-label="Previous">
+                <svg viewBox="0 0 24 24">
+                    <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
+                </svg>
+            </button>
+            <button class="music-btn" id="nextBtn" aria-label="Next">
+                <svg viewBox="0 0 24 24">
+                    <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
+                </svg>
+            </button>
+        </div>
+        <div class="progress-container" id="progressContainer">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="song-name" id="songName">Ready</div>
+    </div>
+
+    <script>
+        // Song configuration
+        const songs = [
+            { name: 'Kyrie', url: 'https://www.missaadastra.com/assets/Exc1_KYRIE_25s.mp3', duration: 25 },
+            { name: 'Gloria', url: 'https://www.missaadastra.com/assets/Exc2_GLORIA_39s.mp3', duration: 39 },
+            { name: 'Credo', url: 'https://www.missaadastra.com/assets/Exc3_CREDO_59s.mp3', duration: 59 },
+            { name: 'Sanctus', url: 'https://www.missaadastra.com/assets/Exc4_SANCTUS_1m04s.mp3', duration: 64 },
+            { name: 'Agnus Dei', url: 'https://www.missaadastra.com/assets/Exc5_AGNUSDEI_1m49s.mp3', duration: 109 }
+        ];
+
+        let currentSong = 0;
+        let isPlaying = false;
+        let currentAudio = null;
+        let animationType = 0;
+        
+        // Initialize audio
+        currentAudio = new Audio();
+        currentAudio.preload = 'auto';
+
+        // Canvas setup
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Mouse interaction tracking for parallax and trails
+        let mouseX = 0;
+        let mouseY = 0;
+        let prevMouseX = 0;
+        let prevMouseY = 0;
+        let mouseSpeed = 0;
+        const speedThreshold = 3;
+        
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            mouseX = canvas.width / 2;
+            mouseY = canvas.height / 2;
+            prevMouseX = mouseX;
+            prevMouseY = mouseY;
+        }
+        
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+        
+        const particles = [];
+        const backgroundStars = [];
+        const particleCount = 150;
+        const backgroundStarCount = 2500;
+        const connectionDistance = 150;
+
+        // ============================================
+        // ENHANCED BACKGROUND STAR WITH PARALLAX & TRAILS
+        // ============================================
+        class BackgroundStar {
+            constructor() {
+                this.baseX = Math.random() * canvas.width;
+                this.baseY = Math.random() * canvas.height;
+                this.x = this.baseX;
+                this.y = this.baseY;
+                
+                // Size range for depth
+                this.size = Math.random() * 1.6 + 0.2;
+                
+                // Depth factor: 0 = far (back), 1 = close (front)
+                // Smaller stars are farther, larger stars are closer
+                this.depth = (this.size - 0.2) / 1.6; // Normalized 0-1
+                
+                // Parallax multiplier based on depth
+                // Far stars (depth ~0) move less, close stars (depth ~1) move more
+                this.parallaxFactor = this.depth * 0.08 + 0.01; // Range: 0.01 to 0.09
+                
+                // Brightness tiers
+                const brightness = Math.random();
+                if (brightness < 0.5) {
+                    this.baseOpacity = Math.random() * 0.17 + 0.08;
+                } else if (brightness < 0.8) {
+                    this.baseOpacity = Math.random() * 0.2 + 0.25;
+                } else {
+                    this.baseOpacity = Math.random() * 0.25 + 0.45;
+                }
+                
+                this.opacity = this.baseOpacity;
+                
+                // Pulsing
+                this.isPulsing = Math.random() < 0.3;
+                this.twinkleSpeed = Math.random() * 0.0018 + 0.0005;
+                this.twinklePhase = Math.random() * Math.PI * 2;
+                
+                // Trail properties
+                this.trail = [];
+                this.maxTrailLength = Math.floor(3 + this.depth * 5); // Closer stars = longer trails
+                this.trailDecay = 0.85;
+            }
+
+            update() {
+                // Natural pulsing
+                if (this.isPulsing) {
+                    this.twinklePhase += this.twinkleSpeed;
+                    const pulse = Math.sin(this.twinklePhase);
+                    this.opacity = this.baseOpacity * (0.6 + pulse * 0.4);
+                }
+                
+                // DEPTH PARALLAX EFFECT
+                // Calculate offset from center based on mouse position
+                const centerX = canvas.width / 2;
+                const centerY = canvas.height / 2;
+                const mouseOffsetX = mouseX - centerX;
+                const mouseOffsetY = mouseY - centerY;
+                
+                // Apply parallax: closer stars move more
+                const parallaxX = mouseOffsetX * this.parallaxFactor;
+                const parallaxY = mouseOffsetY * this.parallaxFactor;
+                
+                // Target position with parallax
+                const targetX = this.baseX - parallaxX;
+                const targetY = this.baseY - parallaxY;
+                
+                // Smooth movement to target
+                this.x += (targetX - this.x) * 0.1;
+                this.y += (targetY - this.y) * 0.1;
+                
+                // SPEED-BASED TRAIL EFFECT
+                // Only create trails for closer stars when speed threshold is met
+                if (mouseSpeed > speedThreshold && this.depth > 0.3) {
+                    // Add current position to trail
+                    this.trail.push({
+                        x: this.x,
+                        y: this.y,
+                        opacity: this.opacity * 0.6
+                    });
+                    
+                    // Limit trail length
+                    if (this.trail.length > this.maxTrailLength) {
+                        this.trail.shift();
+                    }
+                } else {
+                    // Decay trail when speed is low
+                    if (this.trail.length > 0) {
+                        this.trail.shift();
+                    }
+                }
+            }
+
+            draw() {
+                // Draw trail first (behind the star)
+                if (this.trail.length > 1) {
+                    for (let i = 0; i < this.trail.length - 1; i++) {
+                        const trailPoint = this.trail[i];
+                        const fadeRatio = i / this.trail.length;
+                        const trailOpacity = trailPoint.opacity * fadeRatio * 0.5;
+                        const trailSize = this.size * (0.3 + fadeRatio * 0.7);
+                        
+                        ctx.fillStyle = `rgba(255, 255, 255, ${trailOpacity})`;
+                        ctx.beginPath();
+                        ctx.arc(trailPoint.x, trailPoint.y, trailSize, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                }
+                
+                // Draw the star itself
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        // ============================================
+        // FOREGROUND PARTICLE CLASS (UNCHANGED)
+        // ============================================
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 1;
+                this.baseSize = this.size;
+                this.speedX = (Math.random() - 0.5) * 0.3;
+                this.speedY = (Math.random() - 0.5) * 0.3;
+                this.opacity = Math.random() * 0.5 + 0.5;
+            }
+            
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                
+                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+            }
+            
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+        function initParticles() {
+            particles.length = 0;
+            backgroundStars.length = 0;
+            
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+            
+            for (let i = 0; i < backgroundStarCount; i++) {
+                backgroundStars.push(new BackgroundStar());
+            }
+        }
+
+        // ============================================
+        // ENHANCED RADIAL GRADIENT - VISIBLE VIGNETTE
+        // ============================================
+        function drawBackground() {
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const maxRadius = Math.sqrt(centerX * centerX + centerY * centerY);
+            
+            const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, maxRadius);
+            
+            gradient.addColorStop(0, 'rgba(7, 22, 48, 0.85)');
+            gradient.addColorStop(0.25, 'rgba(7, 22, 48, 0.7)');
+            gradient.addColorStop(0.5, 'rgba(5, 15, 35, 0.5)');
+            gradient.addColorStop(0.75, 'rgba(2, 8, 20, 0.3)');
+            gradient.addColorStop(1, 'rgba(0, 0, 0, 0.1)');
+            
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+
+        // ============================================
+        // ANIMATION LOOP
+        // ============================================
+        function animateParticles() {
+            // Clear with black
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw vignette gradient
+            drawBackground();
+            
+            // Update mouse speed for trail effect
+            const dx = mouseX - prevMouseX;
+            const dy = mouseY - prevMouseY;
+            mouseSpeed = Math.sqrt(dx * dx + dy * dy);
+            prevMouseX = mouseX;
+            prevMouseY = mouseY;
+            
+            // Draw background stars with parallax and trails
+            backgroundStars.forEach(star => {
+                star.update();
+                star.draw();
+            });
+            
+            // Draw particle connections
+            let connectionCount = 0;
+            const maxConnections = 100;
+            
+            for (let i = 0; i < particles.length && connectionCount < maxConnections; i++) {
+                for (let j = i + 1; j < particles.length && connectionCount < maxConnections; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < connectionDistance) {
+                        const opacity = (1 - distance / connectionDistance) * 0.3;
+                        ctx.strokeStyle = `rgba(100, 150, 255, ${opacity})`;
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                        connectionCount++;
+                    }
+                }
+            }
+            
+            // Draw particles
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+            
+            requestAnimationFrame(animateParticles);
+        }
+
+        // Initialize and start
+        initParticles();
+        animateParticles();
+
+        // ============================================
+        // MOUSE INTERACTION TRACKING
+        // ============================================
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            mouseX = e.clientX - rect.left;
+            mouseY = e.clientY - rect.top;
+        });
+
+        canvas.addEventListener('mouseleave', () => {
+            // Return to center when mouse leaves
+            mouseX = canvas.width / 2;
+            mouseY = canvas.height / 2;
+        });
+
+        // ============================================
+        // MUSIC PLAYER FUNCTIONS
+        // ============================================
+        function loadSong(index) {
+            currentSong = index;
+            currentAudio.src = songs[index].url;
+            currentAudio.load();
+            document.getElementById('songName').textContent = songs[index].name;
+        }
+
+        function togglePlayPause() {
+            if (isPlaying) {
+                currentAudio.pause();
+                isPlaying = false;
+            } else {
+                currentAudio.play();
+                isPlaying = true;
+            }
+            
+            document.getElementById('playIcon').style.display = isPlaying ? 'none' : 'block';
+            document.getElementById('pauseIcon').style.display = isPlaying ? 'block' : 'none';
+        }
+
+        function playNext() {
+            currentSong = (currentSong + 1) % songs.length;
+            loadSong(currentSong);
+            if (isPlaying) {
+                currentAudio.play();
+            }
+        }
+
+        function playPrevious() {
+            currentSong = (currentSong - 1 + songs.length) % songs.length;
+            loadSong(currentSong);
+            if (isPlaying) {
+                currentAudio.play();
+            }
+        }
+
+        function updateProgress() {
+            if (currentAudio.duration) {
+                const progress = (currentAudio.currentTime / currentAudio.duration) * 100;
+                document.getElementById('progressBar').style.width = progress + '%';
+            }
+        }
+
+        // Event listeners
+        document.getElementById('progressContainer').addEventListener('click', (e) => {
+            const rect = e.currentTarget.getBoundingClientRect();
+            const percent = (e.clientX - rect.left) / rect.width;
+            currentAudio.currentTime = percent * currentAudio.duration;
+        });
+
+        document.getElementById('playPauseBtn').addEventListener('click', togglePlayPause);
+        document.getElementById('nextBtn').addEventListener('click', playNext);
+        document.getElementById('prevBtn').addEventListener('click', playPrevious);
+        currentAudio.addEventListener('timeupdate', updateProgress);
+        currentAudio.addEventListener('ended', playNext);
+
+        loadSong(0);
+    </script>
+</body>
+</html>
