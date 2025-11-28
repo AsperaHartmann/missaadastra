@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+
+  <!-- English Homepage -->
+  <url>
+    <loc>https://missaadastra.com/</loc>
+    <lastmod>2025-11-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://missaadastra.com/" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://missaadastra.com/pt/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://missaadastra.com/" />
+  </url>
+
+  <!-- Portuguese Homepage -->
+  <url>
+    <loc>https://missaadastra.com/pt/</loc>
+    <lastmod>2025-11-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://missaadastra.com/" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://missaadastra.com/pt/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://missaadastra.com/" />
+  </url>
+
+  <!-- English Section: The Essence -->
+  <url>
+    <loc>https://missaadastra.com/#essence</loc>
+    <lastmod>2025-11-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://missaadastra.com/#essence" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://missaadastra.com/pt/#essencia" />
+  </url>
+
+  <!-- Portuguese Section: A Essência -->
+  <url>
+    <loc>https://missaadastra.com/pt/#essencia</loc>
+    <lastmod>2025-11-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://missaadastra.com/#essence" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://missaadastra.com/pt/#essencia" />
+  </url>
+
+  <!-- English Section: The Experience -->
+  <url>
+    <loc>https://missaadastra.com/#experience</loc>
+    <lastmod>2025-11-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://missaadastra.com/#experience" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://missaadastra.com/pt/#experiencia" />
+  </url>
+
+  <!-- Portuguese Section: A Experiência -->
+  <url>
+    <loc>https://missaadastra.com/pt/#experiencia</loc>
+    <lastmod>2025-11-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://missaadastra.com/#experience" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://missaadastra.com/pt/#experiencia" />
+  </url>
+
+  <!-- English Section: The Words -->
+  <url>
+    <loc>https://missaadastra.com/#words</loc>
+    <lastmod>2025-11-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://missaadastra.com/#words" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://missaadastra.com/pt/#palavras" />
+  </url>
+
+  <!-- Portuguese Section: As Palavras -->
+  <url>
+    <loc>https://missaadastra.com/pt/#palavras</loc>
+    <lastmod>2025-11-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://missaadastra.com/#words" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://missaadastra.com/pt/#palavras" />
+  </url>
+
+  <!-- English Section: The Voices -->
+  <url>
+    <loc>https://missaadastra.com/#voices</loc>
+    <lastmod>2025-11-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://missaadastra.com/#voices" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://missaadastra.com/pt/#vozes" />
+  </url>
+
+  <!-- Portuguese Section: As Vozes -->
+  <url>
+    <loc>https://missaadastra.com/pt/#vozes</loc>
+    <lastmod>2025-11-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://missaadastra.com/#voices" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://missaadastra.com/pt/#vozes" />
+  </url>
+
+  <!-- English Section: Performances -->
+  <url>
+    <loc>https://missaadastra.com/#performances</loc>
+    <lastmod>2025-11-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://missaadastra.com/#performances" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://missaadastra.com/pt/#apresentacoes" />
+  </url>
+
+  <!-- Portuguese Section: Apresentações -->
+  <url>
+    <loc>https://missaadastra.com/pt/#apresentacoes</loc>
+    <lastmod>2025-11-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://missaadastra.com/#performances" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://missaadastra.com/pt/#apresentacoes" />
+  </url>
+
+  <!-- English Section: Connect -->
+  <url>
+    <loc>https://missaadastra.com/#connect</loc>
+    <lastmod>2025-11-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://missaadastra.com/#connect" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://missaadastra.com/pt/#contacto" />
+  </url>
+
+  <!-- Portuguese Section: Contacto -->
+  <url>
+    <loc>https://missaadastra.com/pt/#contacto</loc>
+    <lastmod>2025-11-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://missaadastra.com/#connect" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://missaadastra.com/pt/#contacto" />
+  </url>
+
+</urlset>

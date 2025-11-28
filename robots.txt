@@ -1,0 +1,389 @@
+# =====================================================
+# MISSA AD ASTRA - ROBOTS.TXT
+# https://missaadastra.com/robots.txt
+# =====================================================
+# This file controls how search engines and bots
+# crawl and index the Missa Ad Astra website
+# Last updated: 2025-11-28
+# =====================================================
+
+# =====================================================
+# GENERAL RULES FOR ALL BOTS
+# =====================================================
+
+User-agent: *
+Allow: /
+Crawl-delay: 1
+
+# Allow all content sections
+Allow: /#essence
+Allow: /#experience
+Allow: /#words
+Allow: /#voices
+Allow: /#performances
+Allow: /#connect
+Allow: /pt/
+Allow: /pt/#essencia
+Allow: /pt/#experiencia
+Allow: /pt/#palavras
+Allow: /pt/#vozes
+Allow: /pt/#apresentacoes
+Allow: /pt/#contacto
+
+# Disallow common administrative and system files
+Disallow: /cgi-bin/
+Disallow: /tmp/
+Disallow: /private/
+Disallow: /.git/
+Disallow: /.env
+Disallow: /config/
+Disallow: /backup/
+Disallow: /.htaccess
+Disallow: /.htpasswd
+
+# Disallow duplicate content with query parameters
+Disallow: /*?*
+Disallow: /*&*
+
+# Disallow tracking and analytics files
+Disallow: /stats/
+Disallow: /analytics/
+
+# =====================================================
+# MAJOR SEARCH ENGINES - ENHANCED ACCESS
+# =====================================================
+
+# Google
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Googlebot-Image
+Allow: /
+Crawl-delay: 1
+
+User-agent: Googlebot-Video
+Allow: /
+Crawl-delay: 1
+
+# Google Mobile
+User-agent: Googlebot-Mobile
+Allow: /
+Crawl-delay: 1
+
+# Bing
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: BingPreview
+Allow: /
+Crawl-delay: 1
+
+# Yahoo
+User-agent: Slurp
+Allow: /
+Crawl-delay: 2
+
+# DuckDuckGo
+User-agent: DuckDuckBot
+Allow: /
+Crawl-delay: 1
+
+# Yandex
+User-agent: Yandex
+Allow: /
+Crawl-delay: 2
+
+# Baidu
+User-agent: Baiduspider
+Allow: /
+Crawl-delay: 2
+
+# =====================================================
+# AI CRAWLERS & LLM TRAINING BOTS
+# =====================================================
+
+# OpenAI GPT - Allow (for ChatGPT search)
+User-agent: GPTBot
+Allow: /
+Crawl-delay: 2
+
+# OpenAI ChatGPT User Agent
+User-agent: ChatGPT-User
+Allow: /
+Crawl-delay: 2
+
+# Anthropic Claude
+User-agent: Claude-Web
+Allow: /
+Crawl-delay: 1
+
+User-agent: anthropic-ai
+Allow: /
+Crawl-delay: 1
+
+# Google Bard/Gemini
+User-agent: Google-Extended
+Allow: /
+Crawl-delay: 2
+
+# Perplexity AI
+User-agent: PerplexityBot
+Allow: /
+Crawl-delay: 1
+
+# Common Crawl (public dataset)
+User-agent: CCBot
+Allow: /
+Crawl-delay: 2
+
+# Applebot (Apple/Siri)
+User-agent: Applebot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Applebot-Extended
+Allow: /
+Crawl-delay: 2
+
+# Meta AI
+User-agent: FacebookBot
+Allow: /
+Crawl-delay: 2
+
+User-agent: Meta-ExternalAgent
+Allow: /
+Crawl-delay: 2
+
+# Amazon Alexa
+User-agent: ia_archiver
+Allow: /
+Crawl-delay: 2
+
+# Cohere AI
+User-agent: cohere-ai
+Allow: /
+Crawl-delay: 2
+
+# =====================================================
+# SOCIAL MEDIA BOTS - ALLOW FOR RICH PREVIEWS
+# =====================================================
+
+# Twitter/X
+User-agent: Twitterbot
+Allow: /
+Crawl-delay: 1
+
+# Facebook
+User-agent: facebookexternalhit
+Allow: /
+Crawl-delay: 1
+
+# LinkedIn
+User-agent: LinkedInBot
+Allow: /
+Crawl-delay: 1
+
+# Pinterest
+User-agent: Pinterestbot
+Allow: /
+Crawl-delay: 1
+
+# WhatsApp
+User-agent: WhatsApp
+Allow: /
+Crawl-delay: 1
+
+# Telegram
+User-agent: TelegramBot
+Allow: /
+Crawl-delay: 1
+
+# Slack
+User-agent: Slackbot
+Allow: /
+Crawl-delay: 1
+
+# Discord
+User-agent: Discordbot
+Allow: /
+Crawl-delay: 1
+
+# =====================================================
+# SPECIALIZED CRAWLERS
+# =====================================================
+
+# Archive.org Wayback Machine
+User-agent: ia_archiver
+Allow: /
+Crawl-delay: 5
+
+# SEO Tools (Allow for legitimate website analysis)
+User-agent: AhrefsBot
+Allow: /
+Crawl-delay: 3
+
+User-agent: SEMrushBot
+Allow: /
+Crawl-delay: 3
+
+User-agent: MJ12bot
+Allow: /
+Crawl-delay: 3
+
+User-agent: dotbot
+Allow: /
+Crawl-delay: 3
+
+# =====================================================
+# AGGRESSIVE SCRAPERS - BLOCK OR LIMIT
+# =====================================================
+
+# Generic aggressive scrapers
+User-agent: SemrushBot
+Crawl-delay: 10
+
+User-agent: AhrefsBot
+Crawl-delay: 10
+
+User-agent: MJ12bot
+Crawl-delay: 10
+
+# Known malicious bots
+User-agent: SurveyBot
+Disallow: /
+
+User-agent: WebReaper
+Disallow: /
+
+User-agent: WebCopier
+Disallow: /
+
+User-agent: Offline Explorer
+Disallow: /
+
+User-agent: HTTrack
+Disallow: /
+
+User-agent: Microsoft.URL.Control
+Disallow: /
+
+User-agent: EmailCollector
+Disallow: /
+
+User-agent: EmailSiphon
+Disallow: /
+
+User-agent: EmailWolf
+Disallow: /
+
+User-agent: ExtractorPro
+Disallow: /
+
+User-agent: CherryPicker
+Disallow: /
+
+User-agent: WebBandit
+Disallow: /
+
+User-agent: Teleport
+Disallow: /
+
+User-agent: TeleportPro
+Disallow: /
+
+User-agent: WebZIP
+Disallow: /
+
+User-agent: Octopus
+Disallow: /
+
+User-agent: Offline Navigator
+Disallow: /
+
+User-agent: WebStripper
+Disallow: /
+
+User-agent: WebSauger
+Disallow: /
+
+User-agent: WebWhacker
+Disallow: /
+
+User-agent: express WebPictures
+Disallow: /
+
+User-agent: Fetch
+Disallow: /
+
+User-agent: Grabber
+Disallow: /
+
+User-agent: GetRight
+Disallow: /
+
+User-agent: GetWeb
+Disallow: /
+
+User-agent: Go-Ahead-Got-It
+Disallow: /
+
+User-agent: Go!Zilla
+Disallow: /
+
+User-agent: Download Demon
+Disallow: /
+
+User-agent: Download Wonder
+Disallow: /
+
+User-agent: InterGET
+Disallow: /
+
+User-agent: FlashGet
+Disallow: /
+
+User-agent: JetCar
+Disallow: /
+
+User-agent: NetAnts
+Disallow: /
+
+User-agent: NetZIP
+Disallow: /
+
+User-agent: Mass Downloader
+Disallow: /
+
+User-agent: Siphon
+Disallow: /
+
+# =====================================================
+# SITEMAPS & HOST
+# =====================================================
+
+# Sitemap location
+Sitemap: https://missaadastra.com/sitemap.xml
+
+# Host declaration (preferred domain)
+Host: https://missaadastra.com
+
+# =====================================================
+# ADDITIONAL NOTES
+# =====================================================
+# This robots.txt file is optimized for:
+# - SEO (Search Engine Optimization)
+# - AEO (Answer Engine Optimization) 
+# - RAO (Retrieval-Augmented Optimization)
+# - MCP (Multi-Channel Presence)
+#
+# AI crawlers are ALLOWED to help with:
+# - Question answering about Missa Ad Astra
+# - Information retrieval in AI assistants
+# - Rich snippets and knowledge graphs
+# - Cross-platform content discovery
+#
+# The website welcomes ethical AI and search crawling
+# while blocking malicious scrapers and content thieves.
+# =====================================================
