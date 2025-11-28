@@ -1,3 +1,8 @@
+<!-- ========================================
+     MISSA AD ASTRA - BILINGUAL WEBSITE
+     English Version (index.html)
+     ======================================== -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,7 +14,13 @@
 	<meta property="og:title" content="Missa Ad Astra - A Contemporary Sacred Manifesto">
 	<meta property="og:description" content="25 years in the making. Entirely new Latin texts. Revolutionary sacred music.">
 	<meta property="og:type" content="website">
-	<link rel="canonical" href="https://missaadastra.com">
+	
+    <!-- Language and SEO tags -->
+    <link rel="canonical" href="https://missaadastra.com/">
+    <link rel="alternate" hreflang="pt" href="https://missaadastra.com/pt/">
+    <link rel="alternate" hreflang="en" href="https://missaadastra.com/">
+    <link rel="alternate" hreflang="x-default" href="https://missaadastra.com/">
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
@@ -29,6 +40,60 @@
 
         .sans {
             font-family: 'Inter', sans-serif;
+        }
+
+        /* Language Selector */
+        .language-selector {
+            position: fixed;
+            top: 1.2rem;
+            right: 1.2rem;
+			display: flex;
+ 			gap: 0.1rem;
+            z-index: 1000;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 400;
+            letter-spacing: 0.05em;
+            transition: all 0.3s ease;
+        }
+
+        .language-selector a {
+            color: #fff;
+            text-decoration: none;
+            padding: 0 0.3rem;
+            transition: opacity 0.3s ease;
+        }
+
+        .language-selector a:hover {
+            opacity: 0.7;
+        }
+
+        .language-selector .divider {
+            color: #fff;
+            opacity: 0.4;
+        }
+
+        .language-selector .active {
+            font-weight: 500;
+            opacity: 1;
+        }
+
+        .language-selector .inactive {
+            opacity: 0.6;
+        }
+
+        /* Adaptive color for language selector based on section */
+        .language-selector.light a,
+        .language-selector.light .divider {
+            color: #1a1a1a;
+        }
+
+        .language-selector.light .divider {
+            opacity: 0.3;
+        }
+
+        .language-selector.light .inactive {
+            opacity: 0.5;
         }
 
         /* Hero Section with Generative Art */
@@ -55,6 +120,7 @@
             z-index: 10;
             text-align: center;
             color: #fff;
+            pointer-events: none;
         }
 
         .hero-title {
@@ -64,6 +130,7 @@
             margin-bottom: 2rem;
             text-transform: uppercase;
             animation: fadeIn 2s ease-in;
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.7), 0 2px 6px rgba(0, 0, 0, 0.5);
         }
 
         .hero-subtitle {
@@ -72,17 +139,7 @@
             letter-spacing: 0.2em;
             opacity: 0;
             animation: fadeIn 2s ease-in 1s forwards;
-        }
-
-        .scroll-indicator {
-            position: absolute;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            opacity: 0.7;
-            animation: bounce 2s infinite;
-            font-size: 1.5rem;
-            color: #fff;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8), 0 1px 4px rgba(0, 0, 0, 0.6);
         }
 
         @keyframes fadeIn {
@@ -99,6 +156,102 @@
         @keyframes bounce {
             0%, 100% { transform: translateX(-50%) translateY(0); }
             50% { transform: translateX(-50%) translateY(10px); }
+        }
+
+        /* Music Player */
+        .music-player {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 12px 20px;
+            z-index: 1000;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            color: #fff;
+            min-width: 320px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        .music-player.light {
+            background: rgba(255, 255, 255, 0);
+            color: #1a1a1a;
+        }
+
+        .music-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .music-btn {
+            width: 32px;
+            height: 32px;
+            background: none;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.3s ease, color 0.3s ease;
+            opacity: 0.7;
+        }
+
+        .music-player.light .music-btn {
+            color: #1a1a1a;
+        }
+
+        .music-btn:hover {
+            opacity: 1;
+        }
+
+        .music-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        .music-btn.play-pause svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .progress-container {
+            flex: 1;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.2);
+            position: relative;
+            cursor: pointer;
+            min-width: 100px;
+            transition: background 0.3s ease;
+        }
+
+        .music-player.light .progress-container {
+            background: rgba(0, 0, 0, 0.15);
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.8));
+            width: 0%;
+            transition: width 0.1s linear, background 0.3s ease;
+        }
+
+        .music-player.light .progress-bar {
+            background: linear-gradient(90deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7));
+        }
+
+        .song-name {
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            opacity: 0.9;
+            min-width: 80px;
+            text-align: right;
         }
 
         /* Section Base Styles */
@@ -201,6 +354,9 @@
             padding: 2rem;
             border: 1px solid #eee;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            display: block;
         }
 
         .experience-card:hover {
@@ -510,6 +666,10 @@
             font-style: italic;
         }
 
+        .promoters-list {
+            line-height: 1.8;
+        }
+
         .performers-list {
             line-height: 1.8;
         }
@@ -665,10 +825,22 @@
             .nav-dots {
                 display: none;
             }
+
+            .language-selector {
+                top: 1rem;
+                right: 1rem;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Language Selector -->
+    <div class="language-selector" id="langSelector">
+        <a href="/" class="active" aria-current="page">EN</a>
+        <span class="divider" aria-hidden="true">|</span>
+        <a href="/pt/" class="inactive" hreflang="pt">PT</a>
+    </div>
+
     <!-- Navigation Dots -->
     <div class="nav-dots">
         <div class="nav-dot" onclick="scrollToSection('hero')"></div>
@@ -680,15 +852,42 @@
         <div class="nav-dot" onclick="scrollToSection('connect')"></div>
     </div>
 
-    <!-- Hero Section with Particle Animation -->
+    <!-- Hero Section with Enhanced Animation -->
     <section id="hero">
         <canvas id="canvas"></canvas>
         <div class="hero-content">
-            <h1 class="hero-title">Missa Ad Astra</h1>
+            <h1 class="hero-title">MISSA AD ASTRA</h1>
             <p class="hero-subtitle">A Contemporary Sacred Manifesto</p>
         </div>
-        <div class="scroll-indicator">↓</div>
     </section>
+
+    <!-- Music Player -->
+    <div class="music-player">
+        <div class="music-controls">
+            <button class="music-btn play-pause" id="playPauseBtn" aria-label="Play/Pause">
+                <svg id="playIcon" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z"/>
+                </svg>
+                <svg id="pauseIcon" viewBox="0 0 24 24" style="display:none;">
+                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                </svg>
+            </button>
+            <button class="music-btn" id="prevBtn" aria-label="Previous">
+                <svg viewBox="0 0 24 24">
+                    <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
+                </svg>
+            </button>
+            <button class="music-btn" id="nextBtn" aria-label="Next">
+                <svg viewBox="0 0 24 24">
+                    <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
+                </svg>
+            </button>
+        </div>
+        <div class="progress-container" id="progressContainer">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="song-name" id="songName">Ready</div>
+    </div>
 
     <!-- Essence Section -->
     <section id="essence">
@@ -720,21 +919,17 @@
         <div class="container">
             <h2 class="section-title">Experience</h2>
             <div class="experience-grid">
-                <div class="experience-card">
+                <a href="https://vimeo.com/1131225719/153093b0c9?share=copy#t=2305.903" target="_blank" rel="noopener noreferrer" class="experience-card">
                     <h3 class="experience-title">Watch</h3>
                     <div class="experience-icon">▶</div>
                     <p class="experience-subtitle">Experience the world premiere performance</p>
-                </div>
-                <div class="experience-card">
+                </a>
+                <a href="https://ruipauloteixeira.bandcamp.com/track/missa-ad-astra-complete-work" target="_blank" rel="noopener noreferrer" class="experience-card">
                     <h3 class="experience-title">Listen</h3>
                     <div class="experience-icon">♫</div>
                     <p class="experience-subtitle">Immerse yourself in the complete recording</p>
-                </div>
-                <div class="experience-card">
-                    <h3 class="experience-title">Explore</h3>
-                    <div class="experience-icon">✦</div>
-                    <p class="experience-subtitle">Discover the texts and translations</p>
-                </div>
+                </a>
+
             </div>
         </div>
     </section>
@@ -938,6 +1133,62 @@
                     <p class="testimonial-author">Pedro Teixeira</p>
                     <p class="testimonial-role">Choir Conductor, Coro Ricercare</p>
                 </div>
+                <div class="testimonial active" data-index="6">
+                    <p class="testimonial-quote">
+                        Your music, together with his texts, became for me a form of contemporary spirituality. Together, they united the very best of the Christian message with what it ought to be in our time.
+                    </p>
+                    <hr class="testimonial-divider">
+                    <p class="testimonial-author">Maria João Gomes</p>
+                    <p class="testimonial-role">Mezzo-soprano, Soloist at the premiere of Missa Ad Astra</p>
+                </div>
+                <div class="testimonial active" data-index="7">
+                    <p class="testimonial-quote">
+                        It fills me with joy to see sacred music celebrated so beautifully in these times that have become so desacralized. How good it is to bring it to that sanctuary of encounter and silence.
+                    </p>
+                    <hr class="testimonial-divider">
+                    <p class="testimonial-author">Margarida Mendes</p>
+                    <p class="testimonial-role">From the Board of Associação Ricercare</p>
+                </div>
+                <div class="testimonial active" data-index="8">
+                    <p class="testimonial-quote">
+                        My sincere congratulations on the Mass you composed – with a musicality, expression, emotion and modernity that, in my opinion, speaks to any elite… it was thrilling to hear!!!
+                    </p>
+                    <hr class="testimonial-divider">
+                    <p class="testimonial-author">Lídia Correia</p>
+                    <p class="testimonial-role">Organist, present in the audience at the premiere concert</p>
+                </div>
+                <div class="testimonial active" data-index="9">
+                    <p class="testimonial-quote">
+                        In the Sanctus, it felt to me as though the Angels were descending down to us.
+                    </p>
+                    <hr class="testimonial-divider">
+                    <p class="testimonial-author">Uriel Teixeira</p>
+                    <p class="testimonial-role">Young audience member</p>
+                </div>
+                <div class="testimonial active" data-index="10">
+                    <p class="testimonial-quote">
+                        A work that lifts our hearts!
+                    </p>
+                    <hr class="testimonial-divider">
+                    <p class="testimonial-author">Nuno Mendes</p>
+                    <p class="testimonial-role">Bass, Soloist at the premiere of Missa Ad Astra</p>
+                </div>
+                <div class="testimonial active" data-index="11">
+                    <p class="testimonial-quote">
+                        For me it was deeply moving – and an enormous pleasure – to be able to perform this great work again. I truly feel privileged to have taken part in two excellent concerts, both with full audiences!
+                    </p>
+                    <hr class="testimonial-divider">
+                    <p class="testimonial-author">Tiago Sousa</p>
+                    <p class="testimonial-role">Tenor, Soloist at the premiere of Missa Ad Astra</p>
+                </div>
+                <div class="testimonial active" data-index="12">
+                    <p class="testimonial-quote">
+                        It is striking how freely the author revisits and re-presents the core themes, guiding the initial motif – Rosa florat – into a cosmic and spiritual resonance.
+                    </p>
+                    <hr class="testimonial-divider">
+                    <p class="testimonial-author">Father Joaquim Ganhão</p>
+                    <p class="testimonial-role">Director of the Liturgy Department, Sanctuary of Fátima</p>
+                </div>
    		</div>
 				<div class="testimonial-dots">
                     <span class="testimonial-dot active" onclick="goToTestimonial(0)"></span>
@@ -946,6 +1197,13 @@
                     <span class="testimonial-dot" onclick="goToTestimonial(3)"></span>
                     <span class="testimonial-dot" onclick="goToTestimonial(4)"></span>
                     <span class="testimonial-dot" onclick="goToTestimonial(5)"></span>
+                    <span class="testimonial-dot" onclick="goToTestimonial(6)"></span>
+                    <span class="testimonial-dot" onclick="goToTestimonial(7)"></span>
+                    <span class="testimonial-dot" onclick="goToTestimonial(8)"></span>
+                    <span class="testimonial-dot" onclick="goToTestimonial(9)"></span>
+                    <span class="testimonial-dot" onclick="goToTestimonial(10)"></span>
+                    <span class="testimonial-dot" onclick="goToTestimonial(11)"></span>
+                    <span class="testimonial-dot" onclick="goToTestimonial(12)"></span>
                 </div>
             </div>
         </div>
@@ -994,103 +1252,368 @@
     </section>
 
     <script>
-        // Particle Animation for Hero - Improved constellation effect
+        // Language selector color adaptation
+        window.addEventListener('scroll', () => {
+            const langSelector = document.getElementById('langSelector');
+            const scrollPosition = window.scrollY + 100;
+            
+            const sections = document.querySelectorAll('section');
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.offsetHeight;
+                
+                if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                    if (section.id === 'hero' || section.id === 'connect') {
+                        langSelector.classList.remove('light');
+                    } else {
+                        langSelector.classList.add('light');
+                    }
+                }
+            });
+        });
+
+        // Enhanced Animation Script (from missa-animation-1-kyrie-enhanced-v2-with-rotation.html)
+        const songs = [
+            { name: 'Kyrie', url: 'https://www.missaadastra.com/assets/Exc1_KYRIE_25s.mp3', duration: 25 },
+            { name: 'Gloria', url: 'https://www.missaadastra.com/assets/Exc2_GLORIA_39s.mp3', duration: 39 },
+            { name: 'Credo', url: 'https://www.missaadastra.com/assets/Exc3_CREDO_59s.mp3', duration: 59 },
+            { name: 'Sanctus', url: 'https://www.missaadastra.com/assets/Exc4_SANCTUS_1m04s.mp3', duration: 64 },
+            { name: 'Agnus Dei', url: 'https://www.missaadastra.com/assets/Exc5_AGNUSDEI_1m49s.mp3', duration: 109 }
+        ];
+
+        let currentSong = 0;
+        let isPlaying = false;
+        let currentAudio = null;
+        let breathingPhase = 0;
+        let currentShootingStar = null;
+        let lastShootingStarTime = 0;
+        
+        currentAudio = new Audio();
+        currentAudio.preload = 'auto';
+
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
+        
+        let mouseX = 0;
+        let mouseY = 0;
+        let prevMouseX = 0;
+        let prevMouseY = 0;
+        let mouseSpeed = 0;
+        const speedThreshold = 3;
         
         function resizeCanvas() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
+            mouseX = canvas.width / 2;
+            mouseY = canvas.height / 2;
+            prevMouseX = mouseX;
+            prevMouseY = mouseY;
         }
         
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
         
         const particles = [];
+        const backgroundStars = [];
         const particleCount = 150;
+        const backgroundStarCount = 2500;
         const connectionDistance = 150;
         
-        class Particle {
+        let starfieldRotation = 0;
+        const rotationSpeed = 0.0001;
+
+        class BackgroundStar {
             constructor() {
+                this.baseX = Math.random() * canvas.width;
+                this.baseY = Math.random() * canvas.height;
+                this.x = this.baseX;
+                this.y = this.baseY;
+                
+                this.size = Math.random() * 1.6 + 0.2;
+                this.depth = (this.size - 0.2) / 1.6;
+                
+                const brightness = Math.random();
+                if (brightness < 0.5) {
+                    this.baseOpacity = Math.random() * 0.17 + 0.08;
+                } else if (brightness < 0.8) {
+                    this.baseOpacity = Math.random() * 0.2 + 0.25;
+                } else {
+                    this.baseOpacity = Math.random() * 0.25 + 0.45;
+                }
+                
+                this.opacity = this.baseOpacity;
+                this.isPulsing = Math.random() < 0.3;
+                this.twinkleSpeed = Math.random() * 0.0018 + 0.0005;
+                this.twinklePhase = Math.random() * Math.PI * 2;
+                
+                this.trail = [];
+                this.maxTrailLength = Math.floor(3 + this.depth * 5);
+            }
+
+            update() {
+                if (this.isPulsing) {
+                    this.twinklePhase += this.twinkleSpeed;
+                    const pulse = Math.sin(this.twinklePhase);
+                    this.opacity = this.baseOpacity * (0.6 + pulse * 0.4);
+                }
+                
+                const centerX = canvas.width / 2;
+                const centerY = canvas.height / 2;
+                
+                const dx = this.baseX - centerX;
+                const dy = this.baseY - centerY;
+                
+                const cosAngle = Math.cos(starfieldRotation);
+                const sinAngle = Math.sin(starfieldRotation);
+                
+                const rotatedX = dx * cosAngle - dy * sinAngle;
+                const rotatedY = dx * sinAngle + dy * cosAngle;
+                
+                this.x = centerX + rotatedX;
+                this.y = centerY + rotatedY;
+                
+                if (mouseSpeed > speedThreshold && this.depth > 0.3) {
+                    this.trail.push({
+                        x: this.x,
+                        y: this.y,
+                        opacity: this.opacity * 0.6
+                    });
+                    
+                    if (this.trail.length > this.maxTrailLength) {
+                        this.trail.shift();
+                    }
+                } else {
+                    if (this.trail.length > 0) {
+                        this.trail.shift();
+                    }
+                }
+            }
+
+            draw() {
+                if (this.trail.length > 1) {
+                    for (let i = 0; i < this.trail.length - 1; i++) {
+                        const trailPoint = this.trail[i];
+                        const fadeRatio = i / this.trail.length;
+                        const trailOpacity = trailPoint.opacity * fadeRatio * 0.5;
+                        const trailSize = this.size * (0.3 + fadeRatio * 0.7);
+                        
+                        ctx.fillStyle = `rgba(200, 220, 255, ${trailOpacity})`;
+                        ctx.beginPath();
+                        ctx.arc(trailPoint.x, trailPoint.y, trailSize, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                }
+                
+                let brightnessBoost = 0;
+                if (mouseX !== null && mouseY !== null) {
+                    const dx = mouseX - this.x;
+                    const dy = mouseY - this.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    const glowRadius = 150;
+                    
+                    if (distance < glowRadius) {
+                        brightnessBoost = (1 - distance / glowRadius) * 0.5;
+                    }
+                }
+                
+                const r = 200 + brightnessBoost * 55;
+                const g = 220 + brightnessBoost * 35;
+                const b = 255;
+                const finalOpacity = Math.min(1, this.opacity + brightnessBoost);
+                
+                ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${finalOpacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        class Particle {
+            constructor(index) {
+                this.index = index;
+                this.reset();
+                this.isShootingStar = false;
+                this.shootingAngle = 0;
+                this.shootingSpeed = 0;
+                this.trail = [];
+            }
+
+            reset() {
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
+                this.baseX = this.x;
+                this.baseY = this.y;
                 this.size = Math.random() * 2 + 1;
-                this.speedX = (Math.random() - 0.5) * 0.3;
-                this.speedY = (Math.random() - 0.5) * 0.3;
+                this.baseSize = this.size;
+                this.speedX = 0;
+                this.speedY = 0;
                 this.opacity = Math.random() * 0.5 + 0.5;
-                this.pulseSpeed = Math.random() * 0.02 + 0.01;
-                this.pulsePhase = Math.random() * Math.PI * 2;
             }
             
             update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
+                breathingPhase += 0.00015;
+                const breathAmount = Math.sin(breathingPhase) * 0.08 + 1.0;
                 
-                // Wrap around edges instead of bouncing
-                if (this.x > canvas.width) this.x = 0;
-                if (this.x < 0) this.x = canvas.width;
-                if (this.y > canvas.height) this.y = 0;
-                if (this.y < 0) this.y = canvas.height;
+                if (!this.isShootingStar) {
+                    const centerX = canvas.width / 2;
+                    const centerY = canvas.height / 2;
+                    const dx = this.baseX - centerX;
+                    const dy = this.baseY - centerY;
+                    
+                    const targetX = this.baseX + (dx * (breathAmount - 1) * 0.4);
+                    const targetY = this.baseY + (dy * (breathAmount - 1) * 0.4);
+                    
+                    this.x += (targetX - this.x) * 0.02;
+                    this.y += (targetY - this.y) * 0.02;
+                    
+                    this.speedX = 0;
+                    this.speedY = 0;
+                } else {
+                    this.x += Math.cos(this.shootingAngle) * this.shootingSpeed;
+                    this.y += Math.sin(this.shootingAngle) * this.shootingSpeed;
+                    
+                    this.trail.push({ x: this.x, y: this.y, opacity: this.opacity });
+                    if (this.trail.length > 12) {
+                        this.trail.shift();
+                    }
+                    
+                    if (this.x < -50 || this.x > canvas.width + 50 || 
+                        this.y < -50 || this.y > canvas.height + 50) {
+                        this.isShootingStar = false;
+                        currentShootingStar = null;
+                        this.trail = [];
+                        this.reset();
+                    }
+                }
                 
-                // Pulsing effect
-                this.pulsePhase += this.pulseSpeed;
+                this.size = this.baseSize;
             }
             
             draw() {
-                const pulseFactor = Math.sin(this.pulsePhase) * 0.3 + 0.7;
-                ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity * pulseFactor})`;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size * pulseFactor, 0, Math.PI * 2);
-                ctx.fill();
+                const r = 200;
+                const g = 220;
+                const b = 255;
                 
-                // Add glow effect
-                ctx.shadowBlur = 10;
-                ctx.shadowColor = 'rgba(255, 255, 255, 0.5)';
+                if (this.isShootingStar && this.trail.length > 1) {
+                    for (let i = 0; i < this.trail.length - 1; i++) {
+                        const point = this.trail[i];
+                        const alpha = (i / this.trail.length) * point.opacity * 0.5;
+                        ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
+                        ctx.beginPath();
+                        ctx.arc(point.x, point.y, this.size * 0.8, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                }
+                
+                ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fill();
-                ctx.shadowBlur = 0;
             }
         }
-        
+
         function initParticles() {
             particles.length = 0;
+            backgroundStars.length = 0;
+            
             for (let i = 0; i < particleCount; i++) {
-                particles.push(new Particle());
+                particles.push(new Particle(i));
+            }
+            
+            for (let i = 0; i < backgroundStarCount; i++) {
+                backgroundStars.push(new BackgroundStar());
             }
         }
-        
-        function animateParticles() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        function drawInverseBreathingGradient() {
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const maxRadius = Math.sqrt(centerX * centerX + centerY * centerY);
             
-            // Draw connections first (behind particles)
-            for (let i = 0; i < particles.length; i++) {
-                for (let j = i + 1; j < particles.length; j++) {
+            const breathAmount = Math.sin(breathingPhase) * 0.08 + 1.0;
+            const breathFactor = (breathAmount - 0.92) / 0.16;
+            const opacityMultiplier = breathFactor;
+            
+            const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, maxRadius);
+            
+            gradient.addColorStop(0, `rgba(7, 22, 48, ${0.85 * opacityMultiplier})`);
+            gradient.addColorStop(0.25, `rgba(7, 22, 48, ${0.7 * opacityMultiplier})`);
+            gradient.addColorStop(0.5, `rgba(5, 15, 35, ${0.5 * opacityMultiplier})`);
+            gradient.addColorStop(0.75, `rgba(2, 8, 20, ${0.3 * opacityMultiplier})`);
+            gradient.addColorStop(1, 'rgba(0, 0, 0, 0.1)');
+            
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function checkShootingStar() {
+            if (!currentShootingStar) {
+                const currentTime = Date.now();
+                if (currentTime - lastShootingStarTime > 2000) {
+                    if (Math.random() > 0.99) {
+                        const particleIndex = Math.floor(Math.random() * particles.length);
+                        const particle = particles[particleIndex];
+                        particle.isShootingStar = true;
+                        particle.trail = [];
+                        currentShootingStar = particle;
+                        lastShootingStarTime = currentTime;
+                        
+                        const angleOptions = [
+                            Math.PI * 0.15, Math.PI * 0.25, Math.PI * 0.35,
+                            Math.PI * 0.65, Math.PI * 0.75, Math.PI * 0.85,
+                            -Math.PI * 0.15, -Math.PI * 0.25, -Math.PI * 0.35,
+                            -Math.PI * 0.65, -Math.PI * 0.75, -Math.PI * 0.85
+                        ];
+                        particle.shootingAngle = angleOptions[Math.floor(Math.random() * angleOptions.length)];
+                        particle.shootingSpeed = 3 + Math.random() * 2;
+                    }
+                }
+            }
+        }
+
+        function animateParticles() {
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            drawInverseBreathingGradient();
+            
+            starfieldRotation += rotationSpeed;
+            
+            const dx = mouseX - prevMouseX;
+            const dy = mouseY - prevMouseY;
+            mouseSpeed = Math.sqrt(dx * dx + dy * dy);
+            prevMouseX = mouseX;
+            prevMouseY = mouseY;
+            
+            backgroundStars.forEach(star => {
+                star.update();
+                star.draw();
+            });
+            
+            checkShootingStar();
+            
+            let connectionCount = 0;
+            const maxConnections = 50;
+            
+            for (let i = 0; i < particles.length && connectionCount < maxConnections; i++) {
+                for (let j = i + 1; j < particles.length && connectionCount < maxConnections; j++) {
                     const dx = particles[i].x - particles[j].x;
                     const dy = particles[i].y - particles[j].y;
                     const distance = Math.sqrt(dx * dx + dy * dy);
                     
                     if (distance < connectionDistance) {
                         const opacity = (1 - distance / connectionDistance) * 0.3;
-                        ctx.strokeStyle = `rgba(100, 150, 255, ${opacity})`;
+                        ctx.strokeStyle = `rgba(70, 130, 255, ${opacity})`;
                         ctx.lineWidth = 1;
                         ctx.beginPath();
                         ctx.moveTo(particles[i].x, particles[i].y);
                         ctx.lineTo(particles[j].x, particles[j].y);
                         ctx.stroke();
-                        
-                        // Add node highlights at connection points
-                        if (distance < connectionDistance / 2) {
-                            const midX = (particles[i].x + particles[j].x) / 2;
-                            const midY = (particles[i].y + particles[j].y) / 2;
-                            ctx.fillStyle = `rgba(150, 200, 255, ${opacity * 0.3})`;
-                            ctx.beginPath();
-                            ctx.arc(midX, midY, 1, 0, Math.PI * 2);
-                            ctx.fill();
-                        }
+                        connectionCount++;
                     }
                 }
             }
             
-            // Draw particles
             particles.forEach(particle => {
                 particle.update();
                 particle.draw();
@@ -1098,9 +1621,78 @@
             
             requestAnimationFrame(animateParticles);
         }
-        
+
         initParticles();
         animateParticles();
+
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            mouseX = e.clientX - rect.left;
+            mouseY = e.clientY - rect.top;
+        });
+
+        canvas.addEventListener('mouseleave', () => {
+            mouseX = canvas.width / 2;
+            mouseY = canvas.height / 2;
+        });
+
+        // Music Player Functions
+        function loadSong(index) {
+            currentSong = index;
+            currentAudio.src = songs[index].url;
+            currentAudio.load();
+            document.getElementById('songName').textContent = songs[index].name;
+        }
+
+        function togglePlayPause() {
+            if (isPlaying) {
+                currentAudio.pause();
+                isPlaying = false;
+            } else {
+                currentAudio.play();
+                isPlaying = true;
+            }
+            
+            document.getElementById('playIcon').style.display = isPlaying ? 'none' : 'block';
+            document.getElementById('pauseIcon').style.display = isPlaying ? 'block' : 'none';
+        }
+
+        function playNext() {
+            currentSong = (currentSong + 1) % songs.length;
+            loadSong(currentSong);
+            if (isPlaying) {
+                currentAudio.play();
+            }
+        }
+
+        function playPrevious() {
+            currentSong = (currentSong - 1 + songs.length) % songs.length;
+            loadSong(currentSong);
+            if (isPlaying) {
+                currentAudio.play();
+            }
+        }
+
+        function updateProgress() {
+            if (currentAudio.duration) {
+                const progress = (currentAudio.currentTime / currentAudio.duration) * 100;
+                document.getElementById('progressBar').style.width = progress + '%';
+            }
+        }
+
+        document.getElementById('progressContainer').addEventListener('click', (e) => {
+            const rect = e.currentTarget.getBoundingClientRect();
+            const percent = (e.clientX - rect.left) / rect.width;
+            currentAudio.currentTime = percent * currentAudio.duration;
+        });
+
+        document.getElementById('playPauseBtn').addEventListener('click', togglePlayPause);
+        document.getElementById('nextBtn').addEventListener('click', playNext);
+        document.getElementById('prevBtn').addEventListener('click', playPrevious);
+        currentAudio.addEventListener('timeupdate', updateProgress);
+        currentAudio.addEventListener('ended', playNext);
+
+        loadSong(0);
 
         // Initialize navigation dots with correct colors
         function initializeDots() {
@@ -1201,17 +1793,22 @@
                 location: 'Santarém, Portugal',
                 time: '21:30',
                 venue: 'Santarém Cathedral',
-                context: 'World Premiere - Opening Concert of Fós 2024, as part of the celebration of the 50th Anniversary of the Diocese of Santarém',
+                context: 'World Premiere - Opening Concert of FÓS 2024 – Santarém Organ Festival –, as part of the celebration of the 50th Anniversary of the Diocese of Santarém',
+                promoters: [
+                    'Diocese of Santarém',
+                    'Santa Casa da Misericórdia of Santarém',
+                    'Santarém City Council'
+                ],
                 performers: [
-                    'Orquestra Clássica do Centro (Coimbra, Portugal)',
-                    'Coro Ricercare (Lisbon, Portugal)',
-                    'Sergio Alapont, Musical Director',
+                    'ORQUESTRA CLÁSSICA DO CENTRO (Coimbra, Portugal)',
+                    'CORO RICERCARE (Lisbon, Portugal)',
                     'Pedro Teixeira, Choir Conductor',
                     'Eva Braga Simões, Soprano',
                     'Maria João Gomes, Mezzo-Soprano',
                     'Tiago Sousa, Tenor',
                     'Nuno Mendes, Bass',
-                    'Ricardo Toste, Organ'
+                    'Ricardo Toste, Organ',
+                    'Sergio Alapont, Musical Director'
                 ]
             },
             {
@@ -1220,46 +1817,66 @@
                 location: 'Coimbra, Portugal',
                 time: '21:30',
                 venue: 'Sé Nova',
-                context: 'Easter Concert',
+                context: 'Easter Concert – Closing concert of the Easter celebrations in the city of Coimbra',
+                promoters: [
+                    'Coimbra City Council',
+                    'Orquestra Clássica do Centro'
+                ],
                 performers: [
-                    'Orquestra Clássica do Centro (Coimbra, Portugal)',
-                    'Coro Ricercare (Lisbon, Portugal)',
-                    'Sergio Alapont, Musical Director',
+                    'ORQUESTRA CLÁSSICA DO CENTRO (Coimbra, Portugal)',
+                    'CORO RICERCARE (Lisbon, Portugal)',
                     'Pedro Teixeira, Choir Conductor',
                     'Eva Braga Simões, Soprano',
                     'Maria João Gomes, Mezzo-Soprano',
                     'Tiago Sousa, Tenor',
                     'Nuno Mendes, Bass',
-                    'Ricardo Toste, Organ'
+                    'Ricardo Toste, Organ',
+                    'Sergio Alapont, Musical Director'
                 ]
             },
             {
                 status: 'PREVIOUS PERFORMANCE',
                 date: 'April 27, 2025',
-                location: 'Shrine of Fatima, Portugal',
+                location: 'Shrine of Fátima, Portugal',
                 time: '15:30',
-                venue: 'Basilica of Our Lady of the Rosary of Fatima',
+                venue: 'Basilica of Our Lady of the Rosary of Fátima',
                 context: 'Easter Concert',
+                promoters: [
+                    'Shrine of Fátima'
+                ],
                 performers: [
-                    'Orquestra Clássica do Centro (Coimbra, Portugal)',
-                    'Coro Ricercare (Lisbon, Portugal)',
-                    'Sergio Alapont, Musical Director',
+                    'ORQUESTRA CLÁSSICA DO CENTRO (Coimbra, Portugal)',
+                    'CORO RICERCARE (Lisbon, Portugal)',
                     'Pedro Teixeira, Choir Conductor',
                     'Eva Braga Simões, Soprano',
                     'Maria João Gomes, Mezzo-Soprano',
                     'Tiago Sousa, Tenor',
                     'Nuno Mendes, Bass',
-                    'Ricardo Toste, Organ'
+                    'Ricardo Toste, Organ',
+                    'Sergio Alapont, Musical Director'
                 ]
             },
             {
                 status: 'NEXT PERFORMANCE',
                 date: 'December 13, 2025',
                 location: 'Lisbon, Portugal',
-                time: 'Time to be confirmed',
+                time: '19:00',
                 venue: 'Church of St. Nicholas',
-                context: 'Christmas Concert',
-                performers: ['To be confirmed']
+                context: 'Christmas Concert – Between Virtuosity and Spirituality',
+                promoters: [
+                    'Égide – Portuguese Arts Association'
+                ],
+                performers: [
+                    'ORQUESTRA CLÁSSICA DO CENTRO (Coimbra, Portugal)',
+                    'CORO RICERCARE (Lisbon, Portugal)',
+                    'Pedro Teixeira, Choir Conductor',
+                    'Eva Braga Simões, Soprano',
+                    'Maria João Gomes, Mezzo-Soprano',
+                    'Tiago Sousa, Tenor',
+                    'Nuno Mendes, Bass',
+                    'Ricardo Toste, Organ',
+                    'Sergio Alapont, Musical Director'
+                ]
             }
         ];
 
@@ -1295,6 +1912,8 @@
             const perf = performances[currentIndex];
             const detailsContent = document.getElementById('detailsContent');
             
+            let promotersHtml = perf.promoters.map(p => p).join('<br>');
+            
             let performersHtml = perf.performers.map(p => p).join('<br>');
             
             detailsContent.innerHTML = `
@@ -1312,6 +1931,10 @@
                     <div class="detail-value italic">${perf.context}</div>
                 </div>
                 ` : ''}
+                <div class="detail-row">
+                    <div class="detail-label">Promoters</div>
+                    <div class="detail-value promoters-list">${promotersHtml}</div>
+                </div>
                 <div class="detail-row">
                     <div class="detail-label">Performers</div>
                     <div class="detail-value performers-list">${performersHtml}</div>
@@ -1360,6 +1983,7 @@
         window.addEventListener('scroll', () => {
             const sections = ['hero', 'essence', 'experience', 'words', 'voices', 'performances', 'connect'];
             const dots = document.querySelectorAll('.nav-dot');
+            const musicPlayer = document.querySelector('.music-player');
             
             let current = 0;
             sections.forEach((section, index) => {
@@ -1370,6 +1994,7 @@
                 }
             });
             
+            // Update navigation dots
             dots.forEach((dot, index) => {
                 // For dark sections (hero and connect)
                 if (current === 0 || current === 6) {
@@ -1385,6 +2010,15 @@
                     }
                 }
             });
+            
+            // Update music player colors
+            if (current === 0 || current === 6) {
+                // Dark sections (hero and connect) - dark player
+                musicPlayer.classList.remove('light');
+            } else {
+                // Light sections (essence, experience, words, voices, performances) - light player
+                musicPlayer.classList.add('light');
+            }
         });
     </script>
 </body>
