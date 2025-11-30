@@ -245,7 +245,12 @@
             margin-bottom: 2rem;
             text-transform: uppercase;
             animation: fadeIn 2s ease-in;
-            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.7), 0 2px 6px rgba(0, 0, 0, 0.5);
+            /* Multi-layered shadow approach for maximum visibility */
+            text-shadow: 0 0 12px rgba(0, 0, 0, 0.7), 0 0 6px rgba(0, 0, 0, 0.5);
+            /* Drop-shadow filter creates a glow that appears in front of canvas */
+            filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.9)) 
+                    drop-shadow(0 0 40px rgba(0, 0, 0, 0.6))
+                    drop-shadow(0 0 8px rgba(0, 0, 0, 0.8));
         }
 
         .hero-subtitle {
@@ -254,7 +259,12 @@
             letter-spacing: 0.2em;
             opacity: 0;
             animation: fadeIn 2s ease-in 1s forwards;
-            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8), 0 1px 4px rgba(0, 0, 0, 0.6);
+            /* Multi-layered shadow approach for maximum visibility */
+            text-shadow: 0 0 8px rgba(0, 0, 0, 0.9), 0 0 4px rgba(0, 0, 0, 0.7);
+            /* Drop-shadow filter creates a glow that appears in front of canvas */
+            filter: drop-shadow(0 0 16px rgba(0, 0, 0, 1)) 
+                    drop-shadow(0 0 32px rgba(0, 0, 0, 0.7))
+                    drop-shadow(0 0 6px rgba(0, 0, 0, 0.9));
         }
 
         @keyframes fadeIn {
@@ -944,6 +954,20 @@
             .language-selector {
                 top: 1rem;
                 right: 1rem;
+            }
+
+            .hero-title {
+                text-shadow: 0 0 12px rgba(0, 0, 0, 0.7), 0 0 6px rgba(0, 0, 0, 0.5);
+                filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.9)) 
+                        drop-shadow(0 0 40px rgba(0, 0, 0, 0.6))
+                        drop-shadow(0 0 8px rgba(0, 0, 0, 0.8));
+            }
+
+            .hero-subtitle {
+                text-shadow: 0 0 8px rgba(0, 0, 0, 1), 0 0 4px rgba(0, 0, 0, 0.8);
+                filter: drop-shadow(0 0 16px rgba(0, 0, 0, 1)) 
+                        drop-shadow(0 0 32px rgba(0, 0, 0, 0.7))
+                        drop-shadow(0 0 6px rgba(0, 0, 0, 0.9));
             }
         }
     </style>
