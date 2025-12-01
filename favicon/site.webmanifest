@@ -1,6 +1,7 @@
 {
   "name": "Missa Ad Astra",
-  "short_name": "Missa",
+  "short_name": "Missa Ad Astra",
+  "description": "A Contemporary Sacred Manifesto",
   "icons": [
     {
       "src": "/favicon/web-app-manifest-192x192.png",
