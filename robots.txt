@@ -4,7 +4,7 @@
 # =====================================================
 # This file controls how search engines and bots
 # crawl and index the Missa Ad Astra website
-# Last updated: 2025-11-28
+# Last updated: 2025-12-19
 # =====================================================
 
 # =====================================================
@@ -29,6 +29,9 @@ Allow: /pt/#palavras
 Allow: /pt/#vozes
 Allow: /pt/#apresentacoes
 Allow: /pt/#contacto
+
+# Allow favicon directory
+Allow: /favicon/
 
 # Disallow common administrative and system files
 Disallow: /cgi-bin/
@@ -386,4 +389,9 @@ Host: https://missaadastra.com
 #
 # The website welcomes ethical AI and search crawling
 # while blocking malicious scrapers and content thieves.
+#
+# Updated: December 19, 2025
+# - Added favicon directory to allowed paths
+# - Updated lastmod dates to reflect current content
+# - Performances section now shows historical events
 # =====================================================

@@ -7,7 +7,7 @@
   <!-- English Homepage -->
   <url>
     <loc>https://missaadastra.com/</loc>
-    <lastmod>2025-11-28</lastmod>
+    <lastmod>2025-12-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://missaadastra.com/" />
@@ -18,7 +18,7 @@
   <!-- Portuguese Homepage -->
   <url>
     <loc>https://missaadastra.com/pt/</loc>
-    <lastmod>2025-11-28</lastmod>
+    <lastmod>2025-12-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://missaadastra.com/" />
@@ -29,7 +29,7 @@
   <!-- English Section: The Essence -->
   <url>
     <loc>https://missaadastra.com/#essence</loc>
-    <lastmod>2025-11-28</lastmod>
+    <lastmod>2025-12-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://missaadastra.com/#essence" />
@@ -39,7 +39,7 @@
   <!-- Portuguese Section: A Essência -->
   <url>
     <loc>https://missaadastra.com/pt/#essencia</loc>
-    <lastmod>2025-11-28</lastmod>
+    <lastmod>2025-12-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://missaadastra.com/#essence" />
@@ -49,7 +49,7 @@
   <!-- English Section: The Experience -->
   <url>
     <loc>https://missaadastra.com/#experience</loc>
-    <lastmod>2025-11-28</lastmod>
+    <lastmod>2025-12-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://missaadastra.com/#experience" />
@@ -59,7 +59,7 @@
   <!-- Portuguese Section: A Experiência -->
   <url>
     <loc>https://missaadastra.com/pt/#experiencia</loc>
-    <lastmod>2025-11-28</lastmod>
+    <lastmod>2025-12-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://missaadastra.com/#experience" />
@@ -69,7 +69,7 @@
   <!-- English Section: The Words -->
   <url>
     <loc>https://missaadastra.com/#words</loc>
-    <lastmod>2025-11-28</lastmod>
+    <lastmod>2025-12-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://missaadastra.com/#words" />
@@ -79,7 +79,7 @@
   <!-- Portuguese Section: As Palavras -->
   <url>
     <loc>https://missaadastra.com/pt/#palavras</loc>
-    <lastmod>2025-11-28</lastmod>
+    <lastmod>2025-12-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://missaadastra.com/#words" />
@@ -89,7 +89,7 @@
   <!-- English Section: The Voices -->
   <url>
     <loc>https://missaadastra.com/#voices</loc>
-    <lastmod>2025-11-28</lastmod>
+    <lastmod>2025-12-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://missaadastra.com/#voices" />
@@ -99,7 +99,7 @@
   <!-- Portuguese Section: As Vozes -->
   <url>
     <loc>https://missaadastra.com/pt/#vozes</loc>
-    <lastmod>2025-11-28</lastmod>
+    <lastmod>2025-12-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://missaadastra.com/#voices" />
@@ -109,9 +109,9 @@
   <!-- English Section: Performances -->
   <url>
     <loc>https://missaadastra.com/#performances</loc>
-    <lastmod>2025-11-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <lastmod>2025-12-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://missaadastra.com/#performances" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://missaadastra.com/pt/#apresentacoes" />
   </url>
@@ -119,9 +119,9 @@
   <!-- Portuguese Section: Apresentações -->
   <url>
     <loc>https://missaadastra.com/pt/#apresentacoes</loc>
-    <lastmod>2025-11-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <lastmod>2025-12-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://missaadastra.com/#performances" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://missaadastra.com/pt/#apresentacoes" />
   </url>
@@ -129,7 +129,7 @@
   <!-- English Section: Connect -->
   <url>
     <loc>https://missaadastra.com/#connect</loc>
-    <lastmod>2025-11-28</lastmod>
+    <lastmod>2025-12-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://missaadastra.com/#connect" />
@@ -139,7 +139,7 @@
   <!-- Portuguese Section: Contacto -->
   <url>
     <loc>https://missaadastra.com/pt/#contacto</loc>
-    <lastmod>2025-11-28</lastmod>
+    <lastmod>2025-12-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://missaadastra.com/#connect" />
